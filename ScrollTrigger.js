@@ -17,12 +17,16 @@
 
 		this.init = function(_this) {
 			return function(bindTo, scrollIn) {
-				if (bindTo) {
+				if (bindTo != undefined && bindTo != null) {
 					_this.bindElement = bindTo;
+				} else {
+					_this.bindElement = document.body;
 				}
 
-				if (scrollIn) {
+				if (scrollIn != undefined && scrollIn != null) {
 					_this.scrollElement = scrollIn;
+				} else {
+					_this.scrollElement = window;
 				}
 
 				_this.triggers = _this.bindElement.querySelectorAll("[data-scroll]");
