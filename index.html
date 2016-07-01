@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	
+	<title>ScrollTrigger - Scroll based animations with ease</title>
+	
+	<link href="style.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="block">
+	<h1 data-scroll="-200 scaleUpIn scaleUpOut">ScrollTrigger</h1>
+	<h2 data-scroll="-200 fromBottomIn fromBottomOut">Add scroll based animations to your site with ease.</h2>
+	
+	<svg viewBox="0 0 60 60">
+		<path d="M52.254 18.327c0.816-0.804 2.127-0.804 2.937 0s0.813 2.103 0 2.907l-23.724 23.49c-0.81 0.804-2.121 0.804-2.937 0l-23.724-23.49c-0.81-0.804-0.81-2.103 0-2.907 0.813-0.804 2.127-0.804 2.937 0l22.257 21.423 22.254-21.423z"></path>
+	</svg>
+</div>
+<div class="block">
+	<h1 data-scroll="200 fromTopIn fromTopOut">CSS Animations</h1>
+	<h2 data-scroll="200 fromBottomIn fromBottomOut">All animations are triggered by classes, so you can take advantage of the power that CSS3 animations give you.</h2>
+</div>
+<div class="block">
+	<h1 data-scroll="200 fromLeftIn fromLeftOut">Vanilla JS</h1>
+	<h2 data-scroll="200 fromRightIn fromRightOut">It's written in vanilla javascript, so you can use it with any framework.</h2>
+</div>
+<div class="block">
+	<h1 data-scroll="200 scaleDownIn scaleDownOut">RequestAnimationFrame</h1>
+	<h2 data-scroll="200 fromBottomIn fromBottomOut">It uses the window.requestAnimationFrame method so it doesn't jack the users scroll. Animations are triggered when the browser is ready for it.</h2>
+</div>
+<div class="block">
+	<h1 data-scroll="200 fromRightIn fromRightOut">Simple syntax</h1>
+	<h2 data-scroll="200 fromLeftIn fromLeftOut">You define the options inside the HTML attribute, so after you have initialised the ScrollTrigger you don't have to touch JavaScript again.</h2>
+</div>
+<div class="block">
+	<h1>Open source</h1>
+	<h2>The project, with documentation, is on <a href="https://github.com/terwanerik/ScrollTrigger">GitHub</a>. Give it some love!</h2>
+	<h3>Written by <a href="https://erikterwan.com" target="_blank">Erik Terwan</a></h3>
+</div>
+
+<script src="ScrollTrigger.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  ScrollTrigger.init();
+});
+</script>
+
+<link href="https://fonts.googleapis.com/css?family=Work+Sans:200,300,500,700" rel="stylesheet">
+</body>
+</html>
