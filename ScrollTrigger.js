@@ -142,7 +142,7 @@
 			for (var n = 0; n < attached.length; n++) {
 				var callback = attached[n];
 
-				callback.call(_this, windowHeight, _this.scrollElement.scrollTop);
+				callback.call(_this, windowHeight, _this.bindElement.scrollTop);
 			}
 			
 			// and loop again
