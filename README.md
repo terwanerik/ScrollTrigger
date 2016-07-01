@@ -19,7 +19,7 @@ The `bindTo` parameter is the HTML element where the triggers should be fetched 
 
 The `scrollIn` parameter is the element to get the scroll position from, by default this is `window`, but it could be a scrolling div etc.
 
-Now add the data-scroll attribute to the HTML element you want to animate:
+Now add the `data-scroll` attribute to the HTML element you want to animate:
 
 ```html
 <div data-scroll></div>
@@ -36,6 +36,20 @@ The first option `150` is the offset to add to the position, in this case, it wi
 The second and third options are the classes to add when visible/invisible.
 
 The fourth and last option is a boolean, if true it'll add the element's height to the scroll offset. Now it will only add the `animateIn` class when the element is completely in the viewport.
+
+## Custom animations ##
+If you want to add custom animations based on the scroll position, it would be a waste to start another loop / jack the onscroll function. That's why you can attach callbacks to the ScrollTrigger's loop. This is really simple:
+
+```javascript
+document.addEventListener('DOMContentLoaded', function(){
+  ScrollTrigger.init();
+  ScrollTrigger.attach(function(height, scrollPos){
+    // i can do anything now with the height of the viewport
+    // or the scrollPosition in the scrollElement. 'this' refers to
+    // the ScrollTrigger object.
+  });
+});
+```
 
 ## Contributing
 Fork, check out `ScrollTrigger.js` and enjoy!
