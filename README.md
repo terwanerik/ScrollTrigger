@@ -38,7 +38,7 @@ The second and third options are the classes to add when visible/invisible.
 The fourth and last option is a boolean, if true it'll add the element's height to the scroll offset. Now it will only add the `animateIn` class when the element is completely in the viewport.
 
 ## What about CSS? ##
-You can find examples on how to use the css classes to animate in the gh-pages branch. Checkout `index.html` and `style.css` for some basic animations.
+You can find examples on how to use the css classes to animate in the [gh-pages branch](https://github.com/terwanerik/ScrollTrigger/tree/gh-pages). Checkout `index.html` and `style.css` for some basic animations.
 
 ## Custom animations ##
 If you want to add custom animations based on the scroll position, it would be a waste to start another loop / jack the onscroll function. That's why you can attach callbacks to the ScrollTrigger's loop. This is really simple:
