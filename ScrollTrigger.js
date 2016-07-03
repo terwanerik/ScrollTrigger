@@ -17,7 +17,6 @@
 		// the element to get the data-scroll elements from
 		this.bindElement = document.body; 
 		
-		
 		// the elements with the data-scroll attribute
 		var triggers = [];
 		
@@ -52,8 +51,9 @@
 				}
 				
 				// get all trigger elements, e.g. all elements with
-				// the data-scroll attribute
-				triggers = _this.bindElement.querySelectorAll("[data-scroll]");
+				// the data-scroll attribute and turn it from a NodeList
+				// into a plain old array
+				triggers = [].slice.call(_this.bindElement.querySelectorAll("[data-scroll]"));
 
 				// check what requestAnimationFrame to use, and if
 				// it's not supported, use the onscroll event
@@ -101,11 +101,15 @@
 				
 				// parse the options given in the data-scroll attribute,
 				// if any.
-				var options = trigger.getAttribute('data-scroll').split(' ');
+				var optionString = trigger.getAttribute('data-scroll');
+				var options = optionString.split(' ');
+				
 				var yOffset = parseInt(options[0] != undefined ? options[0] : 0);
 				var visibleClass = options[1] != undefined ? options[1] : 'visible';
 				var hiddenClass = options[2] != undefined ? options[2] : 'invisible';
-				var addHeight = options[3] != undefined ? (options[3] == 'true') : false;
+				
+				var addHeight = optionString.indexOf("addHeight") > -1;
+				var once = optionString.indexOf("once") > -1;
 				
 				// if the add height (last parameter) is true, we add the
 				// full height of the element to the top position, so the
@@ -127,11 +131,17 @@
 					if (trigger.classList.contains(hiddenClass)) {
 						trigger.classList.remove(hiddenClass);
 					}
+					
+					if (once) {
+						// remove trigger from triggers array
+						triggers.splice(i, 1);
+					}
 				} else {
+					// the element is invisible
 					if (!trigger.classList.contains(hiddenClass)) {
 						trigger.classList.add(hiddenClass);
 					}
-
+					
 					if (trigger.classList.contains(visibleClass)) {
 						trigger.classList.remove(visibleClass);
 					}

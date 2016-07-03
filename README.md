@@ -28,14 +28,18 @@ Now add the `data-scroll` attribute to the HTML element you want to animate:
 When you scroll the page, and the element is visible in the viewport, it will add the default class `visible`. If it's out of the viewport the `invisible` class is added. You can specify options in the `data-scroll` attribute, it can take up to 4.
 
 ```html
-<div data-scroll="150 animateIn animateOut true"></div>
+<div data-scroll="150 animateIn animateOut addHeight once"></div>
 ```
 
 The first option `150` is the offset to add to the position, in this case, it will start 150 pixels after it has been in the viewport. This is nice for tweaking animations to trigger at the right time.
 
 The second and third options are the classes to add when visible/invisible.
 
-The fourth and last option is a boolean, if true it'll add the element's height to the scroll offset. Now it will only add the `animateIn` class when the element is completely in the viewport.
+The fourth option is a boolean, if true it'll add the element's height to the scroll offset. Now it will only add the `animateIn` class when the element is completely in the viewport.
+
+The fifth option makes sure the animation only happens once, so when you scroll up & down the animations do not start over.
+
+The position of the first 3 options is strict, the `addHeight` and `once` options are not. E.g. `150 animateIn animateOut once` is valid, as is `150 animateIn animateOut addHeight`.
 
 ## What about CSS? ##
 You can find examples on how to use the css classes to animate in the [gh-pages branch](https://github.com/terwanerik/ScrollTrigger/tree/gh-pages). Checkout `index.html` and `style.css` for some basic animations.
