@@ -16,39 +16,56 @@
 		this.hideCallback = null;
 		this.visibleClass = 'visible';
 		this.hiddenClass = 'invisible';
-		this.xOffset = 0;
-		this.yOffset = 0;
 		this.addWidth = false;
 		this.addHeight = false;
 		this.once = false;
 		
+		var xOffset = 0;
+		var yOffset = 0;
+		
 		this.left = function(_this){
 			return function(){
-				var left = _this.element.getBoundingClientRect().left;
-				
-				// add the full width of the element to the left position, so the
-				// visibleClass is only added after the element is completely
-				// in the viewport
-				if (_this.addWidth) {
-					left += _this.width();
-				}
-				
-				return left;
+				return _this.element.getBoundingClientRect().left;
 			};
 		}(this);
 		
 		this.top = function(_this){
 			return function(){
-				var top = _this.element.getBoundingClientRect().top;
+				return _this.element.getBoundingClientRect().top;
+			};
+		}(this);
+		
+		this.xOffset = function(_this){
+			return function(goingLeft){
+				var offset = xOffset;
+				
+				// add the full width of the element to the left position, so the
+				// visibleClass is only added after the element is completely
+				// in the viewport
+				if (_this.addWidth && !goingLeft) {
+					offset += _this.width();
+				} else if (goingLeft && !_this.addWidth) {
+					offset -= _this.width();
+				}
+				
+				return offset;
+			};
+		}(this);
+		
+		this.yOffset = function(_this){
+			return function(goingUp){
+				var offset = yOffset;
 				
 				// add the full height of the element to the top position, so the
 				// visibleClass is only added after the element is completely
 				// in the viewport
-				if (_this.addHeight) {
-					top += _this.height();
+				if (_this.addHeight && !goingUp) {
+					offset += _this.height();
+				} else if (goingUp && !_this.addHeight) {
+					offset -= _this.height();
 				}
 				
-				return top;
+				return offset;
 			};
 		}(this);
 		
@@ -115,8 +132,8 @@
 					var offsets = offsetParts[1].split(')')[0].split(',');
 					
 					// remove the px unit and parse as integer
-					_this.xOffset = parseInt(offsets[0].replace('px', ''));
-					_this.yOffset = parseInt(offsets[1].replace('px', ''));
+					xOffset = parseInt(offsets[0].replace('px', ''));
+					yOffset = parseInt(offsets[1].replace('px', ''));
 				}
 				
 				// parse the boolean options
@@ -280,37 +297,21 @@
 					var triggerTop = trigger.top();
 					
 					if (previousScroll.left > currentLeft) {
-						// scrolling left, so we add the xOffset
-						triggerLeft -= trigger.xOffset;
-						
-						// if the width has not been added yet, we add it
-						// or the distance is not correct
-						if (!trigger.addWidth) {
-							triggerLeft += trigger.width();
-						} else {
-							triggerLeft -= trigger.width();
-						}
-					} else if (previousScroll.left > currentLeft) {
-						// scrolling right, so we subtract the xOffset
-						triggerLeft += trigger.xOffset;
+						// scrolling left, so we subtract the xOffset
+						triggerLeft -= trigger.xOffset(true);
+					} else if (previousScroll.left < currentLeft) {
+						// scrolling right, so we add the xOffset
+						triggerLeft += trigger.xOffset(false);
 					}
 					
 					if (previousScroll.top > currentTop) {
 						// scrolling up, so we subtract the yOffset
-						triggerTop -= trigger.yOffset;
-						
-						// if the height has not been added yet, we add it
-						// or the distance is not correct
-						if (!trigger.addHeight) {
-							triggerTop += trigger.height();
-						} else {
-							triggerTop -= trigger.height();
-						}
+						triggerTop -= trigger.yOffset(true);
 					} else if (previousScroll.top < currentTop){
 						// scrolling down so then we add the yOffset
-						triggerTop += trigger.yOffset;
+						triggerTop += trigger.yOffset(false);
 					}
-									
+					
 					// toggle the classes
 					if (triggerLeft < windowWidth && triggerLeft > 0 && 
 							triggerTop < windowHeight && triggerTop > 0) {
