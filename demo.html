@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	
+	<title>ScrollTrigger - Scroll based animations with ease</title>
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="author" content="Erik Terwan">
+	
+	<link href="style.css" rel="stylesheet">
+	<link href="demo.css" rel="stylesheet">
+</head>
+<body>
+<div class="block">
+	<h1 data-scroll="toggle(.scaleUpIn, .scaleUpOut) addHeight">Scroll<span></span>Trigger</h1>
+	<h2 data-scroll="toggle(.fromBottomIn, .fromBottomOut) addHeight">Add scroll based animations to your site with ease.</h2>
+	
+	<svg viewBox="0 0 60 60">
+		<path d="M52.254 18.327c0.816-0.804 2.127-0.804 2.937 0s0.813 2.103 0 2.907l-23.724 23.49c-0.81 0.804-2.121 0.804-2.937 0l-23.724-23.49c-0.81-0.804-0.81-2.103 0-2.907 0.813-0.804 2.127-0.804 2.937 0l22.257 21.423 22.254-21.423z"></path>
+	</svg>
+</div>
+<div class="block">
+	<h1 data-scroll="toggle(.fromTopIn, .fromTopOut) addHeight">CSS Animations</h1>
+	<h2 data-scroll="toggle(.fromBottomIn, .fromBottomOut) addHeight">All animations are triggered by classes, so you can take advantage of the power that CSS3 animations give you.</h2>
+</div>
+<div class="block">
+	<h1 data-scroll="toggle(.fromLeftIn, .fromLeftOut) addHeight">Vanilla JS</h1>
+	<h2 data-scroll="toggle(.fromRightIn, .fromRightOut) addHeight">It's written in vanilla javascript, so you can use it with any framework.</h2>
+</div>
+<div class="block">
+	<h1 data-scroll="toggle(.scaleDownIn, .scaleDownOut) addHeight">Request Animation Frame</h1>
+	<h2 data-scroll="toggle(.fromBottomIn, .fromBottomOut) addHeight">It uses the window.requestAnimationFrame method so it doesn't jack the users scroll. Animations are triggered when the browser is ready for it.</h2>
+</div>
+<div class="block">
+	<h1 data-scroll="toggle(.fromRightIn, .fromRightOut) addHeight">Simple syntax</h1>
+	<h2 data-scroll="toggle(.fromLeftIn, .fromLeftOut) addHeight">You define the options inside the HTML attribute, so after you have initialised the ScrollTrigger you don't have to touch JavaScript again.</h2>
+</div>
+<div class="block">
+	<h1 data-scroll="toggle(.fromRightIn, .fromRightOut) addHeight">Customisable</h1>
+	<h2 data-scroll="toggle(.fromLeftIn, .fromLeftOut) addHeight">ScrollTrigger offers a range of options, from calling custom JavaScript functions to defining custom offsets and classes.</h2>
+	<h3 data-scroll="toggle(.fromRightIn, .fromRightOut) addHeight" data-scrollCall="counter">You scrolled past this block <span>0</span> times.</h3>
+</div>
+<div class="block">
+	<h1 data-scroll="toggle(.fromRightIn, .fromRightOut) addHeight">Versatile</h1>
+	<h2 data-scroll="toggle(.fromLeftIn, .fromLeftOut) addHeight">ScrollTrigger supports vertical and horizontal scrolling, check out the <a href="horizontaldemo.html">horizontal demo</a>.</h2>
+</div>
+<div class="block">
+	<h1>Open source</h1>
+	<h2>The project, with documentation, is on <a href="https://github.com/terwanerik/ScrollTrigger">GitHub</a>. Give it some love!</h2>
+	<h3>Written by <a href="https://erikterwan.com" target="_blank">Erik Terwan</a></h3>
+</div>
+
+<script src="ScrollTrigger.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  ScrollTrigger.init();
+});
+</script>
+
+<link href="https://fonts.googleapis.com/css?family=Work+Sans:200,300,500,700" rel="stylesheet">
+</body>
+</html>

@@ -27,7 +27,10 @@
 		
 		// the previous scrollTop position, to determine if a user
 		// is scrolling up or down
-		var previousTop = 0;
+		var previousScroll = {
+			left: 0,
+			top: 0
+		};
 
 		// the loop method to use, preferred window.requestAnimationFrame
 		var loop = window.requestAnimationFrame;
@@ -71,8 +74,9 @@
 					window.oRequestAnimationFrame ||
 					_this.scrollElement.onscroll; // old school browser support
 				
-				// set the current scrollTop position
-				previousTop = _this.bindElement.scrollTop;
+				// set the current scroll positions
+				previousScroll.left = _this.bindElement.scrollLeft;
+				previousScroll.top = _this.bindElement.scrollTop;
 				
 				if (triggers.length > 0) {
 					isLooping = true;
@@ -134,48 +138,96 @@
 		 * scrolls (on legacy browsers)
 		 */
 		function update() {
+			var windowWidth = _this.scrollElement.innerWidth;
 			var windowHeight = _this.scrollElement.innerHeight;
 			var currentTop = _this.bindElement.scrollTop;
+			var currentLeft = _this.bindElement.scrollLeft;
 			
 			// loop through all triggers
 			for (var i = 0; i <  triggers.length; i++) {
 				var trigger = triggers[i];
 				var triggerTop = trigger.getBoundingClientRect().top;
+				var triggerLeft = trigger.getBoundingClientRect().left;
 				
-				// parse the options given in the data-scroll attribute,
-				// if any.
+				// parse the options given in the data-scroll attribute, if any
 				var optionString = trigger.getAttribute('data-scroll');
-				var options = optionString.split(' ');
+				var callString = trigger.getAttribute('data-scrollCall');
+				var visibleClass = 'visible';
+				var hiddenClass = 'invisible';
+				var xOffset = 0;
+				var yOffset = 0;
 				
-				var yOffset = parseInt(options[0] != undefined ? options[0] : 0);
-				var visibleClass = options[1] != undefined ? options[1] : 'visible';
-				var hiddenClass = options[2] != undefined ? options[2] : 'invisible';
+				// split the options on the toggle() parameter
+				var classParts = optionString.split('toggle(');
+				if (classParts.length > 1) {
+					// the toggle() parameter was given, split it at ) to get the
+					// content inside the parentheses, then split them on the comma
+					var classes = classParts[1].split(')')[0].split(',');
+					
+					// trim and remove the dot
+					visibleClass = classes[0].trim().replace('.', '');
+					hiddenClass = classes[1].trim().replace('.', '');
+				}
 				
+				// split the options on the offset() parameter
+				var offsetParts = optionString.split('offset(');
+				if (offsetParts.length > 1) {
+					// the offset() parameter was given, split it at ) to get the
+					// content inside the parentheses, then split them on the comma
+					var offsets = offsetParts[1].split(')')[0].split(',');
+					
+					// remove the px unit and parse as integer
+					xOffset = parseInt(offsets[0].replace('px', ''));
+					yOffset = parseInt(offsets[1].replace('px', ''));
+				}
+				
+				// parse the boolean options
+				var addWidth = optionString.indexOf("addWidth") > -1;
 				var addHeight = optionString.indexOf("addHeight") > -1;
 				var once = optionString.indexOf("once") > -1;
 				
-				// if the add height (last parameter) is true, we add the
-				// full height of the element to the top position, so the
+				// add the full width of the element to the left position, so the
+				// visibleClass is only added after the element is completely
+				// in the viewport
+				if (addWidth) {
+					triggerLeft += trigger.offsetWidth;
+				}
+				
+				// add the full height of the element to the top position, so the
 				// visibleClass is only added after the element is completely
 				// in the viewport
 				if (addHeight) {
 					triggerTop += trigger.offsetHeight;
 				}
 				
-				if (previousTop > currentTop) {
+				if (previousScroll.left > currentLeft) {
+					// scrolling left, so we subtract the xOffset
+					triggerLeft -= xOffset;
+				} else if (previousScroll.left < currentLeft) {
+					// scrolling right or not scrolling at all
+					// then we add the xOffset
+					triggerLeft += xOffset;
+				}
+				
+				if (previousScroll.top > currentTop) {
 					// scrolling up, so we subtract the yOffset
 					triggerTop -= yOffset;
-				} else {
+				} else if (previousScroll.top < currentTop){
 					// scrolling down or not scrolling at all
 					// then we add the yOffset
 					triggerTop += yOffset;
 				}
-				
+								
 				// toggle the classes
-				if (triggerTop < windowHeight && triggerTop > 0) {
+				if (triggerLeft < windowWidth && triggerLeft > 0 && 
+						triggerTop < windowHeight && triggerTop > 0) {
 					// the element is visible
 					if (!trigger.classList.contains(visibleClass)) {
 						trigger.classList.add(visibleClass);
+						
+						if (callString) {
+							functionCall(trigger, callString);
+						}
 					}
 
 					if (trigger.classList.contains(hiddenClass)) {
@@ -205,8 +257,9 @@
 				callback.call(_this, windowHeight, _this.bindElement.scrollTop);
 			}
 			
-			// save the current top position
-			previousTop = currentTop;
+			// save the current scroll position
+			previousScroll.left = currentLeft;
+			previousScroll.top = currentTop;
 			
 			if (triggers.length > 0 || attached.length > 0) {
 				isLooping = true;
@@ -217,10 +270,34 @@
 				isLooping = false;
 			}
 		}
-	};
-	
+		
+		function functionCall(trigger, functionAsString) {
+			var params = functionAsString.split('(');
+			var method = params[0];
+			
+			if (params.length > 1) {
+				params = params[1].split(')')[0]; // get the value between the parentheses
+			} else {
+				params = undefined;
+			}
+			
+			if (window[method]) {
+				// function exists in the global window scope
+				// so let's call it
+				window[method].call(trigger, params);
+			}
+		}
+	}
 	
 	// add an instance of the ScrollTrigger to the window
 	// for use in public/window scope.
 	window.ScrollTrigger = new ScrollTrigger();
 })();
+
+window.counter = function() {
+	// this refers to the html element with the data-scrollCall tag
+	var span = this.querySelector('span');
+	var current = parseInt(span.textContent);
+	
+	span.textContent = current + 1;
+};
