@@ -31,6 +31,9 @@
 
 		// the loop method to use, preferred window.requestAnimationFrame
 		var loop = window.requestAnimationFrame;
+		
+		// if the requestAnimationFrame is looping
+		var isLooping = true;
 
 
 		/**
@@ -71,9 +74,15 @@
 				// set the current scrollTop position
 				previousTop = _this.bindElement.scrollTop;
 				
-				// start the update loop
-				update();
-
+				if (triggers.length > 0) {
+					isLooping = true;
+					
+					// start the update loop
+					update();
+				} else {
+					isLooping = false;
+				}
+				
 				// return 'this' for chaining
 				return _this;
 			};
@@ -81,12 +90,34 @@
 
 
 		/**
-		 * Attaches a callback every time the update method is called
+		 * Attaches a callback that get's called every time 
+		 * the update method is called
 		 */
 		this.attach = function(_this) {
 			return function(callback) {
 				// add callback to array
 				attached.push(callback);
+				
+				if (!isLooping) {
+					isLooping = true;
+					
+					// start the update loop
+					update();
+				}
+				
+				// return 'this' for chaining
+				return _this;
+			};
+		}(this);
+	
+	
+		/**
+		 * Detaches a callback
+		 */
+		this.detach = function(_this) {
+			return function(callback) {
+				// remove callback from array
+				attached.splice(attached.indexOf(callback), 1);
 				
 				// return 'this' for chaining
 				return _this;
@@ -177,8 +208,14 @@
 			// save the current top position
 			previousTop = currentTop;
 			
-			// and loop again
-			loop(update);
+			if (triggers.length > 0 || attached.length > 0) {
+				isLooping = true;
+				
+				// and loop again
+				loop(update);
+			} else {
+				isLooping = false;
+			}
 		}
 	};
 	

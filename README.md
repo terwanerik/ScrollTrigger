@@ -49,12 +49,18 @@ If you want to add custom animations based on the scroll position, it would be a
 
 ```javascript
 document.addEventListener('DOMContentLoaded', function(){
+	var callback = function(height, scrollPos){
+	  // i can do anything now with the height of the viewport
+	  // or the scrollPosition in the scrollElement. 'this' refers to
+	  // the ScrollTrigger object.
+	  
+	  // if you are done with the callback you can detach it
+	  // using the ScrollTrigger.detach() method.
+	  ScrollTrigger.detach(callback);
+	};
+	
   ScrollTrigger.init();
-  ScrollTrigger.attach(function(height, scrollPos){
-    // i can do anything now with the height of the viewport
-    // or the scrollPosition in the scrollElement. 'this' refers to
-    // the ScrollTrigger object.
-  });
+  ScrollTrigger.attach(callback);
 });
 ```
 
