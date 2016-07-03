@@ -46,8 +46,8 @@
 	</svg>
 </div>
 <div class="block">
-	<h1 data-scroll="toggle(.fromTopIn, .fromTopOut) offset(250px,0)">CSS Animations</h1>
-	<h2 data-scroll="toggle(.fromBottomIn, .fromBottomOut) offset(250px,0)">All animations are triggered by classes, so you can take advantage of the power that CSS3 animations give you.</h2>
+	<h1 data-scroll="toggle(.fromTopIn, .fromTopOut) offset(250px,0) addWidth">CSS Animations</h1>
+	<h2 data-scroll="toggle(.fromBottomIn, .fromBottomOut) offset(250px,0) addWidth">All animations are triggered by classes, so you can take advantage of the power that CSS3 animations give you.</h2>
 </div>
 <div class="block">
 	<h1 data-scroll="toggle(.fromLeftIn, .fromLeftOut) offset(250px,0)">Vanilla JS</h1>
@@ -76,8 +76,16 @@
 	<h3>Written by <a href="https://erikterwan.com" target="_blank">Erik Terwan</a></h3>
 </div>
 
-<script src="ScrollTrigger.js"></script>
+<script src="ScrollTrigger.min.js"></script>
 <script>
+window.counter = function() {
+	// this refers to the html element with the data-scrollCall tag
+	var span = this.querySelector('span');
+	var current = parseInt(span.textContent);
+	
+	span.textContent = current + 1;
+};
+
 document.addEventListener('DOMContentLoaded', function(){
   ScrollTrigger.init();
 });
