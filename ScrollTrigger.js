@@ -24,6 +24,10 @@
 		// this is handy for custom scroll based animation. So you
 		// don't have multiple, unnecessary loops going.
 		var attached = [];
+		
+		// the previous scrollTop position, to determine if a user
+		// is scrolling up or down
+		var previousTop = 0;
 
 		// the loop method to use, preferred window.requestAnimationFrame
 		var loop = window.requestAnimationFrame;
@@ -63,9 +67,14 @@
 					window.msRequestAnimationFrame ||
 					window.oRequestAnimationFrame ||
 					_this.scrollElement.onscroll; // old school browser support
-
+				
+				// set the current scrollTop position
+				previousTop = _this.bindElement.scrollTop;
+				
+				// start the update loop
 				update();
 
+				// return 'this' for chaining
 				return _this;
 			};
 		}(this);
@@ -76,8 +85,10 @@
 		 */
 		this.attach = function(_this) {
 			return function(callback) {
+				// add callback to array
 				attached.push(callback);
-
+				
+				// return 'this' for chaining
 				return _this;
 			};
 		}(this);
@@ -93,6 +104,7 @@
 		 */
 		function update() {
 			var windowHeight = _this.scrollElement.innerHeight;
+			var currentTop = _this.bindElement.scrollTop;
 			
 			// loop through all triggers
 			for (var i = 0; i <  triggers.length; i++) {
@@ -119,11 +131,18 @@
 					triggerTop += trigger.offsetHeight;
 				}
 				
-				// add the yOffset
-				triggerTop += yOffset;
+				if (previousTop > currentTop) {
+					// scrolling up, so we subtract the yOffset
+					triggerTop -= yOffset;
+				} else {
+					// scrolling down or not scrolling at all
+					// then we add the yOffset
+					triggerTop += yOffset;
+				}
 				
 				// toggle the classes
 				if (triggerTop < windowHeight && triggerTop > 0) {
+					// the element is visible
 					if (!trigger.classList.contains(visibleClass)) {
 						trigger.classList.add(visibleClass);
 					}
@@ -154,6 +173,9 @@
 
 				callback.call(_this, windowHeight, _this.bindElement.scrollTop);
 			}
+			
+			// save the current top position
+			previousTop = currentTop;
 			
 			// and loop again
 			loop(update);
