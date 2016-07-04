@@ -90,4 +90,4 @@ document.addEventListener('DOMContentLoaded', function(){
 Fork, check out `ScrollTrigger.js` and enjoy!
 
 ## Legacy
-Looking for the old, 1.4kb minified, ScrollTrigger? Check out the [legacy branch](https://github.com/terwanerik/ScrollTrigger/tree/legacy-v0.1)!
+Looking for the old, 1.5kb minified, ScrollTrigger? Check out the [legacy branch](https://github.com/terwanerik/ScrollTrigger/tree/legacy-v0.1)!
