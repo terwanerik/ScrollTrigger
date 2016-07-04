@@ -1,0 +1,99 @@
+/**
+ * Animations
+ */
+
+.fromTopIn
+{
+	transition: transform 1.0s ease, opacity 1.0s ease;
+	
+	transform: translate(0,0);
+	opacity: 1.0;
+}
+
+.fromTopOut
+{
+	transition: transform 1.0s ease, opacity 1.0s ease;
+	
+	transform: translate(0,-10px);
+	opacity: 0.0;
+}
+
+.fromBottomIn
+{
+	transition: transform 1.0s ease, opacity 1.0s ease;
+	
+	transform: translate(0,0);
+	opacity: 1.0;
+}
+
+.fromBottomOut
+{
+	transition: transform 1.0s ease, opacity 1.0s ease;
+	
+	transform: translate(0,10px);
+	opacity: 0.0;
+}
+
+.fromLeftIn
+{
+	transition: transform 1.0s ease, opacity 1.0s ease;
+	
+	transform: translate(0,0);
+	opacity: 1.0;
+}
+
+.fromLeftOut
+{
+	transition: transform 1.0s ease, opacity 1.0s ease;
+	
+	transform: translate(-10px,0);
+	opacity: 0.0;
+}
+
+.fromRightIn
+{
+	transition: transform 1.0s ease, opacity 1.0s ease;
+	
+	transform: translate(0,0);
+	opacity: 1.0;
+}
+
+.fromRightOut
+{
+	transition: transform 1.0s ease, opacity 1.0s ease;
+	
+	transform: translate(10px, 0);
+	opacity: 0.0;
+}
+
+.scaleUpIn
+{
+	transition: transform 1.0s ease, opacity 1.0s ease;
+	
+	transform: scale(1.0,1.0);
+	opacity: 1.0;
+}
+
+.scaleUpOut
+{
+	transition: transform 1.0s ease, opacity 1.0s ease;
+	
+	transform: scale(1.3,1.3);
+	opacity: 0.0;
+}
+
+.scaleDownIn
+{
+	transition: transform 1.0s ease, opacity 1.0s ease;
+	
+	transform: scale(1.0,1.0);
+	opacity: 1.0;
+}
+
+.scaleDownOut
+{
+	transition: transform 1.0s ease, opacity 1.0s ease;
+	
+	transform: scale(0.7,0.7);
+	opacity: 0.0;
+}

@@ -1,5 +1,5 @@
 /**
- * Written by Erik Terwan on 23/06/16.
+ * Written by Erik Terwan on 03/07/16.
  *
  * Erik Terwan - development + design
  * https://erikterwan.com
@@ -9,6 +9,143 @@
  */
 (function(){
 	"use strict";
+	
+	var Trigger = function(_element) {
+		this.element = _element;
+		this.showCallback = null;
+		this.hideCallback = null;
+		this.visibleClass = 'visible';
+		this.hiddenClass = 'invisible';
+		this.addWidth = false;
+		this.addHeight = false;
+		this.once = false;
+		
+		var xOffset = 0;
+		var yOffset = 0;
+		
+		this.left = function(_this){
+			return function(){
+				return _this.element.getBoundingClientRect().left;
+			};
+		}(this);
+		
+		this.top = function(_this){
+			return function(){
+				return _this.element.getBoundingClientRect().top;
+			};
+		}(this);
+		
+		this.xOffset = function(_this){
+			return function(goingLeft){
+				var offset = xOffset;
+				
+				// add the full width of the element to the left position, so the
+				// visibleClass is only added after the element is completely
+				// in the viewport
+				if (_this.addWidth && !goingLeft) {
+					offset += _this.width();
+				} else if (goingLeft && !_this.addWidth) {
+					offset -= _this.width();
+				}
+				
+				return offset;
+			};
+		}(this);
+		
+		this.yOffset = function(_this){
+			return function(goingUp){
+				var offset = yOffset;
+				
+				// add the full height of the element to the top position, so the
+				// visibleClass is only added after the element is completely
+				// in the viewport
+				if (_this.addHeight && !goingUp) {
+					offset += _this.height();
+				} else if (goingUp && !_this.addHeight) {
+					offset -= _this.height();
+				}
+				
+				return offset;
+			};
+		}(this);
+		
+		this.width = function(_this){
+			return function(){
+				return _this.element.offsetWidth;
+			};
+		}(this);
+		
+		this.height = function(_this){
+			return function(){
+				return _this.element.offsetHeight;
+			};
+		}(this);
+		
+		this.addClass = function(_this){
+			return function(className, didAddCallback){
+				if (!_this.element.classList.contains(className)) {
+					_this.element.classList.add(className);
+					
+					if (didAddCallback) {
+						didAddCallback();
+					}
+				}		
+			};
+		}(this);
+		
+		this.removeClass = function(_this){
+			return function(className, didRemoveCallback){
+				if (_this.element.classList.contains(className)) {
+					_this.element.classList.remove(className);
+					
+					if (didRemoveCallback) {
+						didRemoveCallback();
+					}
+				}		
+			};
+		}(this);
+		
+		this.init = function(_this){
+			return function(){
+				// parse the options given in the data-scroll attribute, if any
+				var optionString = _this.element.getAttribute('data-scroll');
+				_this.showCallback = _this.element.getAttribute('data-scroll-showCallback');
+				_this.hideCallback = _this.element.getAttribute('data-scroll-hideCallback');
+				
+				// split the options on the toggle() parameter
+				var classParts = optionString.split('toggle(');
+				if (classParts.length > 1) {
+					// the toggle() parameter was given, split it at ) to get the
+					// content inside the parentheses, then split them on the comma
+					var classes = classParts[1].split(')')[0].split(',');
+					
+					// trim and remove the dot
+					_this.visibleClass = classes[0].trim().replace('.', '');
+					_this.hiddenClass = classes[1].trim().replace('.', '');
+				}
+				
+				// split the options on the offset() parameter
+				var offsetParts = optionString.split('offset(');
+				if (offsetParts.length > 1) {
+					// the offset() parameter was given, split it at ) to get the
+					// content inside the parentheses, then split them on the comma
+					var offsets = offsetParts[1].split(')')[0].split(',');
+					
+					// remove the px unit and parse as integer
+					xOffset = parseInt(offsets[0].replace('px', ''));
+					yOffset = parseInt(offsets[1].replace('px', ''));
+				}
+				
+				// parse the boolean options
+				_this.addWidth = optionString.indexOf("addWidth") > -1;
+				_this.addHeight = optionString.indexOf("addHeight") > -1;
+				_this.once = optionString.indexOf("once") > -1;
+				
+				// return this for chaining
+				return _this;
+			};
+		}(this);
+	};
 	
 	var ScrollTrigger = function() {
 		// the element to detect the scroll in
@@ -26,8 +163,12 @@
 		var attached = [];
 		
 		// the previous scrollTop position, to determine if a user
-		// is scrolling up or down
-		var previousTop = 0;
+		// is scrolling up or down. Set that to -1 -1 so the loop
+		// always runs at least once
+		var previousScroll = {
+			left: -1,
+			top: -1
+		};
 
 		// the loop method to use, preferred window.requestAnimationFrame
 		var loop = window.requestAnimationFrame;
@@ -61,7 +202,15 @@
 				// the data-scroll attribute and turn it from a NodeList
 				// into a plain old array
 				triggers = [].slice.call(_this.bindElement.querySelectorAll("[data-scroll]"));
-
+				
+				// map all the triggers to Trigger objects, and initialize them
+				// so the options get parsed
+				triggers = triggers.map(function (value, index) {
+			  	var trigger = new Trigger(value);
+			  	
+			  	return trigger.init();
+			  });
+				
 				// check what requestAnimationFrame to use, and if
 				// it's not supported, use the onscroll event
 				loop = window.requestAnimationFrame ||
@@ -70,9 +219,6 @@
 					window.msRequestAnimationFrame ||
 					window.oRequestAnimationFrame ||
 					_this.scrollElement.onscroll; // old school browser support
-				
-				// set the current scrollTop position
-				previousTop = _this.bindElement.scrollTop;
 				
 				if (triggers.length > 0) {
 					isLooping = true;
@@ -134,79 +280,74 @@
 		 * scrolls (on legacy browsers)
 		 */
 		function update() {
+			var windowWidth = _this.scrollElement.innerWidth;
 			var windowHeight = _this.scrollElement.innerHeight;
 			var currentTop = _this.bindElement.scrollTop;
+			var currentLeft = _this.bindElement.scrollLeft;
 			
-			// loop through all triggers
-			for (var i = 0; i <  triggers.length; i++) {
-				var trigger = triggers[i];
-				var triggerTop = trigger.getBoundingClientRect().top;
+			// if the user scrolled
+			if (previousScroll.left != currentLeft || previousScroll.top != currentTop) {
 				
-				// parse the options given in the data-scroll attribute,
-				// if any.
-				var optionString = trigger.getAttribute('data-scroll');
-				var options = optionString.split(' ');
-				
-				var yOffset = parseInt(options[0] != undefined ? options[0] : 0);
-				var visibleClass = options[1] != undefined ? options[1] : 'visible';
-				var hiddenClass = options[2] != undefined ? options[2] : 'invisible';
-				
-				var addHeight = optionString.indexOf("addHeight") > -1;
-				var once = optionString.indexOf("once") > -1;
-				
-				// if the add height (last parameter) is true, we add the
-				// full height of the element to the top position, so the
-				// visibleClass is only added after the element is completely
-				// in the viewport
-				if (addHeight) {
-					triggerTop += trigger.offsetHeight;
-				}
-				
-				if (previousTop > currentTop) {
-					// scrolling up, so we subtract the yOffset
-					triggerTop -= yOffset;
-				} else {
-					// scrolling down or not scrolling at all
-					// then we add the yOffset
-					triggerTop += yOffset;
-				}
-				
-				// toggle the classes
-				if (triggerTop < windowHeight && triggerTop > 0) {
-					// the element is visible
-					if (!trigger.classList.contains(visibleClass)) {
-						trigger.classList.add(visibleClass);
-					}
-
-					if (trigger.classList.contains(hiddenClass)) {
-						trigger.classList.remove(hiddenClass);
+				// loop through all triggers
+				for (var i = 0; i <  triggers.length; i++) {
+					var trigger = triggers[i];
+					var triggerLeft = trigger.left();
+					var triggerTop = trigger.top();
+					
+					if (previousScroll.left > currentLeft) {
+						// scrolling left, so we subtract the xOffset
+						triggerLeft -= trigger.xOffset(true);
+					} else if (previousScroll.left < currentLeft) {
+						// scrolling right, so we add the xOffset
+						triggerLeft += trigger.xOffset(false);
 					}
 					
-					if (once) {
-						// remove trigger from triggers array
-						triggers.splice(i, 1);
-					}
-				} else {
-					// the element is invisible
-					if (!trigger.classList.contains(hiddenClass)) {
-						trigger.classList.add(hiddenClass);
+					if (previousScroll.top > currentTop) {
+						// scrolling up, so we subtract the yOffset
+						triggerTop -= trigger.yOffset(true);
+					} else if (previousScroll.top < currentTop){
+						// scrolling down so then we add the yOffset
+						triggerTop += trigger.yOffset(false);
 					}
 					
-					if (trigger.classList.contains(visibleClass)) {
-						trigger.classList.remove(visibleClass);
+					// toggle the classes
+					if (triggerLeft < windowWidth && triggerLeft > 0 && 
+							triggerTop < windowHeight && triggerTop > 0) {
+						// the element is visible
+						trigger.addClass(trigger.visibleClass, function(){
+							if (trigger.showCallback) {
+								functionCall(trigger, trigger.showCallback);
+							}
+						});
+						
+						trigger.removeClass(trigger.hiddenClass);
+						
+						if (trigger.once) {
+							// remove trigger from triggers array
+							triggers.splice(i, 1);
+						}
+					} else {
+						// the element is invisible
+						trigger.addClass(trigger.hiddenClass);
+						trigger.removeClass(trigger.visibleClass, function(){
+							if (trigger.hideCallback) {
+								functionCall(trigger, trigger.hideCallback);
+							}
+						});
 					}
 				}
+				
+				// call the attached callbacks, if any
+				for (var n = 0; n < attached.length; n++) {
+					var callback = attached[n];
+	
+					callback.call(_this, windowHeight, _this.bindElement.scrollTop);
+				}
+				
+				// save the current scroll position
+				previousScroll.left = currentLeft;
+				previousScroll.top = currentTop;
 			}
-			
-			// call the attached callbacks, if any
-			for (var n = 0; n < attached.length; n++) {
-				var callback = attached[n];
-
-				callback.call(_this, windowHeight, _this.bindElement.scrollTop);
-			}
-			
-			// save the current top position
-			previousTop = currentTop;
 			
 			if (triggers.length > 0 || attached.length > 0) {
 				isLooping = true;
@@ -217,8 +358,24 @@
 				isLooping = false;
 			}
 		}
-	};
-	
+		
+		function functionCall(trigger, functionAsString) {
+			var params = functionAsString.split('(');
+			var method = params[0];
+			
+			if (params.length > 1) {
+				params = params[1].split(')')[0]; // get the value between the parentheses
+			} else {
+				params = undefined;
+			}
+			
+			if (window[method]) {
+				// function exists in the global window scope
+				// so let's call it
+				window[method].call(trigger.element, params);
+			}
+		}
+	}
 	
 	// add an instance of the ScrollTrigger to the window
 	// for use in public/window scope.
