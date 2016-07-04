@@ -55,6 +55,8 @@ The `data-scroll` attribute can take a couple of options, in contrast to v0.1, t
 | addHeight | Boolean     | This adds the offsetHeight of the element to the offset, so the `visible` class is only added when the element is completely in the viewport.                                        | `data-scroll="addHeight"`                                                                                                                                                                                      |
 | once      | Boolean     | This makes sure the animation only runs once, if you add a callback that will also only run once.                                                                                    | `data-scroll="once"`                                                                                                                                                                                           |
 
+For advanced examples on how to use the options, check out the `example` folder. Especially the `horizontal.html` file.
+
 ### Callbacks
 You can add callbacks to the show and hide events, e.g. when an element comes into the viewport and when it goes out. You do this by adding the `data-scroll-showCallback` and / or the `data-scroll-hideCallback` tags. We avoid using `eval` so the callback needs to be in the (global) `window` scope. A super simple example:
 ```html
