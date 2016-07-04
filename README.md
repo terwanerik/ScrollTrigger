@@ -25,7 +25,9 @@ Now add the `data-scroll` attribute to the HTML element you want to animate:
 <div data-scroll></div>
 ```
 
-When you scroll the page, and the element is visible in the viewport, it will add the default class `visible`. If it's out of the viewport the `invisible` class is added. You can specify options in the `data-scroll` attribute, it can take up to 4.
+When you scroll the page, and the element is visible in the viewport, it will add the default class `visible`. If it's out of the viewport the `invisible` class is added.
+
+### Options ###
 
 ```html
 <div data-scroll="150 animateIn animateOut addHeight once"></div>

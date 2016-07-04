@@ -163,10 +163,11 @@
 		var attached = [];
 		
 		// the previous scrollTop position, to determine if a user
-		// is scrolling up or down
+		// is scrolling up or down. Set that to -1 -1 so the loop
+		// always runs at least once
 		var previousScroll = {
-			left: 0,
-			top: 0
+			left: -1,
+			top: -1
 		};
 
 		// the loop method to use, preferred window.requestAnimationFrame
@@ -218,10 +219,6 @@
 					window.msRequestAnimationFrame ||
 					window.oRequestAnimationFrame ||
 					_this.scrollElement.onscroll; // old school browser support
-				
-				// set the current scroll positions
-				previousScroll.left = _this.bindElement.scrollLeft;
-				previousScroll.top = _this.bindElement.scrollTop;
 				
 				if (triggers.length > 0) {
 					isLooping = true;
@@ -290,6 +287,7 @@
 			
 			// if the user scrolled
 			if (previousScroll.left != currentLeft || previousScroll.top != currentTop) {
+				
 				// loop through all triggers
 				for (var i = 0; i <  triggers.length; i++) {
 					var trigger = triggers[i];
