@@ -282,8 +282,10 @@
 		function update() {
 			var windowWidth = _this.scrollElement.innerWidth;
 			var windowHeight = _this.scrollElement.innerHeight;
-			var currentTop = _this.bindElement.scrollTop;
-			var currentLeft = _this.bindElement.scrollLeft;
+			
+			// FF and IE use the documentElement instead of body
+			var currentTop = !_this.bindElement.scrollTop ? document.documentElement.scrollTop : _this.bindElement.scrollTop;
+			var currentLeft = !_this.bindElement.scrollLeft ? document.documentElement.scrollLeft : _this.bindElement.scrollLeft;
 			
 			// if the user scrolled
 			if (previousScroll.left != currentLeft || previousScroll.top != currentTop) {
@@ -341,7 +343,7 @@
 				for (var n = 0; n < attached.length; n++) {
 					var callback = attached[n];
 	
-					callback.call(_this, windowHeight, _this.bindElement.scrollTop);
+					callback.call(_this, currentLeft, currentTop, windowWidth, windowHeight);
 				}
 				
 				// save the current scroll position
