@@ -141,6 +141,15 @@
 				_this.addHeight = optionString.indexOf("addHeight") > -1;
 				_this.once = optionString.indexOf("once") > -1;
 				
+				// adds the half of the offsetWidth/Height to the x/yOffset
+				if (optionString.indexOf("centerHorizontal") > -1) {
+					xOffset = _this.element.offsetWidth / 2;
+				}
+				
+				if (optionString.indexOf("centerVertical") > -1) {
+					yOffset = _this.element.offsetHeight / 2;
+				}
+				
 				// return this for chaining
 				return _this;
 			};
