@@ -48,7 +48,7 @@ When you scroll the page, and the element is visible in the viewport, it will ad
 Now when you scroll the page, the elements that 'come in' to the viewport fade in. A really basic example.
 
 ### Options
-The `data-scroll` attribute can take a couple of options, in contrast to v0.1, the position of the options are not strict. So place them anywhere inside the `data-scroll` tag.
+The `data-scroll` attribute can take a couple of options, in contrast to v0.1, the position of the options are not strict. So you can place them anywhere inside the `data-scroll` tag.
 
 | Name      | Type        | Description                                                                                                                                                                          | Example                                                                                                                                                                                                        |
 |-----------|-------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -78,26 +78,31 @@ If you want to add custom animations based on the scroll position, it would be a
 
 ```javascript
 document.addEventListener('DOMContentLoaded', function(){
-	var callback = function(scrollLeft, scrollTop, width, height){
-	  // i can do anything now with the height of the viewport
-	  // or the scrollPosition in the scrollElement. 'this' refers to
-	  // the html object that contains the data-scroll attribute.
-	  
-	  // if you are done with the callback you can detach it
-	  // using the ScrollTrigger.detach() method.
-	  ScrollTrigger.detach(callback);
-	};
-	
+  var callback = function(scrollLeft, scrollTop, width, height){
+    // i can do anything now with the height of the viewport
+    // or the scrollPosition in the scrollElement. 'this' refers to
+    // the html object that contains the data-scroll attribute.
+    
+    // if you are done with the callback you can detach it
+    // using the ScrollTrigger.detach() method.
+    ScrollTrigger.detach(callback);
+  };
+  	
   ScrollTrigger.init();
   ScrollTrigger.attach(callback);
 });
 ```
 
 ## Contributing
-Fork, check out `ScrollTrigger.js` and enjoy! If you have improvements, create a new branch & create a pull request :)
+Fork, check out `ScrollTrigger.js` and enjoy! If you have improvements, start a new branch & create a pull request when you're all done :)
 
-## Found an issue?
-Ooh snap, well, bugs happen. Please create a new issue and mention the OS and browser the issue is occurring on. If you are really kind, make a [minimal, complete and verifiable example](http://stackoverflow.com/help/mcve) and upload that to [codepen](http://codepen.io).
+## Troubleshooting
+You can see really quickly if the Trigger is working by hitting 'inspect element' in the little menu that pops up when you hit the right mouse button (or ctrl + click if you're one of those oldschool Mac users). Here you can see if the visible/invisble class is toggled when you scroll past the element, is that happening? Then there is something wrong with the CSS.
+
+If the classes don't toggle, check the JavaScript console. There might be some handy info in there.
+
+#### Found an issue?
+Ooh snap, well, bugs happen. Please create a new issue and mention the OS and browser (including version) that the issue is occurring on. If you are really kind, make a [minimal, complete and verifiable example](http://stackoverflow.com/help/mcve) and upload that to [codepen](http://codepen.io).
 
 ## Legacy
 Looking for the old, 1.5kb minified, ScrollTrigger? Check out the [legacy branch](https://github.com/terwanerik/ScrollTrigger/tree/legacy-v0.1)!
