@@ -313,8 +313,8 @@
 					}
 					
 					// toggle the classes
-					if (triggerLeft < windowWidth && triggerLeft > 0 && 
-							triggerTop < windowHeight && triggerTop > 0) {
+					if (triggerLeft < windowWidth && triggerLeft >= 0 && 
+							triggerTop < windowHeight && triggerTop >= 0) {
 						// the element is visible
 						trigger.addClass(trigger.visibleClass, function(){
 							if (trigger.showCallback) {
