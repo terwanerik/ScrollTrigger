@@ -94,7 +94,10 @@ document.addEventListener('DOMContentLoaded', function(){
 ```
 
 ## Contributing
-Fork, check out `ScrollTrigger.js` and enjoy!
+Fork, check out `ScrollTrigger.js` and enjoy! If you have improvements, create a new branch & create a pull request :)
+
+## Found an issue?
+Ooh snap, well, bugs happen. Please create a new issue and mention the OS and browser the issue is occurring on. If you are really kind, make a [minimal, complete and verifiable example](http://stackoverflow.com/help/mcve) and upload that to [codepen](http://codepen.io).
 
 ## Legacy
 Looking for the old, 1.5kb minified, ScrollTrigger? Check out the [legacy branch](https://github.com/terwanerik/ScrollTrigger/tree/legacy-v0.1)!
