@@ -172,7 +172,7 @@
 				}
 				
 				// toggle the classes
-				if (triggerTop < windowHeight && triggerTop > 0) {
+				if (triggerTop < windowHeight && triggerTop >= 0) {
 					// the element is visible
 					if (!trigger.classList.contains(visibleClass)) {
 						trigger.classList.add(visibleClass);
