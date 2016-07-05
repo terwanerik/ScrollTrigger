@@ -154,7 +154,7 @@
 		// the element to get the data-scroll elements from
 		this.bindElement = document.body; 
 		
-		// the elements with the data-scroll attribute
+		// the Trigger objects
 		var triggers = [];
 		
 		// attached callbacks for the requestAnimationFrame loop,
@@ -218,7 +218,7 @@
 					window.mozRequestAnimationFrame ||
 					window.msRequestAnimationFrame ||
 					window.oRequestAnimationFrame ||
-					_this.scrollElement.onscroll; // old school browser support
+					function(callback){ setTimeout(callback, 1000 / 60); }; // old school browser support
 				
 				if (triggers.length > 0) {
 					isLooping = true;
