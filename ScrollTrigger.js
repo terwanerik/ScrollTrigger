@@ -81,28 +81,67 @@
 			};
 		}(this);
 		
+		var addClass = function ( element, newClass, callback ) {
+			newClass = newClass.trim();
+			if ( regex.test(className) ) {
+				return false;
+			}
+			element.className += " " + newClass;
+			if ( typeof callback === 'function' ) {
+				return callback();
+			}
+		};
+		
 		this.addClass = function(_this){
-			return function(className, didAddCallback){
+			var addClass = function(className, didAddCallback){
 				if (!_this.element.classList.contains(className)) {
 					_this.element.classList.add(className);
-					
-					if (didAddCallback) {
+					if ( typeof didAddCallback === 'function' ) {
 						didAddCallback();
 					}
-				}		
+				}
 			};
+			
+			var retroAddClass = function(className, didAddCallback) {
+				className = className.trim();
+				var regEx = new RegExp('(?:^|\\s)' + className + '(?:(\\s\\w)|$)', 'ig');
+				var oldClassName = _this.element.className;
+				if ( !regEx.test(oldClassName) ) {
+					_this.element.className += " " + className;
+					if ( typeof didAddCallback === 'function' ) {
+						didAddCallback();
+					}
+				}
+			};
+			
+			return _this.element.classList ? addClass : retroAddClass;
+			
 		}(this);
 		
 		this.removeClass = function(_this){
-			return function(className, didRemoveCallback){
+			var removeClass = function(className, didRemoveCallback){
 				if (_this.element.classList.contains(className)) {
 					_this.element.classList.remove(className);
-					
-					if (didRemoveCallback) {
+					if ( typeof didRemoveCallback === 'function' ) {
 						didRemoveCallback();
 					}
-				}		
+				}
 			};
+			
+			var retroRemoveClass = function(className, didRemoveCallback) {
+				className = className.trim();
+				var regEx = new RegExp('(?:^|\\s)' + className + '(?:(\\s\\w)|$)', 'ig');
+				var oldClassName = _this.element.className;
+				if ( regEx.test(oldClassName) ) {
+					_this.element.className = oldClassName.replace(regEx, "$1").trim();
+					if ( typeof didRemoveCallback === 'function' ) {
+						didRemoveCallback();
+					}
+				}
+			};
+			
+			return _this.element.classList ? removeClass : retroRemoveClass;
+			
 		}(this);
 		
 		this.init = function(_this){
