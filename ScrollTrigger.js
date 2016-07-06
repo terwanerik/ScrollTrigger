@@ -208,7 +208,12 @@
 		};
 
 		// the loop method to use, preferred window.requestAnimationFrame
-		var loop = window.requestAnimationFrame;
+		var loop = window.requestAnimationFrame ||
+			window.webkitRequestAnimationFrame ||
+			window.mozRequestAnimationFrame ||
+			window.msRequestAnimationFrame ||
+			window.oRequestAnimationFrame ||
+			function(callback){ setTimeout(callback, 1000 / 60); };
 		
 		// if the requestAnimationFrame is looping
 		var isLooping = true;
