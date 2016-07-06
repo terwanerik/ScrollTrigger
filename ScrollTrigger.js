@@ -81,17 +81,6 @@
 			};
 		}(this);
 		
-		var addClass = function ( element, newClass, callback ) {
-			newClass = newClass.trim();
-			if ( regex.test(className) ) {
-				return false;
-			}
-			element.className += " " + newClass;
-			if ( typeof callback === 'function' ) {
-				return callback();
-			}
-		};
-		
 		this.addClass = function(_this){
 			var addClass = function(className, didAddCallback){
 				if (!_this.element.classList.contains(className)) {
