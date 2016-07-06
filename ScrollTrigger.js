@@ -261,15 +261,6 @@
 			  	return trigger.init();
 			  });
 				
-				// check what requestAnimationFrame to use, and if
-				// it's not supported, use the onscroll event
-				loop = window.requestAnimationFrame ||
-					window.webkitRequestAnimationFrame ||
-					window.mozRequestAnimationFrame ||
-					window.msRequestAnimationFrame ||
-					window.oRequestAnimationFrame ||
-					function(callback){ setTimeout(callback, 1000 / 60); }; // old school browser support
-				
 				if (triggers.length > 0) {
 					isLooping = true;
 					
