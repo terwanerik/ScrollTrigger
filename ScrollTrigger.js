@@ -119,6 +119,14 @@
 					// content inside the parentheses, then split them on the comma
 					var classes = classParts[1].split(')')[0].split(',');
 					
+					// Check if trim exists if not, add the polyfill
+					// courtesy of MDN
+					if (!String.prototype.trim) {
+						String.prototype.trim = function () {
+							return this.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
+						};
+					}
+					
 					// trim and remove the dot
 					_this.visibleClass = classes[0].trim().replace('.', '');
 					_this.hiddenClass = classes[1].trim().replace('.', '');
