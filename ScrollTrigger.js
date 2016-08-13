@@ -300,8 +300,6 @@ var ScrollTrigger = (function(){
 				// into a plain old array
 				triggers = [].slice.call(_this.bindElement.querySelectorAll("[data-scroll]"));
 
-				console.log(defaultOptions);
-
 				// map all the triggers to Trigger objects, and initialize them
 				// so the options get parsed
 				triggers = triggers.map(function (value, index) {
@@ -323,7 +321,6 @@ var ScrollTrigger = (function(){
 				return _this;
 			};
 		}(this);
-
 
 		/**
 		 * Attaches a callback that get's called every time 
