@@ -8,18 +8,37 @@
 Triggers classes on html elements based on the scroll position. It makes use of requestAnimationFrame so it doesn't jack the users scroll, that way the user / browser keeps their original scroll behaviour. Animations run when the browser is ready for it.
 
 ## How to use?
-It's quite simple, just add the `ScrollTrigger.min.js` file to your HTML page. Then call `ScrollTrigger.init()` when the page has loaded. Like so:
+It's quite simple, just add the `ScrollTrigger.min.js` file to your HTML page. Then construct a new ScrollTrigger instance when the page has loaded. Like so:
 
 ```html
 <script src="ScrollTrigger.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function(){
-	ScrollTrigger.init();
+	var trigger = new ScrollTrigger();
 });
 </script>
 ```
 
-The init call takes 2 parameters, the `bindTo` and `scrollIn` parameters. These are optional.
+That's how simple it can be. A more advanced example would be:
+
+```js
+document.addEventListener('DOMContentLoaded', function(){
+	var trigger = new ScrollTrigger({
+	  toggle: {
+	    visible: 'visibleClass',
+	    hidden: 'hiddenClass'
+	  },
+	  offet: {
+	    x: 0,
+	    y: 20
+	  },
+	  addHeight: true,
+	  once: true
+	}, document.body, window);
+});
+```
+
+The init call takes 3 parameters, the first is a default set of options. The last two are the `bindTo` and `scrollIn` parameters. These are optional.
 
 The `bindTo` parameter is the HTML element where the triggers should be fetched from, this usually is `document.body` but could specify to a certain element.
 
@@ -52,13 +71,13 @@ The `data-scroll` attribute can take a couple of options, in contrast to v0.1, t
 
 | Name      | Type        | Description                                                                                                                                                                          | Example                                                                                                                                                                                                        |
 |-----------|-------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| toggle() | CSS Classes | These are the classes that ScrollTrigger changes, a replacement for the default `visible` and `invisible` classes. It takes 2 required parameters, the visible and invisible class. | `data-scroll="toggle(.animateIn, .animateOut)"` The `.` is not required, so `data-scroll="toggle(animateIn, animateOut)"` is also valid, just a bit less legible.                                            |
-| offset()  | Pixels      | This is a custom offset you can add to the element, this is nice for tuning animations. It takes 2 required parameters, the x and y offset.                                          | `data-scroll="offset(0,50px)"` for a 50px y offset.`data-scroll="offset(-50px,0)"` for a -50px x offset.The px value is not required, so `data-scroll="offset(-50,0)"` is also valid, just a bit less legible. |
-| addWidth  | Boolean     | This adds the offsetWidth of the element to the offset, so the `visible` class is only added when the element is completely in the viewport.                                         | `data-scroll="addWidth"`                                                                                                                                                                                       |
-| addHeight | Boolean     | This adds the offsetHeight of the element to the offset, so the `visible` class is only added when the element is completely in the viewport.                                        | `data-scroll="addHeight"`                                                                                                                                                                                      |
-| centerHorizontal      | Boolean     | This adds the half of the offsetWidth to the offset, so the `visible` class is added when the element is exactly half in the viewport. Really handy for horizontal scrolling pages.                                                                                    | `data-scroll="centerHorizontal"`                                                                                                                                                                                           |
-| centerVertical      | Boolean     | This adds the half of the offsetHeight to the offset, so the `visible` class is added when the element is exactly half in the viewport.                                                                                    | `data-scroll="centerVertical"`                                                                                                                                                                                           |
-| once      | Boolean     | This makes sure the animation only runs once, if you add a callback that will also only run once.                                                                                    | `data-scroll="once"`                                                                                                                                                                                           |
+| toggle() | CSS Classes | These are the classes that ScrollTrigger changes, a replacement for the default `visible` and `invisible` classes. It takes 2 required parameters, the visible and invisible class. | `data-scroll="toggle(.animateIn, .animateOut)"` The `.` is not required, so `data-scroll="toggle(animateIn, animateOut)"` is also valid, just a bit less legible. For the default options the syntax is: `{ toggle: { visible: 'SomeClass', hidden: 'OtherClass' } }`                                           |
+| offset()  | Pixels      | This is a custom offset you can add to the element, this is nice for tuning animations. It takes 2 required parameters, the x and y offset.                                          | `data-scroll="offset(0,50px)"` for a 50px y offset.`data-scroll="offset(-50px,0)"` for a -50px x offset.The px value is not required, so `data-scroll="offset(-50,0)"` is also valid, just a bit less legible. For the default options the syntax is: `{ offset: { x: -50, y: 0 } }`  |
+| addWidth  | Boolean     | This adds the offsetWidth of the element to the offset, so the `visible` class is only added when the element is completely in the viewport.                                         | `data-scroll="addWidth"` For the default options the syntax is: `{ addWidth: true }`                                                                                                                                                                                       |
+| addHeight | Boolean     | This adds the offsetHeight of the element to the offset, so the `visible` class is only added when the element is completely in the viewport.                                        | `data-scroll="addHeight"` For the default options the syntax is: `{ addHeight: true }`                                                                                                                                                                                      |
+| centerHorizontal      | Boolean     | This adds the half of the offsetWidth to the offset, so the `visible` class is added when the element is exactly half in the viewport. Really handy for horizontal scrolling pages.                                                                                    | `data-scroll="centerHorizontal"` For the default options the syntax is: `{ centerHorizontal: true }`                                                                                                                                                                                           |
+| centerVertical      | Boolean     | This adds the half of the offsetHeight to the offset, so the `visible` class is added when the element is exactly half in the viewport.                                                                                    | `data-scroll="centerVertical"` For the default options the syntax is: `{ centerVertical: true }`                                                                                                                                                                                           |
+| once      | Boolean     | This makes sure the animation only runs once, if you add a callback that will also only run once.                                                                                    | `data-scroll="once"` For the default options the syntax is: `{ once: true }`                                                                                                                                                                                           |
 
 For advanced examples on how to use the options, check out the `example` folder. Especially the `horizontal.html` file.
 
@@ -78,6 +97,8 @@ If you want to add custom animations based on the scroll position, it would be a
 
 ```javascript
 document.addEventListener('DOMContentLoaded', function(){
+  var trigger = new ScrollTrigger();
+
   var callback = function(scrollLeft, scrollTop, width, height){
     // i can do anything now with the height of the viewport
     // or the scrollPosition in the scrollElement. 'this' refers to
@@ -85,11 +106,10 @@ document.addEventListener('DOMContentLoaded', function(){
     
     // if you are done with the callback you can detach it
     // using the ScrollTrigger.detach() method.
-    ScrollTrigger.detach(callback);
+    trigger.detach(callback);
   };
-  	
-  ScrollTrigger.init();
-  ScrollTrigger.attach(callback);
+
+  trigger.attach(callback);
 });
 ```
 
