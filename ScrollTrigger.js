@@ -143,6 +143,8 @@ var ScrollTrigger = (function(){
 				return function(){
 					// set the default options
 					var options = _this.defaultOptions;
+					// parse the options given in the data-scroll attribute, if any
+					var optionString = _this.element.getAttribute('data-scroll');
 
 					if (options) {
 						if (options.toggle && options.toggle.visible) {
@@ -187,8 +189,7 @@ var ScrollTrigger = (function(){
 						_this.once = optionString.indexOf("once") > -1;
 					}
 
-					// parse the options given in the data-scroll attribute, if any
-					var optionString = _this.element.getAttribute('data-scroll');
+					// parse callbacks
 					_this.showCallback = _this.element.getAttribute('data-scroll-showCallback');
 					_this.hideCallback = _this.element.getAttribute('data-scroll-hideCallback');
 					
@@ -300,6 +301,8 @@ var ScrollTrigger = (function(){
 				// into a plain old array
 				triggers = [].slice.call(_this.bindElement.querySelectorAll("[data-scroll]"));
 
+				console.log(defaultOptions);
+
 				// map all the triggers to Trigger objects, and initialize them
 				// so the options get parsed
 				triggers = triggers.map(function (value, index) {
@@ -321,6 +324,7 @@ var ScrollTrigger = (function(){
 				return _this;
 			};
 		}(this);
+
 
 		/**
 		 * Attaches a callback that get's called every time 
