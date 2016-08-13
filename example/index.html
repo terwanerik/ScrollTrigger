@@ -13,38 +13,38 @@
 </head>
 <body>
 <div class="block">
-	<h1 data-scroll="toggle(.scaleUpIn, .scaleUpOut) addHeight">Scroll<span></span>Trigger</h1>
-	<h2 data-scroll="toggle(.fromBottomIn, .fromBottomOut) addHeight">Add scroll based animations to your site with ease.</h2>
+	<h1 data-scroll="toggle(.scaleUpIn, .scaleUpOut)">Scroll<span></span>Trigger</h1>
+	<h2 data-scroll="toggle(.fromBottomIn, .fromBottomOut)">Add scroll based animations to your site with ease.</h2>
 	
 	<svg viewBox="0 0 60 60">
 		<path d="M52.254 18.327c0.816-0.804 2.127-0.804 2.937 0s0.813 2.103 0 2.907l-23.724 23.49c-0.81 0.804-2.121 0.804-2.937 0l-23.724-23.49c-0.81-0.804-0.81-2.103 0-2.907 0.813-0.804 2.127-0.804 2.937 0l22.257 21.423 22.254-21.423z"></path>
 	</svg>
 </div>
 <div class="block">
-	<h1 data-scroll="toggle(.fromTopIn, .fromTopOut) addHeight">CSS Animations</h1>
-	<h2 data-scroll="toggle(.fromBottomIn, .fromBottomOut) addHeight">All animations are triggered by classes, so you can take advantage of the power that CSS3 animations give you.</h2>
+	<h1 data-scroll="toggle(.fromTopIn, .fromTopOut)">CSS Animations</h1>
+	<h2 data-scroll="toggle(.fromBottomIn, .fromBottomOut)">All animations are triggered by classes, so you can take advantage of the power that CSS3 animations give you.</h2>
 </div>
 <div class="block">
-	<h1 data-scroll="toggle(.fromLeftIn, .fromLeftOut) addHeight">Vanilla JS</h1>
-	<h2 data-scroll="toggle(.fromRightIn, .fromRightOut) addHeight">It's written in vanilla javascript, so you can use it with any framework.</h2>
+	<h1 data-scroll="toggle(.fromLeftIn, .fromLeftOut)">Vanilla JS</h1>
+	<h2 data-scroll="toggle(.fromRightIn, .fromRightOut)">It's written in vanilla javascript, so you can use it with any framework.</h2>
 </div>
 <div class="block">
-	<h1 data-scroll="toggle(.scaleDownIn, .scaleDownOut) addHeight">Request Animation Frame</h1>
-	<h2 data-scroll="toggle(.fromBottomIn, .fromBottomOut) addHeight">It uses the window.requestAnimationFrame method so it doesn't jack the users scroll. Animations are triggered when the browser is ready for it.</h2>
+	<h1 data-scroll="toggle(.scaleDownIn, .scaleDownOut)">Request Animation Frame</h1>
+	<h2 data-scroll="toggle(.fromBottomIn, .fromBottomOut)">It uses the window.requestAnimationFrame method so it doesn't jack the users scroll. Animations are triggered when the browser is ready for it.</h2>
 </div>
 <div class="block">
-	<h1 data-scroll="toggle(.fromRightIn, .fromRightOut) addHeight">Simple syntax</h1>
-	<h2 data-scroll="toggle(.fromLeftIn, .fromLeftOut) addHeight">You define the options inside the HTML attribute, so after you have initialised the ScrollTrigger you don't have to touch JavaScript again.</h2>
+	<h1 data-scroll="toggle(.fromRightIn, .fromRightOut)">Simple syntax</h1>
+	<h2 data-scroll="toggle(.fromLeftIn, .fromLeftOut)">You define the options inside the HTML attribute, so after you have initialised the ScrollTrigger you don't have to touch JavaScript again.</h2>
 </div>
 <div class="block">
-	<h1 data-scroll="toggle(.fromRightIn, .fromRightOut) addHeight">Custom<span></span>izable</h1>
-	<h2 data-scroll="toggle(.fromLeftIn, .fromLeftOut) addHeight">ScrollTrigger offers a range of options, from calling custom JavaScript functions to defining custom offsets and classes.</h2>
-	<h3 data-scroll="toggle(.fromRightIn, .fromRightOut) addHeight" data-scroll-showCallback="counter">You scrolled past this block <span>0</span> times.</h3>
+	<h1 data-scroll="toggle(.fromRightIn, .fromRightOut)">Custom<span></span>izable</h1>
+	<h2 data-scroll="toggle(.fromLeftIn, .fromLeftOut)">ScrollTrigger offers a range of options, from calling custom JavaScript functions to defining custom offsets and classes.</h2>
+	<h3 data-scroll="toggle(.fromRightIn, .fromRightOut)" data-scroll-showCallback="counter">You scrolled past this block <span>0</span> times.</h3>
 </div>
 <div class="block">
-	<h1 data-scroll="toggle(.fromRightIn, .fromRightOut) addHeight once">Versatile</h1>
-	<h2 data-scroll="toggle(.fromLeftIn, .fromLeftOut) addHeight once">ScrollTrigger supports vertical and horizontal scrolling, check out the <a href="horizontal.html">horizontal demo</a>.</h2>
-	<h3 data-scroll="toggle(.fromRightIn, .fromRightOut) addHeight once">This block only animates once.</h3>
+	<h1 data-scroll="toggle(.fromRightIn, .fromRightOut) once">Versatile</h1>
+	<h2 data-scroll="toggle(.fromLeftIn, .fromLeftOut) once">ScrollTrigger supports vertical and horizontal scrolling, check out the <a href="horizontal.html">horizontal demo</a>.</h2>
+	<h3 data-scroll="toggle(.fromRightIn, .fromRightOut) once">This block only animates once.</h3>
 </div>
 <div class="block">
 	<h1>Open source</h1>
@@ -63,7 +63,9 @@ window.counter = function() {
 };
 
 document.addEventListener('DOMContentLoaded', function(){
-  ScrollTrigger.init();
+  var trigger = new ScrollTrigger({
+	  addHeight: true
+  });
 });
 </script>
 

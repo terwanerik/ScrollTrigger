@@ -7,192 +7,239 @@
  *
  * MIT license.
  */
-(function(){
+var ScrollTrigger = (function(){
 	"use strict";
 	
-	var Trigger = function(_element) {
-		this.element = _element;
-		this.showCallback = null;
-		this.hideCallback = null;
-		this.visibleClass = 'visible';
-		this.hiddenClass = 'invisible';
-		this.addWidth = false;
-		this.addHeight = false;
-		this.once = false;
-		
-		var xOffset = 0;
-		var yOffset = 0;
-		
-		this.left = function(_this){
-			return function(){
-				return _this.element.getBoundingClientRect().left;
-			};
-		}(this);
-		
-		this.top = function(_this){
-			return function(){
-				return _this.element.getBoundingClientRect().top;
-			};
-		}(this);
-		
-		this.xOffset = function(_this){
-			return function(goingLeft){
-				var offset = xOffset;
-				
-				// add the full width of the element to the left position, so the
-				// visibleClass is only added after the element is completely
-				// in the viewport
-				if (_this.addWidth && !goingLeft) {
-					offset += _this.width();
-				} else if (goingLeft && !_this.addWidth) {
-					offset -= _this.width();
-				}
-				
-				return offset;
-			};
-		}(this);
-		
-		this.yOffset = function(_this){
-			return function(goingUp){
-				var offset = yOffset;
-				
-				// add the full height of the element to the top position, so the
-				// visibleClass is only added after the element is completely
-				// in the viewport
-				if (_this.addHeight && !goingUp) {
-					offset += _this.height();
-				} else if (goingUp && !_this.addHeight) {
-					offset -= _this.height();
-				}
-				
-				return offset;
-			};
-		}(this);
-		
-		this.width = function(_this){
-			return function(){
-				return _this.element.offsetWidth;
-			};
-		}(this);
-		
-		this.height = function(_this){
-			return function(){
-				return _this.element.offsetHeight;
-			};
-		}(this);
-		
-		this.addClass = function(_this){
-			var addClass = function(className, didAddCallback){
-				if (!_this.element.classList.contains(className)) {
-					_this.element.classList.add(className);
-					if ( typeof didAddCallback === 'function' ) {
-						didAddCallback();
-					}
-				}
-			};
+	return function(defaultOptions, bindTo, scrollIn) {
+		/**
+		 * Trigger object, represents a single html element with the
+		 * data-scroll tag. Stores the options given in that tag.
+		 */
+		var Trigger = function(_defaultOptions, _element) {
+			this.element = _element;
+			this.defaultOptions = _defaultOptions;
+			this.showCallback = null;
+			this.hideCallback = null;
+			this.visibleClass = 'visible';
+			this.hiddenClass = 'invisible';
+			this.addWidth = false;
+			this.addHeight = false;
+			this.once = false;
 			
-			var retroAddClass = function(className, didAddCallback) {
-				className = className.trim();
-				var regEx = new RegExp('(?:^|\\s)' + className + '(?:(\\s\\w)|$)', 'ig');
-				var oldClassName = _this.element.className;
-				if ( !regEx.test(oldClassName) ) {
-					_this.element.className += " " + className;
-					if ( typeof didAddCallback === 'function' ) {
-						didAddCallback();
-					}
-				}
-			};
+			var xOffset = 0;
+			var yOffset = 0;
 			
-			return _this.element.classList ? addClass : retroAddClass;
+			this.left = function(_this){
+				return function(){
+					return _this.element.getBoundingClientRect().left;
+				};
+			}(this);
 			
-		}(this);
-		
-		this.removeClass = function(_this){
-			var removeClass = function(className, didRemoveCallback){
-				if (_this.element.classList.contains(className)) {
-					_this.element.classList.remove(className);
-					if ( typeof didRemoveCallback === 'function' ) {
-						didRemoveCallback();
-					}
-				}
-			};
+			this.top = function(_this){
+				return function(){
+					return _this.element.getBoundingClientRect().top;
+				};
+			}(this);
 			
-			var retroRemoveClass = function(className, didRemoveCallback) {
-				className = className.trim();
-				var regEx = new RegExp('(?:^|\\s)' + className + '(?:(\\s\\w)|$)', 'ig');
-				var oldClassName = _this.element.className;
-				if ( regEx.test(oldClassName) ) {
-					_this.element.className = oldClassName.replace(regEx, "$1").trim();
-					if ( typeof didRemoveCallback === 'function' ) {
-						didRemoveCallback();
-					}
-				}
-			};
-			
-			return _this.element.classList ? removeClass : retroRemoveClass;
-			
-		}(this);
-		
-		this.init = function(_this){
-			return function(){
-				// parse the options given in the data-scroll attribute, if any
-				var optionString = _this.element.getAttribute('data-scroll');
-				_this.showCallback = _this.element.getAttribute('data-scroll-showCallback');
-				_this.hideCallback = _this.element.getAttribute('data-scroll-hideCallback');
-				
-				// split the options on the toggle() parameter
-				var classParts = optionString.split('toggle(');
-				if (classParts.length > 1) {
-					// the toggle() parameter was given, split it at ) to get the
-					// content inside the parentheses, then split them on the comma
-					var classes = classParts[1].split(')')[0].split(',');
+			this.xOffset = function(_this){
+				return function(goingLeft){
+					var offset = xOffset;
 					
-					// Check if trim exists if not, add the polyfill
-					// courtesy of MDN
-					if (!String.prototype.trim) {
-						String.prototype.trim = function () {
-							return this.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
-						};
+					// add the full width of the element to the left position, so the
+					// visibleClass is only added after the element is completely
+					// in the viewport
+					if (_this.addWidth && !goingLeft) {
+						offset += _this.width();
+					} else if (goingLeft && !_this.addWidth) {
+						offset -= _this.width();
 					}
 					
-					// trim and remove the dot
-					_this.visibleClass = classes[0].trim().replace('.', '');
-					_this.hiddenClass = classes[1].trim().replace('.', '');
-				}
-				
-				// split the options on the offset() parameter
-				var offsetParts = optionString.split('offset(');
-				if (offsetParts.length > 1) {
-					// the offset() parameter was given, split it at ) to get the
-					// content inside the parentheses, then split them on the comma
-					var offsets = offsetParts[1].split(')')[0].split(',');
+					return offset;
+				};
+			}(this);
+			
+			this.yOffset = function(_this){
+				return function(goingUp){
+					var offset = yOffset;
 					
-					// remove the px unit and parse as integer
-					xOffset = parseInt(offsets[0].replace('px', ''));
-					yOffset = parseInt(offsets[1].replace('px', ''));
-				}
+					// add the full height of the element to the top position, so the
+					// visibleClass is only added after the element is completely
+					// in the viewport
+					if (_this.addHeight && !goingUp) {
+						offset += _this.height();
+					} else if (goingUp && !_this.addHeight) {
+						offset -= _this.height();
+					}
+					
+					return offset;
+				};
+			}(this);
+			
+			this.width = function(_this){
+				return function(){
+					return _this.element.offsetWidth;
+				};
+			}(this);
+			
+			this.height = function(_this){
+				return function(){
+					return _this.element.offsetHeight;
+				};
+			}(this);
+			
+			this.addClass = function(_this){
+				var addClass = function(className, didAddCallback){
+					if (!_this.element.classList.contains(className)) {
+						_this.element.classList.add(className);
+						if ( typeof didAddCallback === 'function' ) {
+							didAddCallback();
+						}
+					}
+				};
 				
-				// parse the boolean options
-				_this.addWidth = optionString.indexOf("addWidth") > -1;
-				_this.addHeight = optionString.indexOf("addHeight") > -1;
-				_this.once = optionString.indexOf("once") > -1;
+				var retroAddClass = function(className, didAddCallback) {
+					className = className.trim();
+					var regEx = new RegExp('(?:^|\\s)' + className + '(?:(\\s\\w)|$)', 'ig');
+					var oldClassName = _this.element.className;
+					if ( !regEx.test(oldClassName) ) {
+						_this.element.className += " " + className;
+						if ( typeof didAddCallback === 'function' ) {
+							didAddCallback();
+						}
+					}
+				};
 				
-				// adds the half of the offsetWidth/Height to the x/yOffset
-				if (optionString.indexOf("centerHorizontal") > -1) {
-					xOffset = _this.element.offsetWidth / 2;
-				}
+				return _this.element.classList ? addClass : retroAddClass;
 				
-				if (optionString.indexOf("centerVertical") > -1) {
-					yOffset = _this.element.offsetHeight / 2;
-				}
+			}(this);
+			
+			this.removeClass = function(_this){
+				var removeClass = function(className, didRemoveCallback){
+					if (_this.element.classList.contains(className)) {
+						_this.element.classList.remove(className);
+						if ( typeof didRemoveCallback === 'function' ) {
+							didRemoveCallback();
+						}
+					}
+				};
 				
-				// return this for chaining
-				return _this;
-			};
-		}(this);
-	};
-	
-	var ScrollTrigger = function() {
+				var retroRemoveClass = function(className, didRemoveCallback) {
+					className = className.trim();
+					var regEx = new RegExp('(?:^|\\s)' + className + '(?:(\\s\\w)|$)', 'ig');
+					var oldClassName = _this.element.className;
+					if ( regEx.test(oldClassName) ) {
+						_this.element.className = oldClassName.replace(regEx, "$1").trim();
+						if ( typeof didRemoveCallback === 'function' ) {
+							didRemoveCallback();
+						}
+					}
+				};
+				
+				return _this.element.classList ? removeClass : retroRemoveClass;
+				
+			}(this);
+			
+			this.init = function(_this){
+				return function(){
+					// set the default options
+					var options = _this.defaultOptions;
+
+					if (options) {
+						if (options.toggle && options.toggle.visible) {
+							_this.visibleClass = options.toggle.visible;
+						}
+
+						if (options.toggle && options.toggle.hidden) {
+							_this.hiddenClass = options.toggle.hidden;
+						}
+
+						if (options.centerHorizontal === true) {
+							xOffset = _this.element.offsetWidth / 2;
+						}
+
+						if (options.centerVertical === true) {
+							yOffset = _this.element.offsetHeight / 2;
+						}
+
+						if (options.offset && options.offset.x) {
+							xOffset+= options.offset.x;
+						}
+
+						if (options.offset && options.offset.y) {
+							yOffset+= options.offset.y;
+						}
+
+						if (options.addWidth) {
+							_this.addWidth = options.addWidth;
+						}
+
+						if (options.addHeight) {
+							_this.addHeight = options.addHeight;
+						}
+
+						if (options.once) {
+							_this.once = options.once;
+						}
+					} else {
+						// parse the boolean options
+						_this.addWidth = optionString.indexOf("addWidth") > -1;
+						_this.addHeight = optionString.indexOf("addHeight") > -1;
+						_this.once = optionString.indexOf("once") > -1;
+					}
+
+					// parse the options given in the data-scroll attribute, if any
+					var optionString = _this.element.getAttribute('data-scroll');
+					_this.showCallback = _this.element.getAttribute('data-scroll-showCallback');
+					_this.hideCallback = _this.element.getAttribute('data-scroll-hideCallback');
+					
+					// split the options on the toggle() parameter
+					var classParts = optionString.split('toggle(');
+					if (classParts.length > 1) {
+						// the toggle() parameter was given, split it at ) to get the
+						// content inside the parentheses, then split them on the comma
+						var classes = classParts[1].split(')')[0].split(',');
+						
+						// Check if trim exists if not, add the polyfill
+						// courtesy of MDN
+						if (!String.prototype.trim) {
+							String.prototype.trim = function () {
+								return this.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
+							};
+						}
+						
+						// trim and remove the dot
+						_this.visibleClass = classes[0].trim().replace('.', '');
+						_this.hiddenClass = classes[1].trim().replace('.', '');
+					}
+
+					// adds the half of the offsetWidth/Height to the x/yOffset
+					if (optionString.indexOf("centerHorizontal") > -1) {
+						xOffset = _this.element.offsetWidth / 2;
+					}
+
+					if (optionString.indexOf("centerVertical") > -1) {
+						yOffset = _this.element.offsetHeight / 2;
+					}
+
+					// split the options on the offset() parameter
+					var offsetParts = optionString.split('offset(');
+					if (offsetParts.length > 1) {
+						// the offset() parameter was given, split it at ) to get the
+						// content inside the parentheses, then split them on the comma
+						var offsets = offsetParts[1].split(')')[0].split(',');
+						
+						// remove the px unit and parse as integer
+						xOffset += parseInt(offsets[0].replace('px', ''));
+						yOffset += parseInt(offsets[1].replace('px', ''));
+					}
+
+					// return this for chaining
+					return _this;
+				};
+			}(this);
+		};
+		
+		
 		// the element to detect the scroll in
 		this.scrollElement = window;
 		
@@ -230,8 +277,8 @@
 		/**
 		 * Initializes the scrollTrigger
 		 */
-		this.init = function(_this) {
-			return function(bindTo, scrollIn) {
+		var init = function(_this) {
+			return function(defaultOptions, bindTo, scrollIn) {
 				// check if bindTo is not undefined or null,
 				// otherwise use the document.body
 				if (bindTo != undefined && bindTo != null) {
@@ -252,11 +299,13 @@
 				// the data-scroll attribute and turn it from a NodeList
 				// into a plain old array
 				triggers = [].slice.call(_this.bindElement.querySelectorAll("[data-scroll]"));
-				
+
+				console.log(defaultOptions);
+
 				// map all the triggers to Trigger objects, and initialize them
 				// so the options get parsed
 				triggers = triggers.map(function (value, index) {
-			  	var trigger = new Trigger(value);
+			  	var trigger = new Trigger(defaultOptions, value);
 			  	
 			  	return trigger.init();
 			  });
@@ -418,9 +467,7 @@
 				window[method].call(trigger.element, params);
 			}
 		}
-	}
-	
-	// add an instance of the ScrollTrigger to the window
-	// for use in public/window scope.
-	window.ScrollTrigger = new ScrollTrigger();
+
+		return init(defaultOptions, bindTo, scrollIn);
+	};
 })();
