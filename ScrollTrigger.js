@@ -23,6 +23,8 @@
  	}
  }(this, function () {
 
+	 'use strict';
+
 	 return function(defaultOptions, bindTo, scrollIn) {
  		/**
  		 * Trigger object, represents a single html element with the
