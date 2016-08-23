@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	
+
 	<title>ScrollTrigger - Scroll based animations with ease</title>
-	
+
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="author" content="Erik Terwan">
-	
+
 	<link href="style.css" rel="stylesheet">
 	<link href="demo.css" rel="stylesheet">
 </head>
@@ -15,7 +15,7 @@
 <div class="block">
 	<h1 data-scroll="toggle(.scaleUpIn, .scaleUpOut)">Scroll<span></span>Trigger</h1>
 	<h2 data-scroll="toggle(.fromBottomIn, .fromBottomOut)">Add scroll based animations to your site with ease.</h2>
-	
+
 	<svg viewBox="0 0 60 60">
 		<path d="M52.254 18.327c0.816-0.804 2.127-0.804 2.937 0s0.813 2.103 0 2.907l-23.724 23.49c-0.81 0.804-2.121 0.804-2.937 0l-23.724-23.49c-0.81-0.804-0.81-2.103 0-2.907 0.813-0.804 2.127-0.804 2.937 0l22.257 21.423 22.254-21.423z"></path>
 	</svg>
@@ -58,7 +58,7 @@ window.counter = function() {
 	// this refers to the html element with the data-scroll-showCallback tag
 	var span = this.querySelector('span');
 	var current = parseInt(span.textContent);
-	
+
 	span.textContent = current + 1;
 };
 
