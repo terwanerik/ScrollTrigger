@@ -1,9 +1,10 @@
 # ScrollTrigger
-[![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org)
-![Issues](https://img.shields.io/github/issues/terwanerik/ScrollTrigger.svg)
+[![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/terwanerik/ScrollTrigger/blob/master/LICENSE)
+[![Issues](https://img.shields.io/github/issues/terwanerik/ScrollTrigger.svg)](https://github.com/terwanerik/ScrollTrigger/issues)
 [![GitHub release](https://img.shields.io/github/release/terwanerik/ScrollTrigger.svg?maxAge=2592000)]()
 [![Bower](https://img.shields.io/bower/v/ScrollTrigger.svg?maxAge=2592000)]()
 [![npm version](https://badge.fury.io/js/scrolltrigger-classes.svg)](https://www.npmjs.com/package/scrolltrigger-classes)
+[![Package Quality](http://npm.packagequality.com/shield/scrolltrigger-classes.svg)](http://packagequality.com/#?package=scrolltrigger-classes)
 
 Triggers classes on html elements based on the scroll position. It makes use of requestAnimationFrame so it doesn't jack the users scroll, that way the user / browser keeps their original scroll behaviour. Animations run when the browser is ready for it.
 
