@@ -125,5 +125,8 @@ If the classes don't toggle, check the JavaScript console. There might be some h
 #### Found an issue?
 Ooh snap, well, bugs happen. Please create a new issue and mention the OS and browser (including version) that the issue is occurring on. If you are really kind, make a [minimal, complete and verifiable example](http://stackoverflow.com/help/mcve) and upload that to [codepen](http://codepen.io).
 
+## Using ScrollTrigger?
+I would love to see how you use ScrollTrigger in your projects! If you are using ScrollTrigger on a live webpage, please hit me up on Twitter [@erikterwan](http://twitter.com/erikterwan), good implementations will be referenced here.
+
 ## Legacy
 Looking for the old, 1.5kb minified, ScrollTrigger? Check out the [legacy branch](https://github.com/terwanerik/ScrollTrigger/tree/legacy-v0.1)!
