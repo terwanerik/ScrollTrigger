@@ -67,7 +67,7 @@ When you scroll the page, and the element is visible in the viewport, it will ad
 
 Now when you scroll the page, the elements that 'come in' to the viewport fade in. A really basic example.
 
-### Options
+## Options
 The `data-scroll` attribute can take a couple of options, in contrast to v0.1, the position of the options are not strict. So you can place them anywhere inside the `data-scroll` tag.
 
 | Name      | Type        | Description                                                                                                                                                                          | Example                                                                                                                                                                                                        |
@@ -90,8 +90,23 @@ You can add callbacks to the show and hide events, e.g. when an element comes in
 
 For a more advanced example check out the example folder.
 
-## What about CSS?
+### What about CSS?
 For more advanced CSS animations check out the example folder, specifically `demo.css`. This demonstrates some translate/scale animations combined with opacity animations. All the animations are done in CSS so the possibilities are (almost) endless.
+
+## JavaScript API
+There are several things you can control via JavaScript.
+
+| Name                       | Description                                                                                                                                              | Example                                                        |
+|----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------|
+| .bind(elements)            | Binds new elements to the ScrollTrigger                                                                                                                  | `.bind(document.querySelectorAll('.someClass [data-scroll]'))` |
+| .triggerFor(element)       | Returns the Trigger object for the given HTMLElement                                                                                                     | `.triggerFor(document.querySelector('[data-scroll]'))`         |
+| .destroy(element)          | Removes the Trigger object for the given HTMLElement, leaving the DOM untouched, so the classes added by ScrollTrigger will stay put.                    | `.destroy(document.getElementById('someTrigger'))`             |
+| .destroyAll()              | The same as `.destroy()` but than for all elements.                                                                                                      | `.destroyAll()`                                                |
+| .reset(element)            | Removes the Trigger object for the given HTMLElement, and removing all traces from ScrollTrigger, so the classes added by ScrollTrigger will be removed. | `.reset(document.getElementById('someTrigger'))`               |
+| .resetAll()                | The same as `.reset()` but than for all elements.                                                                                                        | `.resetAll()`                                                  |
+| .attach(functionReference) | Attaches a callback to the ScrollTrigger loop, get's called every time the scroll position has changed. Very nice for custom animations.                                                  | Check the example below                                        |
+| .detach(functionReference) | Removes the callback from the ScrollTrigger loop.                                                                                                        | Check the example below                                        |
+
 
 ## Custom animations
 If you want to add custom animations based on the scroll position, it would be a waste to start another loop / jack the onscroll function. That's why you can attach callbacks to the ScrollTrigger's loop. This is really simple:
