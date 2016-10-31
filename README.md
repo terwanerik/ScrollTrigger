@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	    visible: 'visibleClass',
 	    hidden: 'hiddenClass'
 	  },
-	  offet: {
+	  offset: {
 	    x: 0,
 	    y: 20
 	  },
