@@ -278,9 +278,12 @@
 
 		// the element to get the data-scroll elements from
 		this.bindElement = document.body;
-
+		
 		// the Trigger objects
 		var triggers = [];
+
+		// the Trigger objects to be removed
+		var removeQueue = [];
 
 		// attached callbacks for the requestAnimationFrame loop,
 		// this is handy for custom scroll based animation. So you
@@ -553,8 +556,8 @@
 						trigger.removeClass(trigger.hiddenClass);
 
 						if (trigger.once) {
-							// remove trigger from triggers array
-							triggers.splice(index, 1);
+							// add the trigger to the removal queue
+							removeQueue.push(index);
 						}
 					} else {
 						// the element is invisible
@@ -576,6 +579,13 @@
 				previousScroll.left = currentLeft;
 				previousScroll.top = currentTop;
 			}
+			
+			// remove all the triggers from the removal queue
+			removeQueue.forEach(function(index){
+				triggers.splice(index, 1);
+			});
+			
+			removeQueue = [];
 
 			if (triggers.length > 0 || attached.length > 0) {
 				isLooping = true;
