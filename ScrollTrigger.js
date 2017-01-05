@@ -175,6 +175,14 @@
 							_this.hiddenClass = options.toggle.hidden;
 						}
 
+						if (options.showCallback) {
+							_this.showCallback = options.showCallback;
+						}
+
+						if (options.hideCallback) {
+							_this.hideCallback = options.hideCallback;
+						}
+
 						if (options.centerHorizontal === true) {
 							xOffset = _this.element.offsetWidth / 2;
 						}
@@ -223,8 +231,8 @@
 					}
 
 					// parse callbacks
-					_this.showCallback = _this.element.getAttribute('data-scroll-showCallback');
-					_this.hideCallback = _this.element.getAttribute('data-scroll-hideCallback');
+					_this.showCallback = _this.element.hasAttribute('data-scroll-showCallback') ? _this.element.getAttribute('data-scroll-showCallback') : _this.showCallback;
+					_this.hideCallback = _this.element.hasAttribute('data-scroll-hideCallback') ? _this.element.getAttribute('data-scroll-hideCallback') : _this.hideCallback;
 
 					// split the options on the toggle() parameter
 					var classParts = optionString.split('toggle(');
@@ -278,6 +286,9 @@
 
 		// the element to get the data-scroll elements from
 		this.bindElement = document.body;
+
+		// the scope to call the callbacks in, defaults to window
+		this.callScope = window;
 
 		// the Trigger objects
 		var triggers = [];
@@ -509,15 +520,35 @@
 		 * scrolls (on legacy browsers)
 		 */
 		function update() {
-			var windowWidth = _this.scrollElement.innerWidth;
-			var windowHeight = _this.scrollElement.innerHeight;
-
 			// FF and IE use the documentElement instead of body
 			var currentTop = !_this.bindElement.scrollTop ? document.documentElement.scrollTop : _this.bindElement.scrollTop;
 			var currentLeft = !_this.bindElement.scrollLeft ? document.documentElement.scrollLeft : _this.bindElement.scrollLeft;
 
 			// if the user scrolled
 			if (previousScroll.left != currentLeft || previousScroll.top != currentTop) {
+				_this.scrollDidChange();
+			}
+
+			if (triggers.length > 0 || attached.length > 0) {
+				isLooping = true;
+
+				// and loop again
+				loop(update);
+			} else {
+				isLooping = false;
+			}
+		}
+
+		this.scrollDidChange = function(_this) {
+			return function() {
+				var windowWidth = _this.scrollElement.innerWidth;
+				var windowHeight = _this.scrollElement.innerHeight;
+
+				// FF and IE use the documentElement instead of body
+				var currentTop = !_this.bindElement.scrollTop ? document.documentElement.scrollTop : _this.bindElement.scrollTop;
+				var currentLeft = !_this.bindElement.scrollLeft ? document.documentElement.scrollLeft : _this.bindElement.scrollLeft;
+
+				var onceTriggers = [];
 
 				// loop through all triggers
 				triggers.forEach(function(trigger, index){
@@ -554,7 +585,7 @@
 
 						if (trigger.once) {
 							// remove trigger from triggers array
-							triggers.splice(index, 1);
+							onceTriggers.push(trigger);
 						}
 					} else {
 						// the element is invisible
@@ -572,20 +603,20 @@
 					callback.call(_this, currentLeft, currentTop, windowWidth, windowHeight);
 				});
 
+				// remove the triggers that are 'once'
+				onceTriggers.forEach(function(trigger){
+					var index = triggers.indexOf(trigger);
+
+					if (index > -1) {
+						triggers.splice(index, 1);
+					}
+				});
+
 				// save the current scroll position
 				previousScroll.left = currentLeft;
 				previousScroll.top = currentTop;
-			}
-
-			if (triggers.length > 0 || attached.length > 0) {
-				isLooping = true;
-
-				// and loop again
-				loop(update);
-			} else {
-				isLooping = false;
-			}
-		}
+			};
+		}(this);
 
 		function functionCall(trigger, functionAsString) {
 			var params = functionAsString.split('(');
@@ -593,15 +624,67 @@
 
 			if (params.length > 1) {
 				params = params[1].split(')')[0]; // get the value between the parentheses
+
+				// check if there are multiple attributes
+				if (params.indexOf("', '") > -1) {
+					params = params.split("', '");
+				} else if (params.indexOf("','") > -1) {
+					params = params.split("','");
+				} else if (params.indexOf('", "') > -1) {
+					params = params.split('", "');
+				} else if (params.indexOf('","') > -1) {
+					params = params.split('","');
+				} else {
+					// nope, just a single parameter
+					params = [params];
+				}
 			} else {
-				params = undefined;
+				params = [];
 			}
 
-			if (window[method]) {
-				// function exists in the global window scope
-				// so let's call it
-				window[method].call(trigger.element, params);
+			// remove all quotes from the parameters
+			params = params.map(function (param) {
+				return removeQuotes(param);
+			})
+
+			if (typeof _this.callScope[method] == "function") {
+				// function exists in the call scope so let's try to call it. Some methods don't like to have the HTMLElement
+				// passed as 'this', so retry without that if it fails.
+				try {
+					_this.callScope[method].apply(trigger.element, params);
+				} catch (e) {
+					// alright let's try again
+					try {
+						_this.callScope[method].apply(null, params);
+					} catch (e) {
+						// ah to bad.
+					}
+				}
 			}
+		}
+		
+		// removes quotes from a string, e.g. turns 'foo' or "foo" into foo
+		// typeof foo is string
+		function removeQuotes(str) {
+			str = str + ""; // force a string
+
+			if (str[0] == '"') {
+				str = str.substr(1);
+			}
+
+			if (str[0] == "'") {
+				str = str.substr(1);
+			}
+
+			if (str[str.length - 1] == '"') {
+				str = str.substr(0, str.length - 1);
+			}
+
+			if (str[str.length - 1] == "'") {
+				str = str.substr(0, str.length - 1);
+			}
+
+			return str;
 		}
 
 		return init(defaultOptions, bindTo, scrollIn);
