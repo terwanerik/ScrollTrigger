@@ -395,7 +395,7 @@
 			return function(htmlElement){
 				var returnTrigger = null;
 
-				triggers.forEach(function(trigger, index) {
+				triggers.each(function(trigger, index) {
 					if (trigger.element == htmlElement) {
 						returnTrigger = trigger;
 					}
@@ -410,7 +410,7 @@
 		 */
 		this.destroy = function(_this) {
 			return function(htmlElement) {
-				triggers.forEach(function(trigger, index) {
+				triggers.each(function(trigger, index) {
 					if (trigger.element == htmlElement) {
 						triggers.splice(index, 1);
 					}
@@ -461,7 +461,7 @@
 		 */
 		this.resetAll = function(_this) {
 			return function() {
-				triggers.forEach(function(trigger, index) {
+				triggers.each(function(trigger, index) {
 					trigger.reset();
 				});
 
@@ -551,7 +551,7 @@
 				var onceTriggers = [];
 
 				// loop through all triggers
-				triggers.forEach(function(trigger, index){
+				triggers.each(function(trigger, index){
 					var triggerLeft = trigger.left();
 					var triggerTop = trigger.top();
 
@@ -599,12 +599,12 @@
 				});
 
 				// call the attached callbacks, if any
-				attached.forEach(function(callback) {
+				attached.each(function(callback) {
 					callback.call(_this, currentLeft, currentTop, windowWidth, windowHeight);
 				});
 
 				// remove the triggers that are 'once'
-				onceTriggers.forEach(function(trigger){
+				onceTriggers.each(function(trigger){
 					var index = triggers.indexOf(trigger);
 
 					if (index > -1) {
@@ -686,6 +686,18 @@
 
 			return str;
 		}
+		
+		// Faster than .forEach
+		Array.prototype.each = function(a) {
+			var l = this.length;
+			for(var i = 0; i < l; i++) {
+				var e = this[i];
+	
+				if (e) {
+					a(e,i);
+				}
+			}
+		};
 
 		return init(defaultOptions, bindTo, scrollIn);
 	};
