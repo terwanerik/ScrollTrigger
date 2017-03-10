@@ -541,8 +541,8 @@
 
 		this.scrollDidChange = function(_this) {
 			return function() {
-				var windowWidth = _this.scrollElement.innerWidth;
-				var windowHeight = _this.scrollElement.innerHeight;
+				var windowWidth = _this.scrollElement.innerWidth || _this.scrollElement.offsetWidth;
+				var windowHeight = _this.scrollElement.innerHeight || _this.scrollElement.offsetHeight;
 
 				// FF and IE use the documentElement instead of body
 				var currentTop = !_this.bindElement.scrollTop ? document.documentElement.scrollTop : _this.bindElement.scrollTop;
@@ -662,7 +662,7 @@
 				}
 			}
 		}
-		
+
 		// removes quotes from a string, e.g. turns 'foo' or "foo" into foo
 		// typeof foo is string
 		function removeQuotes(str) {
