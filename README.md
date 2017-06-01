@@ -83,9 +83,25 @@ The `data-scroll` attribute can take a couple of options, in contrast to v0.1, t
 For advanced examples on how to use the options, check out the `example` folder. Especially the `horizontal.html` file.
 
 ### Callbacks
-You can add callbacks to the show and hide events, e.g. when an element comes into the viewport and when it goes out. You do this by adding the `data-scroll-showCallback` and / or the `data-scroll-hideCallback` tags. We avoid using `eval` so the callback needs to be in the (global) `window` scope. A super simple example:
+You can add callbacks to the show and hide events, e.g. when an element comes into the viewport and when it goes out. You do this by adding the `data-scroll-showCallback` and / or the `data-scroll-hideCallback` tags. We avoid using `eval` so the callback needs to be in the (global) `window` scope. If you dont want to expose your function to the `window` scope, you can define a custom scope by setting the `trigger.callScope` to your scope.
+
+A super simple example:
 ```html
 <div data-scroll data-scroll-showCallback="alert('Visible')" data-scroll-hideCallback="alert('Invisible')"></div>
+```
+
+With a custom callScope:
+```javascript
+var scope = {};
+var trigger = new ScrollTrigger();
+trigger.callScope = scope;
+
+scope.customFunction = function(value) {
+  alert(value);
+};
+```
+```html
+<div data-scroll data-scroll-showCallback="customFunction('Visible')" data-scroll-hideCallback="customFunction('Invisible')"></div>
 ```
 
 For a more advanced example check out the example folder.
