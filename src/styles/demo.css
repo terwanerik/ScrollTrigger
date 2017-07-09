@@ -1,0 +1,153 @@
+html, body
+{
+	margin: 0;
+	padding: 0;
+}
+
+body
+{
+	background: #efefef;
+
+	font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimSun, sans-serif;
+	font-weight: 400;
+	-webkit-font-smoothing: antialiased;
+
+	overflow-x: hidden;
+}
+
+.wrapper
+{
+	margin: 0 auto;
+	padding: 20px;
+	max-width: 800px;
+}
+
+.block
+{
+	padding: 50px;
+	width: 100%;
+	max-width: 350px;
+
+	background: #fff;
+	box-shadow: 0 2px 14px rgba(0,0,0,0.25);
+	box-sizing: border-box;
+
+	text-align: center;
+	color: #666;
+}
+
+.clear
+{
+	clear: both;
+}
+
+.float--left
+{
+	float: left;
+}
+
+.float--right
+{
+	float: right;
+}
+
+.margin
+{
+	margin: 15px;
+}
+
+.margin--center
+{
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.margin--vertical
+{
+	margin: 15px 0;
+}
+
+.margin--horizontal
+{
+	margin: 0 15px;
+}
+
+.margin--top
+{
+	margin-top: 15px;
+}
+
+.margin--bottom
+{
+	margin-bottom: 15px;
+}
+
+.margin--left
+{
+	margin-left: 15px;
+}
+
+.margin--right
+{
+	margin-right: 15px;
+}
+
+.padding
+{
+	padding: 15px;
+}
+
+.padding--vertical
+{
+	padding: 15px 0;
+}
+
+.padding--horizontal
+{
+	padding: 0 15px;
+}
+
+.padding--top
+{
+	padding-top: 15px;
+}
+
+.padding--bottom
+{
+	padding-bottom: 15px;
+}
+
+.padding--left
+{
+	padding-left: 15px;
+}
+
+.padding--right
+{
+	padding-right: 15px;
+}
+
+.textAlign--left
+{
+	text-align: left;
+}
+
+.textAlign--center
+{
+	text-align: center;
+}
+
+.textAlign--right
+{
+	text-align: right;
+}
+
+.width--full
+{
+	width: 100%;
+}
+
+.width--half
+{
+	width: 50%;
+}
