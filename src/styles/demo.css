@@ -6,6 +6,8 @@ html, body
 
 body
 {
+	padding-top: 60px;
+
 	background: #efefef;
 
 	font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimSun, sans-serif;
@@ -15,25 +17,68 @@ body
 	overflow-x: hidden;
 }
 
-.wrapper
+header
 {
-	margin: 0 auto;
-	padding: 20px;
-	max-width: 800px;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 60px;
+	padding: 0 25px;
+
+	background: #EAEBED;
+	background: rgba(255, 255, 255, 0.8);
+	backdrop-filter: blur(10px);
+	box-shadow: 0 0 8px rgba(0,0,0,0.15);
+	box-sizing: border-box;
+
+	line-height: 55px;
+	color: #006989;
+}
+
+header h1
+{
+	margin: 0;
+	padding: 0;
+	font-weight: 300;
+	font-size: 1.5rem;
+}
+
+header div.stats
+{
+	float: right;
 }
 
 .block
 {
-	padding: 50px;
-	width: 100%;
-	max-width: 350px;
+	height: 50vh;
+	line-height: 50vh;
 
-	background: #fff;
-	box-shadow: 0 2px 14px rgba(0,0,0,0.25);
+	background: #006989;
 	box-sizing: border-box;
 
 	text-align: center;
-	color: #666;
+	color: #fff;
+}
+
+.color-1
+{
+	background: #006989;
+}
+
+.color-2
+{
+	background: #A3BAC3;
+}
+
+.color-3
+{
+	background: #007090;
+}
+
+.color-4
+{
+	background: #01A7C2;
 }
 
 .clear

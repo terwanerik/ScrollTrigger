@@ -1,5 +1,4 @@
 import ScrollTrigger from './ScrollTrigger'
 
-import './styles/demo.css'
-
-const trigger = new ScrollTrigger()
+const scroll = new ScrollTrigger()
+scroll.add("div.block")
