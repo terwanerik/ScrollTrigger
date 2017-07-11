@@ -34,6 +34,8 @@ header
 
 	line-height: 55px;
 	color: #006989;
+
+	z-index: 2;
 }
 
 header h1
@@ -59,6 +61,14 @@ header div.stats
 
 	text-align: center;
 	color: #fff;
+
+	overflow: hidden;
+}
+
+.block img
+{
+	width: 100%;
+	height: auto;
 }
 
 .color-1
@@ -79,6 +89,25 @@ header div.stats
 .color-4
 {
 	background: #01A7C2;
+}
+
+.block.visible
+{
+	transition: opacity 1.5s ease, transform 1.5s cubic-bezier(0.1, 1.03, 0.58, 1);
+	transform: translate(0, 0);
+	opacity: 1.0;
+}
+
+.block.invisible
+{
+	transition: opacity 1.5s ease, transform 1.5s cubic-bezier(0.1, 1.03, 0.58, 1);
+	/*transform: translate(-100%, 0);*/
+	opacity: 0.0;
+}
+
+.block:nth-child(even).invisible
+{
+	/*transform: translate(100%, 0);*/
 }
 
 .clear
