@@ -101,9 +101,7 @@ export default class ScrollTrigger {
 	 * @private
 	 */
 	_scrollStart() {
-		console.log('start')
-
-		this.defaultScroll.start()
+		this.scrollOptions.start()
 	}
 
 	/**
@@ -111,9 +109,7 @@ export default class ScrollTrigger {
 	 * @private
 	 */
 	_scrollStop() {
-		console.log('stop')
-
-		this.defaultScroll.stop()
+		this.scrollOptions.stop()
 	}
 
 	/**
