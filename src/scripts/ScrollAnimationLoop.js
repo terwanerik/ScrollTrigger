@@ -1,6 +1,7 @@
 /**
  * Created by Erik on 09/07/2017.
  */
+import DefaultOptions from '../config/DefaultOptions'
 import extend from 'object-extend'
 import '../extensions/Array'
 
@@ -9,16 +10,8 @@ export default class ScrollAnimationLoop {
 	 * ScrollAnimationLoop constructor.
 	 * Starts a requestAnimationFrame loop as long as the user has scrolled the scrollElement. Stops after a certain time.
 	 *
-	 * @param {Object} [options=Object] options The options for the loop
-	 * @param {Window|HTMLDocument|HTMLElement} [options.element=Window] options.element The element to detect scroll in,
-	 *                                                                                   defaults to window
-	 * @param {number} options.sustain [options.sustain=300] The amount of time to sustain the loop after the scrolling
-	 *                                                       has stopped, in ms. Defaults to 300.
-	 * @param {Function} options.callback [options.callback=null] The callback for every loop
-	 * @param {Function} options.start [options.start=null] The start callback, when the animationFrame loop starts
-	 * @param {Function} options.stop [options.stop=null] The stop callback, when the animationFrame loop stops
-	 * @param {Function} options.directionChange [options.directionChange=null] Callback for when the direction changes
-	 * @param {Function} callback [loop=null] The loop callback
+	 * @param {DefaultOptions.scroll} [options=DefaultOptions.scroll] options The options for the loop
+	 * @param {(function())} callback [loop=null] The loop callback
 	 */
 	constructor(options, callback) {
 		this._parseOptions(options)
@@ -39,28 +32,19 @@ export default class ScrollAnimationLoop {
 	/**
 	 * Parses the options
 	 *
-	 * @param {Object} [options=Object] options The options for the loop
-	 * @param {Window|HTMLDocument|HTMLElement} [options.element=Window] options.element The element to detect scroll in,
-	 *                                                                                   defaults to window
-	 * @param {number} options.sustain [options.sustain=300] The amount of time to sustain the loop after the scrolling
-	 *                                                       has stopped, in ms. Defaults to 300.
-	 * @param {Function} options.callback [options.callback=null] The callback for every loop
-	 * @param {Function} options.start [options.start=null] The start callback, when the animationFrame loop starts
-	 * @param {Function} options.stop [options.stop=null] The stop callback, when the animationFrame loop stops
-	 * @param {Function} options.directionChange [options.directionChange=null] Callback for when the direction changes
+	 * @param {DefaultOptions.scroll} [options=DefaultOptions.scroll] options The options for the loop
 	 * @private
 	 */
 	_parseOptions(options) {
-		const defaults = {
-			sustain: 300,
-			element: window,
-			callback: typeof options != 'function' ? () => {} : options,
-			start: () => {},
-			stop: () => {},
-			directionChange: () => {}
-		}
+		let defaults = new DefaultOptions().scroll
 
-		options = extend(defaults, options)
+		if (typeof options != 'function') {
+			defaults.callback = () => {}
+
+			options = extend(defaults, options)
+		} else {
+			defaults.callback = options
+		}
 
 		this.element = options.element
 		this.sustain = options.sustain

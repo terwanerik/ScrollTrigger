@@ -13,6 +13,7 @@
 /**
  * Created by Erik on 09/07/2017.
  */
+import DefaultOptions from './config/DefaultOptions'
 import Trigger from './scripts/Trigger'
 import TriggerCollection from './scripts/TriggerCollection'
 import ScrollAnimationLoop from './scripts/ScrollAnimationLoop'
@@ -21,51 +22,26 @@ import extend from 'object-extend'
 import './extensions/Array'
 
 export default class ScrollTrigger {
+	/**
+	 * Constructor for the scroll trigger
+	 * @param {DefaultOptions} [options=DefaultOptions] options
+	 */
 	constructor(options) {
 		this._parseOptions(options)
 		this._initCollection()
 		this._initLoop()
 	}
 
+	/**
+	 * Parses the options
+	 * @param {DefaultOptions} [options=DefaultOptions] options
+	 * @private
+	 */
 	_parseOptions(options) {
-		const defaults = {
-			trigger: {
-				once: false,
-				offset: {
-					screen: {
-						x: 0,
-						y: 0
-					},
-					element: {
-						x: 0,
-						y: 0
-					}
-				},
-				toggle: {
-					class: {
-						in: 'visible',
-						out: 'invisible'
-					},
-					callback: {
-						in: () => {},
-						out: () => {}
-					}
-				}
-			},
-			scroll: {
-				sustain: 300,
-				element: window,
-				callback: () => {},
-				start: () => {},
-				stop: () => {},
-				directionChange: () => {}
-			}
-		}
-
-		options = extend(defaults, options)
+		options = extend(new DefaultOptions(), options)
 
 		this.defaultTrigger = options.trigger
-		this.defaultScroll = options.scroll
+		this.scrollOptions = options.scroll
 	}
 
 	/**
@@ -89,8 +65,8 @@ export default class ScrollTrigger {
 	 */
 	_initLoop() {
 		this.loop = new ScrollAnimationLoop({
-			sustain: this.defaultScroll.sustain,
-			element: this.defaultScroll.element,
+			sustain: this.scrollOptions.sustain,
+			element: this.scrollOptions.element,
 			callback: (position, direction) => {
 				this._scrollCallback(position, direction)
 			},
@@ -114,15 +90,10 @@ export default class ScrollTrigger {
 	 */
 	_scrollCallback(position, direction) {
 		this.collection.call((trigger) => {
-			trigger.update()
+			trigger.checkVisibility(this.scrollOptions.element, direction)
 		})
 
-		const stats = document.querySelector('div.stats')
-
-		stats.innerHTML = 'pos: ' + JSON.stringify(position)
-		stats.innerHTML += ' [' + direction + ']'
-
-		this.defaultScroll.callback(position, direction)
+		this.scrollOptions.callback(position, direction)
 	}
 
 	/**
@@ -151,15 +122,13 @@ export default class ScrollTrigger {
 	 * @private
 	 */
 	_scrollDirectionChange(direction) {
-		console.log('change, ' + direction)
-
-		this.defaultScroll.directionChange(direction)
+		this.scrollOptions.directionChange(direction)
 	}
 
 	/**
 	 * Creates a Trigger object from a given element and optional option set
 	 * @param {HTMLElement} element
-	 * @param {Object} [options=null] options
+	 * @param {DefaultOptions.trigger} [options=DefaultOptions.trigger] options
 	 * @returns Trigger
 	 */
 	createTrigger(element, options) {
