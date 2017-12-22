@@ -645,7 +645,7 @@
 			// remove all quotes from the parameters
 			params = params.map(function (param) {
 				return removeQuotes(param);
-			})
+			});
 
 			if (typeof _this.callScope[method] == "function") {
 				// function exists in the call scope so let's try to call it. Some methods don't like to have the HTMLElement
@@ -686,13 +686,13 @@
 
 			return str;
 		}
-		
+
 		// Faster than .forEach
 		Array.prototype.each = function(a) {
 			var l = this.length;
 			for(var i = 0; i < l; i++) {
 				var e = this[i];
-	
+
 				if (e) {
 					a(e,i);
 				}
