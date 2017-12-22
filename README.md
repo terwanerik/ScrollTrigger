@@ -8,6 +8,10 @@
 
 Triggers classes on html elements based on the scroll position. It makes use of requestAnimationFrame so it doesn't jack the users scroll, that way the user / browser keeps their original scroll behaviour. Animations run when the browser is ready for it.
 
+## Install
+
+`npm install scrolltrigger-classes --save`
+
 ## How to use?
 It's quite simple, just add the `ScrollTrigger.min.js` file to your HTML page. Then construct a new ScrollTrigger instance when the page has loaded. Like so:
 
@@ -135,7 +139,7 @@ document.addEventListener('DOMContentLoaded', function(){
     // i can do anything now with the height of the viewport
     // or the scrollPosition in the scrollElement. 'this' refers to
     // the html object that contains the data-scroll attribute.
-    
+
     // if you are done with the callback you can detach it
     // using the ScrollTrigger.detach() method.
     trigger.detach(callback);
