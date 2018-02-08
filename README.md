@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function(){
 ```
 
 ## Contributing
-Fork, check out `ScrollTrigger.js` and enjoy! If you have improvements, start a new branch & create a pull request when you're all done :)
+Have some improvements? Check out the [v1 branch](https://github.com/terwanerik/ScrollTrigger/tree/v1.0)! This branch is under construction, but way better than v0.2 (master). If you want to fix a bug, then just fork, start a new branch & create a pull request when you're all done :)
 
 ## Troubleshooting
 You can see really quickly if the Trigger is working by hitting 'inspect element' in the little menu that pops up when you hit the right mouse button (or ctrl + click if you're one of those oldschool Mac users). Here you can see if the visible/invisble class is toggled when you scroll past the element, is that happening? Then there is something wrong with the CSS.
