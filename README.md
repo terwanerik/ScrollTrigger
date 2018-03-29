@@ -135,17 +135,16 @@ If you want to add custom animations based on the scroll position, it would be a
 document.addEventListener('DOMContentLoaded', function(){
   var trigger = new ScrollTrigger();
 
-  var callback = function(scrollLeft, scrollTop, width, height){
-    // i can do anything now with the height of the viewport
-    // or the scrollPosition in the scrollElement. 'this' refers to
-    // the html object that contains the data-scroll attribute.
+  var loop = function(scrollLeft, scrollTop, width, height){
+    // you can do anything now with the height of the viewport
+    // or the scrollPosition in the scrollElement.
 
     // if you are done with the callback you can detach it
     // using the ScrollTrigger.detach() method.
-    trigger.detach(callback);
+    trigger.detach(loop);
   };
 
-  trigger.attach(callback);
+  trigger.attach(loop);
 });
 ```
 
