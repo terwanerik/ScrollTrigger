@@ -19,7 +19,7 @@ It's quite simple, just add the `ScrollTrigger.min.js` file to your HTML page. T
 <script src="ScrollTrigger.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function(){
-	var trigger = new ScrollTrigger();
+  var trigger = new ScrollTrigger();
 });
 </script>
 ```
@@ -28,18 +28,18 @@ That's how simple it can be. A more advanced example would be:
 
 ```js
 document.addEventListener('DOMContentLoaded', function(){
-	var trigger = new ScrollTrigger({
-	  toggle: {
-	    visible: 'visibleClass',
-	    hidden: 'hiddenClass'
-	  },
-	  offset: {
-	    x: 0,
-	    y: 20
-	  },
-	  addHeight: true,
-	  once: true
-	}, document.body, window);
+  var trigger = new ScrollTrigger({
+    toggle: {
+      visible: 'visibleClass',
+      hidden: 'hiddenClass'
+    },
+    offset: {
+      x: 0,
+      y: 20
+    },
+    addHeight: true,
+    once: true
+  }, document.body, window);
 });
 ```
 
@@ -59,13 +59,13 @@ When you scroll the page, and the element is visible in the viewport, it will ad
 
 ```css
 .invisible {
-	transition: opacity 0.5s ease;
-	opacity: 0.0;
+  transition: opacity 0.5s ease;
+  opacity: 0.0;
 }
 
 .visible {
-	transition: opacity 0.5s ease;
-	opacity: 1.0;
+  transition: opacity 0.5s ease;
+  opacity: 1.0;
 }
 ```
 
@@ -101,6 +101,7 @@ var trigger = new ScrollTrigger();
 trigger.callScope = scope;
 
 scope.customFunction = function(value) {
+  console.log(this); // this refers to the html element coming into the viewport
   alert(value);
 };
 ```
