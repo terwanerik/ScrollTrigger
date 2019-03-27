@@ -11,12 +11,12 @@ export default class ScrollAnimationLoop {
 	 * Starts a requestAnimationFrame loop as long as the user has scrolled the scrollElement. Stops after a certain time.
 	 *
 	 * @param {DefaultOptions.scroll} [options=DefaultOptions.scroll] options The options for the loop
-	 * @param {(function())} callback [loop=null] The loop callback
+	 * @param {ScrollCallback} callback [loop=null] The loop callback
 	 */
 	constructor(options, callback) {
 		this._parseOptions(options)
 
-		if (typeof callback == 'function') {
+		if (typeof callback === 'function') {
 			this.callback = callback
 		}
 
@@ -41,17 +41,17 @@ export default class ScrollAnimationLoop {
 		if (typeof options != 'function') {
 			defaults.callback = () => {}
 
-			options = extend(defaults, options)
+      defaults = extend(defaults, options)
 		} else {
 			defaults.callback = options
 		}
 
-		this.element = options.element
-		this.sustain = options.sustain
-		this.callback = options.callback
-		this.startCallback = options.start
-		this.stopCallback = options.stop
-		this.directionChange = options.directionChange
+		this.element = defaults.element
+		this.sustain = defaults.sustain
+		this.callback = defaults.callback
+		this.startCallback = defaults.start
+		this.stopCallback = defaults.stop
+		this.directionChange = defaults.directionChange
 	}
 
 	/**
@@ -61,20 +61,23 @@ export default class ScrollAnimationLoop {
 	_didScroll() {
 		const newPosition = this.getPosition()
 
-		if (this.position != newPosition) {
+		if (this.position !== newPosition) {
 			let newDirection = this.direction
 
-			if (newPosition.x != this.position.x) {
+			if (newPosition.x !== this.position.x) {
 				newDirection = newPosition.x > this.position.x ? 'right' : 'left'
-			} else if (newPosition.y != this.position.y) {
+			} else if (newPosition.y !== this.position.y) {
 				newDirection = newPosition.y > this.position.y ? 'bottom' : 'top'
 			} else {
 				newDirection = 'none'
 			}
 
-			if (newDirection != this.direction) {
+			if (newDirection !== this.direction) {
 				this.direction = newDirection
-				this.directionChange(this.direction)
+
+        if (typeof this.directionChange === 'function') {
+          this.directionChange(this.direction)
+        }
 			}
 
 			this.position = newPosition
@@ -92,7 +95,11 @@ export default class ScrollAnimationLoop {
 	 */
 	_startRun() {
 		this.running = true
-		this.startCallback()
+
+    if (typeof this.startCallback === 'function') {
+      this.startCallback()
+    }
+
 		this._loop()
 	}
 
@@ -102,7 +109,10 @@ export default class ScrollAnimationLoop {
 	 */
 	_stopRun() {
 		this.running = false
-		this.stopCallback()
+
+    if (typeof this.stopCallback === 'function') {
+      this.stopCallback()
+    }
 	}
 
 	/**

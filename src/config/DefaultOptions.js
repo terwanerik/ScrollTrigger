@@ -28,7 +28,8 @@ export default function() {
 	 *      out: string|string[]
 	 *    },
 	 *  callback: {
-	 *    in: (function()),
+	 *    in: {TriggerInCallback},
+   *    visible: (function()),
 	 *    out: (function())
 	 *  }
 	 * }
@@ -52,11 +53,19 @@ export default function() {
 				out: 'invisible'
 			},
 			callback: {
-				in: () => {},
-				out: () => {}
+				in: null,
+        visible: null,
+				out: null
 			}
 		}
 	}
+
+  /**
+   * The `in` callback is called when the element enters the viewport
+   * @callback TriggerInCallback
+   * @param {{x: Number, y: Number}} position
+   * @param {string} direction
+   */
 
 	/**
 	 * The default options for the scroll behaviour
@@ -64,10 +73,10 @@ export default function() {
 	 * {
 	 *  sustain: number,
 	 *  element: Window|HTMLDocument|HTMLElement,
-	 *  callback: (function()),
+	 *  callback: {ScrollCallback},
 	 *  start: (function()),
 	 *  stop: (function()),
-	 *  directionChange: (function())
+	 *  directionChange: (function(direction: {string}))
 	 * }
 	 * }
 	 */
@@ -79,4 +88,11 @@ export default function() {
 		stop: () => {},
 		directionChange: () => {}
 	}
+
+  /**
+   * The scroll callback is called when the user scrolls
+   * @callback ScrollCallback
+   * @param {{x: Number, y: Number}} position
+   * @param {string} direction
+   */
 }

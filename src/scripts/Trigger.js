@@ -33,7 +33,7 @@ export default class Trigger {
 	}
 
 	/**
-	 *
+	 * Checks if the Trigger is in the viewport, calls the callbacks and toggles the classes
 	 * @param {HTMLElement|HTMLDocument|Window} parent
 	 * @param {string} direction top, bottom, left, right
 	 * @returns {boolean} If the element is visible
@@ -47,7 +47,7 @@ export default class Trigger {
 		const parentHeight = parent.offsetHeight || parent.innerHeight || 0
 
 		const parentFrame = { w: parentWidth, h: parentHeight }
-		const rect = this.element.getBoundingClientRect()
+		const rect = this.getBounds()
 
 		let visible = false
 
@@ -67,19 +67,39 @@ export default class Trigger {
 				break
 		}
 
-		if (visible != this.visible) {
+		if (visible !== this.visible) {
 			this.visible = visible
 
-			this._toggleClass()
-			this._toggleCallback()
+      const response = this._toggleCallback()
+
+      if (response instanceof Promise) {
+        response.then(this._toggleClass.bind(this)).catch(e => {
+          console.error('Trigger promise failed')
+          console.error(e)
+        })
+      } else {
+        this._toggleClass()
+      }
 
 			if (this.visible && this.once) {
 				this.active = false
 			}
-		}
+		} else if (visible) {
+      if (typeof this.toggle.callback.visible == 'function') {
+        return this.toggle.callback.visible.call(this.element, this)
+      }
+    }
 
 		return visible
 	}
+
+  /**
+   * Get the bounds of this element
+   * @return {ClientRect | DOMRect}
+   */
+	getBounds() {
+	  return this.element.getBoundingClientRect()
+  }
 
 	/**
 	 * Checks the visibility when the user scrolls to the bottom
@@ -252,16 +272,17 @@ export default class Trigger {
 
 	/**
 	 * Toggles the callback
-	 * @private
+   * @private
+   * @return null|Promise
 	 */
 	_toggleCallback() {
 		if (this.visible) {
 			if (typeof this.toggle.callback.in == 'function') {
-				this.toggle.callback.in.call(this.element, this)
+				return this.toggle.callback.in.call(this.element, this)
 			}
 		} else {
 			if (typeof this.toggle.callback.out == 'function') {
-				this.toggle.callback.out.call(this.element, this)
+				return this.toggle.callback.out.call(this.element, this)
 			}
 		}
 	}

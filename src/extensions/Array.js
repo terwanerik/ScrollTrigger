@@ -7,10 +7,10 @@
  * @param {(function())} fn The function to call
  */
 Array.prototype.each = function (fn) {
-	var l = this.length
+	const l = this.length
 
-	for(var i = 0; i < l; i++) {
-		var e = this[i]
+	for(let i = 0; i < l; i++) {
+		const e = this[i]
 
 		if (e) {
 			fn(e,i)
