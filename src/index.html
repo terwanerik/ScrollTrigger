@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="./styles/demo.css">
 </head>
 <body>
-  <div class="wrapper">
     <header>
       <div class="wrapper">
         <div class="stats"></div>
@@ -16,99 +15,56 @@
       </div>
     </header>
 
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum at ipsum metus. Donec vitae interdum mi.
-      Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nullam laoreet odio
-      neque, sed vulputate enim cursus quis. Integer fermentum efficitur enim eu rutrum. Praesent posuere libero est.
-      Sed eu mattis augue, in dignissim nunc. Mauris sagittis odio viverra nulla facilisis efficitur. Proin bibendum,
-      felis vitae rhoncus blandit, nunc nibh porttitor velit, accumsan accumsan sem augue ut ante. Donec tristique
-      viverra mollis. Proin nec sagittis neque, et semper massa. Curabitur quis justo enim. Vivamus fermentum ante odio,
-      vel suscipit turpis mattis et. Nulla vel malesuada leo, a varius nisi.</p>
+    <section style="background-image: url('https://source.unsplash.com/random/1600x1200/?dark')">
+        <div class="wrapper center">
+            <h2>Add triggers based on the scroll position.</h2>
+        </div>
+    </section>
 
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum at ipsum metus. Donec vitae interdum mi.
-      Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nullam laoreet odio
-      neque, sed vulputate enim cursus quis. Integer fermentum efficitur enim eu rutrum. Praesent posuere libero est.
-      Sed eu mattis augue, in dignissim nunc. Mauris sagittis odio viverra nulla facilisis efficitur. Proin bibendum,
-      felis vitae rhoncus blandit, nunc nibh porttitor velit, accumsan accumsan sem augue ut ante. Donec tristique
-      viverra mollis. Proin nec sagittis neque, et semper massa. Curabitur quis justo enim. Vivamus fermentum ante odio,
-      vel suscipit turpis mattis et. Nulla vel malesuada leo, a varius nisi.</p>
+    <section style="background-image: url('https://source.unsplash.com/random/1600x1200/?nature')">
+        <div class="wrapper center">
+            <h2>Fully customizeable</h2>
+            <p>Define (custom) offsets on the element or the viewport.</p>
+        </div>
+    </section>
 
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum at ipsum metus. Donec vitae interdum mi.
-      Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nullam laoreet odio
-      neque, sed vulputate enim cursus quis. Integer fermentum efficitur enim eu rutrum. Praesent posuere libero est.
-      Sed eu mattis augue, in dignissim nunc. Mauris sagittis odio viverra nulla facilisis efficitur. Proin bibendum,
-      felis vitae rhoncus blandit, nunc nibh porttitor velit, accumsan accumsan sem augue ut ante. Donec tristique
-      viverra mollis. Proin nec sagittis neque, et semper massa. Curabitur quis justo enim. Vivamus fermentum ante odio,
-      vel suscipit turpis mattis et. Nulla vel malesuada leo, a varius nisi.</p>
+    <section style="background-image: url('https://source.unsplash.com/random/1600x1200/?urban')">
+        <div class="wrapper center">
+            <h2>Not just animation</h2>
+            <p>You can hook to callbacks of Triggers, return promises and more. So you can easily lazy load images, run counters, or even control canvas.</p>
+        </div>
+    </section>
 
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum at ipsum metus. Donec vitae interdum mi.
-      Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nullam laoreet odio
-      neque, sed vulputate enim cursus quis. Integer fermentum efficitur enim eu rutrum. Praesent posuere libero est.
-      Sed eu mattis augue, in dignissim nunc. Mauris sagittis odio viverra nulla facilisis efficitur. Proin bibendum,
-      felis vitae rhoncus blandit, nunc nibh porttitor velit, accumsan accumsan sem augue ut ante. Donec tristique
-      viverra mollis. Proin nec sagittis neque, et semper massa. Curabitur quis justo enim. Vivamus fermentum ante odio,
-      vel suscipit turpis mattis et. Nulla vel malesuada leo, a varius nisi.</p>
+    <section>
+        <div class="wrapper center">
+            <h2>Lazy load images you said?</h2>
+            <p>
+                <div class="image" data-lazy="https://source.unsplash.com/random/250x250/?food"></div>
+                <div class="image" data-lazy="https://source.unsplash.com/random/250x250/?drink"></div>
+                <div class="image" data-lazy="https://source.unsplash.com/random/250x250/?club"></div>
+            </p>
+        </div>
+    </section>
 
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum at ipsum metus. Donec vitae interdum mi.
-      Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nullam laoreet odio
-      neque, sed vulputate enim cursus quis. Integer fermentum efficitur enim eu rutrum. Praesent posuere libero est.
-      Sed eu mattis augue, in dignissim nunc. Mauris sagittis odio viverra nulla facilisis efficitur. Proin bibendum,
-      felis vitae rhoncus blandit, nunc nibh porttitor velit, accumsan accumsan sem augue ut ante. Donec tristique
-      viverra mollis. Proin nec sagittis neque, et semper massa. Curabitur quis justo enim. Vivamus fermentum ante odio,
-      vel suscipit turpis mattis et. Nulla vel malesuada leo, a varius nisi.</p>
+    <section style="background-image: url('https://source.unsplash.com/random/1600x1200/?club,dark')" data-counter=0>
+        <div class="wrapper center">
+            <h2>Run counters you said?</h2>
+            <p>You've scrolled pas this block <span class="count">0 times</span></p>
+        </div>
+    </section>
 
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum at ipsum metus. Donec vitae interdum mi.
-      Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nullam laoreet odio
-      neque, sed vulputate enim cursus quis. Integer fermentum efficitur enim eu rutrum. Praesent posuere libero est.
-      Sed eu mattis augue, in dignissim nunc. Mauris sagittis odio viverra nulla facilisis efficitur. Proin bibendum,
-      felis vitae rhoncus blandit, nunc nibh porttitor velit, accumsan accumsan sem augue ut ante. Donec tristique
-      viverra mollis. Proin nec sagittis neque, et semper massa. Curabitur quis justo enim. Vivamus fermentum ante odio,
-      vel suscipit turpis mattis et. Nulla vel malesuada leo, a varius nisi.</p>
+    <section data-canvas>
+        <canvas></canvas>
+        <div class="wrapper center">
+            <h2>Control canvas you said?</h2>
+        </div>
+    </section>
 
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum at ipsum metus. Donec vitae interdum mi.
-      Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nullam laoreet odio
-      neque, sed vulputate enim cursus quis. Integer fermentum efficitur enim eu rutrum. Praesent posuere libero est.
-      Sed eu mattis augue, in dignissim nunc. Mauris sagittis odio viverra nulla facilisis efficitur. Proin bibendum,
-      felis vitae rhoncus blandit, nunc nibh porttitor velit, accumsan accumsan sem augue ut ante. Donec tristique
-      viverra mollis. Proin nec sagittis neque, et semper massa. Curabitur quis justo enim. Vivamus fermentum ante odio,
-      vel suscipit turpis mattis et. Nulla vel malesuada leo, a varius nisi.</p>
-
-
-    <div
-      class="block img float--right"
-      style="width: 334px; height: 501px;"
-      data-scroll
-      data-lazy="https://images.unsplash.com/photo-1553643182-15d168e4d680?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1234&q=80"></div>
-
-    <h2>Some title</h2>
-    <p>Integer fermentum mattis dui, eget laoreet turpis porta ac. Integer posuere congue mattis. Nulla sodales interdum
-      ipsum vitae venenatis. Nulla et libero lacus. Vestibulum lacinia elit et metus euismod, sed sodales velit gravida.
-      Sed ut rhoncus velit. Cras a laoreet turpis. Duis feugiat dictum quam, eget porttitor nisi consequat id. Sed
-      consequat velit est, nec gravida est ornare in. Nulla eget vestibulum ligula. Aliquam leo sem, condimentum vel
-      dolor non, aliquet porttitor purus. Sed semper, eros eu tincidunt laoreet, metus dolor hendrerit felis, quis
-      scelerisque tortor elit ac erat.</p>
-
-    <p>Cras dolor ligula, molestie et nisi et, vehicula hendrerit odio. Praesent faucibus a quam eu faucibus. Nullam
-      aliquam pretium libero, vitae auctor metus blandit pulvinar. Proin fermentum augue sit amet augue lobortis, sit
-      amet posuere orci laoreet. Cras malesuada erat id posuere tempus. Quisque nec sodales leo. Donec porttitor
-      lobortis finibus. Donec et volutpat nisl. Phasellus quis tortor est. Nunc ullamcorper imperdiet eleifend.</p>
-
-    <h2>Other title</h2>
-    <p>Duis rhoncus elit vitae leo molestie, sit amet vestibulum sem imperdiet. Duis tincidunt gravida mauris,
-      scelerisque feugiat nunc posuere dictum. Aliquam urna quam, scelerisque in tincidunt a, viverra a dui. Donec vitae
-      fringilla ex, vel iaculis dui. Suspendisse potenti. Suspendisse dolor ante, interdum tempor rhoncus sit amet,
-      luctus in purus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aenean sed mollis justo. Quisque
-      nec eros porttitor, scelerisque urna eu, tristique nisl. Duis efficitur mi quis orci sodales, ac maximus dolor
-      efficitur. Integer volutpat, arcu non placerat tincidunt, erat elit blandit elit, id semper tortor mauris quis
-      tortor. Morbi ultrices nisl id justo lobortis ullamcorper.</p>
-
-    <p>Fusce faucibus dapibus erat, eu porttitor augue pharetra nec. Maecenas cursus hendrerit libero eu pulvinar.
-      Aliquam erat volutpat. Vivamus finibus nibh velit, vehicula consectetur orci scelerisque in. Pellentesque sapien
-      dolor, consectetur ornare lorem sit amet, tempor gravida nibh. Cras consectetur libero eget est viverra imperdiet.
-      Quisque vel tellus at nunc aliquam eleifend. Morbi vitae tincidunt augue, non imperdiet nisl. Phasellus eu odio id
-      lectus semper varius. Phasellus semper tortor eu arcu porttitor suscipit. Nunc enim lectus, molestie a mollis et,
-      porttitor non mauris. Etiam condimentum metus cursus mi rhoncus, blandit tincidunt est consequat. Cras id
-      condimentum orci, malesuada cursus sapien. Mauris pulvinar tortor ac lacus commodo, non ultricies orci lacinia.
-      Maecenas vitae dui mollis, auctor mauris sed, lobortis dui.</p>
-  </div>
+    <section style="background-image: url('https://source.unsplash.com/random/1600x1200/?tech')">
+        <div class="wrapper center">
+            <h2>More information?</h2>
+            <p>Have a look on <a href="https://github.com/terwanerik/ScrollTrigger">GitHub</a></p>
+        </div>
+    </section>
 </body>
 </html>

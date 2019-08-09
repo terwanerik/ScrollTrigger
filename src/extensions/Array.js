@@ -1,8 +1,4 @@
 /**
- * Created by Erik on 09/07/2017.
- */
-
-/**
  * Faster than .forEach
  * @param {(function())} fn The function to call
  */

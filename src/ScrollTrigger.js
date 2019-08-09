@@ -150,11 +150,12 @@ export default class ScrollTrigger {
 	/**
 	 * Adds triggers
 	 * @param {string|HTMLElement|NodeList|Trigger|Trigger[]} objects A list of objects or a query
+	 * @param {Object} [options=null] options
 	 * @returns {ScrollTrigger}
 	 */
-	add(objects) {
+	add(objects, options) {
 		if (objects instanceof HTMLElement) {
-			this.collection.add(this.createTrigger(objects))
+			this.collection.add(this.createTrigger(objects, options))
 
 			return this
 		}
@@ -166,7 +167,7 @@ export default class ScrollTrigger {
 		}
 
 		if (objects instanceof NodeList) {
-			this.collection.add(this.createTriggers(objects))
+			this.collection.add(this.createTriggers(objects, options))
 
 			return this
 		}
@@ -178,13 +179,13 @@ export default class ScrollTrigger {
 		}
 
 		if (Array.isArray(objects) && objects.length && objects[0] instanceof HTMLElement) {
-			this.collection.add(this.createTriggers(objects))
+			this.collection.add(this.createTriggers(objects, options))
 
 			return this
 		}
 
 		// assume it's a query string
-		this.collection.add(this.createTriggers(document.querySelectorAll(objects)))
+		this.collection.add(this.createTriggers(document.querySelectorAll(objects), options))
 
 		return this
 	}

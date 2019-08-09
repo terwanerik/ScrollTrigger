@@ -1,6 +1,3 @@
-/**
- * Created by Erik on 09/07/2017.
- */
 import DefaultOptions from '../config/DefaultOptions'
 import extend from 'object-extend'
 import '../extensions/Array'
@@ -67,28 +64,28 @@ export default class Trigger {
 				break
 		}
 
-		if (visible !== this.visible) {
-			this.visible = visible
+        if (visible !== this.visible) {
+        	this.visible = visible
 
-      const response = this._toggleCallback()
+            const response = this._toggleCallback()
 
-      if (response instanceof Promise) {
-        response.then(this._toggleClass.bind(this)).catch(e => {
-          console.error('Trigger promise failed')
-          console.error(e)
-        })
-      } else {
-        this._toggleClass()
-      }
+            if (response instanceof Promise) {
+                response.then(this._toggleClass.bind(this)).catch(e => {
+                  console.error('Trigger promise failed')
+                  console.error(e)
+                })
+            } else {
+                this._toggleClass()
+            }
 
-			if (this.visible && this.once) {
-				this.active = false
-			}
-		} else if (visible) {
-      if (typeof this.toggle.callback.visible == 'function') {
-        return this.toggle.callback.visible.call(this.element, this)
-      }
-    }
+        	if (this.visible && this.once) {
+        		this.active = false
+        	}
+        } else if (visible) {
+            if (typeof this.toggle.callback.visible == 'function') {
+                return this.toggle.callback.visible.call(this.element, this)
+            }
+        }
 
 		return visible
 	}
@@ -98,8 +95,8 @@ export default class Trigger {
    * @return {ClientRect | DOMRect}
    */
 	getBounds() {
-	  return this.element.getBoundingClientRect()
-  }
+        return this.element.getBoundingClientRect()
+    }
 
 	/**
 	 * Checks the visibility when the user scrolls to the bottom
@@ -112,7 +109,7 @@ export default class Trigger {
 		let height = rect.bottom - rect.top
 
 		// Set the element offset
-		if (typeof this.offset.element.y == 'function') {
+		if (typeof this.offset.element.y === 'function') {
 			height -= height * this.offset.element.y()
 		} else if (isFloat(this.offset.element.y)) {
 			height -= height * this.offset.element.y
@@ -123,7 +120,7 @@ export default class Trigger {
 		// Set the viewport offset
 		let offset = 0
 
-		if (typeof this.offset.viewport.y == 'function') {
+		if (typeof this.offset.viewport.y === 'function') {
 			offset = parent.h * this.offset.viewport.y()
 		} else if (isFloat(this.offset.viewport.y)) {
 			offset = parent.h * this.offset.viewport.y
@@ -131,7 +128,7 @@ export default class Trigger {
 			offset = this.offset.viewport.y
 		}
 
-		return (rect.bottom > 0 && rect.bottom < ((parent.h + height) - offset))
+		return (rect.bottom > offset && rect.bottom < ((parent.h + height) - offset))
 	}
 
 	/**
@@ -142,29 +139,7 @@ export default class Trigger {
 	 * @private
 	 */
 	_checkToTopVisibility(rect, parent) {
-		let height = rect.bottom - rect.top
-
-		// Set the element offset
-		if (typeof this.offset.element.y == 'function') {
-			height -= height * this.offset.element.y()
-		} else if (isFloat(this.offset.element.y)) {
-			height -= height * this.offset.element.y
-		} else if (isInt(this.offset.element.y)) {
-			height -= this.offset.element.y
-		}
-
-		// Set the viewport offset
-		let offset = 0
-
-		if (typeof this.offset.viewport.y == 'function') {
-			offset = parent.h * this.offset.viewport.y()
-		} else if (isFloat(this.offset.viewport.y)) {
-			offset = parent.h * this.offset.viewport.y
-		} else if (isInt(this.offset.viewport.y)) {
-			offset = this.offset.viewport.y
-		}
-
-		return (rect.top > -height && rect.top < ((parent.h + height) - offset))
+		return this._checkToBottomVisibility(rect, parent)
 	}
 
 
@@ -198,7 +173,7 @@ export default class Trigger {
 			offset = this.offset.viewport.x
 		}
 
-		return (rect.right > 0 && rect.right < ((parent.w + width) - offset))
+		return (rect.right > offset && rect.right < ((parent.w + width) - offset))
 	}
 
 	/**
@@ -209,29 +184,7 @@ export default class Trigger {
 	 * @private
 	 */
 	_checkToLeftVisibility(rect, parent) {
-		let width = rect.right - rect.left
-
-		// Set the element offset
-		if (typeof this.offset.element.x == 'function') {
-			width -= width * this.offset.element.x()
-		} else if (isFloat(this.offset.element.x)) {
-			width -= width * this.offset.element.x
-		} else if (isInt(this.offset.element.x)) {
-			width -= this.offset.element.x
-		}
-
-		// Set the viewport offset
-		let offset = 0
-
-		if (typeof this.offset.viewport.x == 'function') {
-			offset = parent.w * this.offset.viewport.x()
-		} else if (isFloat(this.offset.viewport.x)) {
-			offset = parent.w * this.offset.viewport.x
-		} else if (isInt(this.offset.viewport.x)) {
-			offset = this.offset.viewport.x
-		}
-
-		return (rect.left > (offset - width) && rect.left < (parent.w + width))
+		return this._checkToRightVisibility(rect, parent)
 	}
 
 	/**

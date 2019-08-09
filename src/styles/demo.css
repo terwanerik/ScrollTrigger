@@ -4,15 +4,18 @@ html, body {
 }
 
 body {
-	padding-top: 175px;
-
-	background: #efefef;
+	background: #121212;
+    color: #efefef;
 
 	font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimSun, sans-serif;
 	font-weight: 400;
+    font-size: 21px;
 	-webkit-font-smoothing: antialiased;
+}
 
-	overflow-x: hidden;
+h1, h2, h3, h4, p {
+    margin: 0;
+    padding: 0.5em;
 }
 
 header {
@@ -20,13 +23,10 @@ header {
 	top: 0;
 	left: 0;
 	width: 100%;
-	padding: 50px 50px 120px 50px;
+    padding: 25px;
 
-  background: linear-gradient(to bottom, #efefef 60%, rgba(239, 239, 239, 0) 100%);
-  box-sizing: border-box;
-
-  line-height: 55px;
-	color: #006989;
+    box-sizing: border-box;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.4);
 
 	z-index: 2;
 }
@@ -38,41 +38,92 @@ header h1 {
 	font-size: 2rem;
 }
 
+header .stats {
+    font-size: 14px;
+    float: right;
+    line-height: 3rem;
+}
+
+section {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+
+    background-color: #232323;
+    background-size: cover;
+
+    color: #fff;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+
+    filter: grayscale(1.0);
+    opacity: 0.3;
+
+    transition: 1s filter linear, opacity 1s ease;
+}
+
+section.visible {
+    filter: none;
+    opacity: 1.0;
+}
+
 div.wrapper {
-  max-width: 800px;
-  margin: 0 auto;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
-header div.stats {
-	float: right;
+div.center {
+    position: relative;
+    top: 50%;
+
+    text-align: center;
+
+    transform: translate(0, -50%);
 }
 
-div.img {
-  background: #fff;
-  padding: 5px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  border-radius: 3px;
-  margin: 15px 0 35px 35px;
+div.image {
+    display: inline-block;
+    width: 150px;
+    height: 150px;
+    margin: 15px;
+
+    background: url('https://samherbert.net/svg-loaders/svg-loaders/puff.svg') center center no-repeat;
+
+    overflow: hidden;
 }
 
-div.img img {
-  width: 100%;
+div.image img {
+    width: 150px;
+    height: 150px;
+    opacity: 0.0;
+    transform: scale(0.1, 0.1);
+
+    border-radius: 50%;
+
+    transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-.block.visible {
-	transition: opacity 1.5s ease, transform 1.5s cubic-bezier(0.1, 1.03, 0.58, 1);
-	transform: translate(0, 0);
-	opacity: 1.0;
+div.image.visible {
+    background: none;
 }
 
-.block.invisible {
-	transition: opacity 1.5s ease, transform 1.5s cubic-bezier(0.1, 1.03, 0.58, 1);
-	/*transform: translate(-100%, 0);*/
-	opacity: 0.0;
+div.image.visible img {
+    opacity: 1.0;
+    transform: none;
 }
 
-.block:nth-child(even).invisible {
-	/*transform: translate(100%, 0);*/
+span[data-counter] {
+    display: inline-block;
+}
+
+section canvas {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #232323;
+}
+
+a {
+    color: #fff;
 }
 
 .clear {

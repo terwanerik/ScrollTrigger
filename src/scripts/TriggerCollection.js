@@ -1,6 +1,3 @@
-/**
- * Created by Erik on 09/07/2017.
- */
 import Trigger from './Trigger'
 import '../extensions/Array'
 

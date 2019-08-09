@@ -1,6 +1,3 @@
-/**
- * Created by Erik on 09/07/2017.
- */
 import DefaultOptions from '../config/DefaultOptions'
 import extend from 'object-extend'
 import '../extensions/Array'
@@ -41,7 +38,7 @@ export default class ScrollAnimationLoop {
 		if (typeof options != 'function') {
 			defaults.callback = () => {}
 
-      defaults = extend(defaults, options)
+            defaults = extend(defaults, options)
 		} else {
 			defaults.callback = options
 		}
@@ -75,14 +72,16 @@ export default class ScrollAnimationLoop {
 			if (newDirection !== this.direction) {
 				this.direction = newDirection
 
-        if (typeof this.directionChange === 'function') {
-          this.directionChange(this.direction)
-        }
+                if (typeof this.directionChange === 'function') {
+                    this.directionChange(this.direction)
+                }
 			}
 
 			this.position = newPosition
 			this.lastAction = this._getTimestamp()
-		}
+		} else {
+            this.direction = 'none'
+        }
 
 		if (!this.running) {
 			this._startRun()
@@ -96,9 +95,9 @@ export default class ScrollAnimationLoop {
 	_startRun() {
 		this.running = true
 
-    if (typeof this.startCallback === 'function') {
-      this.startCallback()
-    }
+        if (typeof this.startCallback === 'function') {
+            this.startCallback()
+        }
 
 		this._loop()
 	}
@@ -110,9 +109,9 @@ export default class ScrollAnimationLoop {
 	_stopRun() {
 		this.running = false
 
-    if (typeof this.stopCallback === 'function') {
-      this.stopCallback()
-    }
+        if (typeof this.stopCallback === 'function') {
+            this.stopCallback()
+        }
 	}
 
 	/**

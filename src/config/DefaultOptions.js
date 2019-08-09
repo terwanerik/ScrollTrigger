@@ -1,8 +1,4 @@
 /**
- * Created by Erik on 11/07/2017.
- */
-
-/**
  * Default options for ScrollTrigger
  */
 export default function() {
@@ -29,7 +25,7 @@ export default function() {
 	 *    },
 	 *  callback: {
 	 *    in: {TriggerInCallback},
-   *    visible: (function()),
+     *    visible: (function()),
 	 *    out: (function())
 	 *  }
 	 * }
@@ -60,12 +56,12 @@ export default function() {
 		}
 	}
 
-  /**
-   * The `in` callback is called when the element enters the viewport
-   * @callback TriggerInCallback
-   * @param {{x: Number, y: Number}} position
-   * @param {string} direction
-   */
+    /**
+     * The `in` callback is called when the element enters the viewport
+     * @callback TriggerInCallback
+     * @param {{x: Number, y: Number}} position
+     * @param {string} direction
+     */
 
 	/**
 	 * The default options for the scroll behaviour
@@ -89,10 +85,10 @@ export default function() {
 		directionChange: () => {}
 	}
 
-  /**
-   * The scroll callback is called when the user scrolls
-   * @callback ScrollCallback
-   * @param {{x: Number, y: Number}} position
-   * @param {string} direction
-   */
+    /**
+     * The scroll callback is called when the user scrolls
+     * @callback ScrollCallback
+     * @param {{x: Number, y: Number}} position
+     * @param {string} direction
+     */
 }
