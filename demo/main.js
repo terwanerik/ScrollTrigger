@@ -1,4 +1,6 @@
-import ScrollTrigger from './ScrollTrigger'
+import ScrollTrigger from '../src/ScrollTrigger'
+
+let scrollY = 0
 
 // Setup ScrollTrigger with default trigger options
 const scroll = new ScrollTrigger({
@@ -13,15 +15,28 @@ const scroll = new ScrollTrigger({
   scroll: {
       callback: (position, direction) => {
           const stats = document.querySelector('div.stats')
-
+          scrollY = position.y
           stats.innerHTML = `x: ${position.x}, y: ${position.y}, direction: ${direction}`
-      }
+      },
+      sustain: 800
   }
 })
 
 // Add all sections to the scroll trigger colllection
 scroll.add('section')
       .add('[data-lazy]', { once: true }) // add the lazy loaded image triggers to the collection with custom options
+
+scroll.query('section')[0].toggle.callback.in = function(){
+    console.log('in')
+}
+
+scroll.query('section')[0].toggle.callback.visible = function(){
+    console.log('visible')
+}
+
+scroll.query('section')[0].toggle.callback.out = function(){
+    console.log('out')
+}
 
 /**
  * Lazy loaded image triggers
@@ -88,7 +103,11 @@ let w = canvas.width = window.innerWidth,
     h = canvas.height = window.innerHeight,
     density = 1,
     i = 0,
+    targetI = 0,
     color = '#'+(Math.random()*0xFFFFFF<<0).toString(16)
+
+
+let lastScrollY = 0
 
 // Set the draw callback, it's already called by requestAnimationFrame, so no need for that
 canvasTriggers.forEach((trigger) => {
@@ -98,12 +117,20 @@ canvasTriggers.forEach((trigger) => {
         ctx.arc(w / 2, h / 2, i, 0, 2 * Math.PI)
         ctx.fill()
 
-        i += 20
+        let di = targetI - i
+        i += di * 0.1
+
+        if (scrollY !== lastScrollY) {
+            targetI += 20
+
+            lastScrollY = scrollY
+        }
 
         const max = Math.max(w, h)
 
         if (i > max) {
             i = 0
+            targetI = 0
             color = '#'+(Math.random()*0xFFFFFF<<0).toString(16)
         }
     }
@@ -113,7 +140,7 @@ canvasTriggers.forEach((trigger) => {
 function setup() {
   window.addEventListener('resize', resize)
 
-  density = window.devicePixelRatio != undefined ? window.devicePixelRatio : 1.0
+  density = window.devicePixelRatio !== undefined ? window.devicePixelRatio : 1.0
 
   canvas.width = w * density
   canvas.height = h * density

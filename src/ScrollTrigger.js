@@ -255,4 +255,21 @@ export default class ScrollTrigger {
 	search(element) {
 		return this.collection.search(element)
 	}
+
+	/**
+	 * Reattaches the scroll listener
+	 */
+	listen() {
+		if (this.loop) { return }
+
+		this._initLoop()
+	}
+
+	/**
+	 * Kills the scroll listener
+	 */
+	kill() {
+		this.loop.kill()
+		this.loop = null
+	}
 }

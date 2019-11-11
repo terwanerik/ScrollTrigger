@@ -50,7 +50,7 @@ export default function() {
 			},
 			callback: {
 				in: null,
-        visible: null,
+        		visible: null,
 				out: null
 			}
 		}

@@ -23,7 +23,8 @@ export default class ScrollAnimationLoop {
 
 		this._startRun()
 
-		this.element.addEventListener('scroll', this._didScroll.bind(this))
+		this._boundListener = this._didScroll.bind(this)
+		this.element.addEventListener('scroll', this._boundListener)
 	}
 
 	/**
@@ -172,6 +173,6 @@ export default class ScrollAnimationLoop {
 	 */
 	kill() {
 		this.running = false
-		this.element.removeEventListener('scroll', this._didScroll.bind(this))
+		this.element.removeEventListener('scroll', this._boundListener)
 	}
 }

@@ -46,26 +46,10 @@ export default class Trigger {
 		const parentFrame = { w: parentWidth, h: parentHeight }
 		const rect = this.getBounds()
 
-		let visible = false
+		const visible = this._checkVisibility(rect, parentFrame)
 
-		switch (direction) {
-			case 'none':
-			case 'bottom':
-			case 'right':
-				visible = this._checkToBottomVisibility(rect, parentFrame) && this._checkToRightVisibility(rect, parentFrame)
-
-				break
-			case 'top':
-			case 'left':
-				visible = this._checkToTopVisibility(rect, parentFrame) && this._checkToLeftVisibility(rect, parentFrame)
-
-				break
-			default:
-				break
-		}
-
-        if (visible !== this.visible) {
-        	this.visible = visible
+		if (visible !== this.visible) {
+			this.visible = visible
 
             const response = this._toggleCallback()
 
@@ -90,101 +74,100 @@ export default class Trigger {
 		return visible
 	}
 
-  /**
-   * Get the bounds of this element
-   * @return {ClientRect | DOMRect}
-   */
+	/**
+	 * Get the bounds of this element
+	 * @return {ClientRect | DOMRect}
+	 */
 	getBounds() {
         return this.element.getBoundingClientRect()
     }
 
 	/**
-	 * Checks the visibility when the user scrolls to the bottom
+	 * Get the calculated offset to place on the element
 	 * @param {ClientRect} rect
-	 * @param {{w:(number),h:(number)}} parent
-	 * @returns {boolean} If the element is visible
+	 * @returns {{x: number, y: number}}
 	 * @private
 	 */
-	_checkToBottomVisibility(rect, parent) {
-		let height = rect.bottom - rect.top
+	_getElementOffset(rect) {
+		let offset = { x: 0, y: 0 }
 
-		// Set the element offset
-		if (typeof this.offset.element.y === 'function') {
-			height -= height * this.offset.element.y()
-		} else if (isFloat(this.offset.element.y)) {
-			height -= height * this.offset.element.y
-		} else if (isInt(this.offset.element.y)) {
-			height -= this.offset.element.y
+		if (typeof this.offset.element.x === 'function') {
+			offset.x = rect.width * this.offset.element.x()
+		} else if (isFloat(this.offset.element.x)) {
+			offset.x = rect.width * this.offset.element.x
+		} else if (isInt(this.offset.element.x)) {
+			offset.x = this.offset.element.x
 		}
 
-		// Set the viewport offset
-		let offset = 0
+		if (typeof this.offset.element.y === 'function') {
+			offset.y = rect.height * this.offset.element.y()
+		} else if (isFloat(this.offset.element.y)) {
+			offset.y = rect.height * this.offset.element.y
+		} else if (isInt(this.offset.element.y)) {
+			offset.y = this.offset.element.y
+		}
+
+		return offset
+	}
+
+	/**
+	 * Get the calculated offset to place on the viewport
+	 * @param {{w: number, h: number}} parent
+	 * @returns {{x: number, y: number}}
+	 * @private
+	 */
+	_getViewportOffset(parent) {
+		let offset = { x: 0, y: 0 }
+
+		if (typeof this.offset.viewport.x === 'function') {
+			offset.x = parent.w * this.offset.viewport.x()
+		} else if (isFloat(this.offset.viewport.x)) {
+			offset.x = parent.w * this.offset.viewport.x
+		} else if (isInt(this.offset.viewport.x)) {
+			offset.x = this.offset.viewport.x
+		}
 
 		if (typeof this.offset.viewport.y === 'function') {
-			offset = parent.h * this.offset.viewport.y()
+			offset.y = parent.h * this.offset.viewport.y()
 		} else if (isFloat(this.offset.viewport.y)) {
-			offset = parent.h * this.offset.viewport.y
+			offset.y = parent.h * this.offset.viewport.y
 		} else if (isInt(this.offset.viewport.y)) {
-			offset = this.offset.viewport.y
+			offset.y = this.offset.viewport.y
 		}
 
-		return (rect.bottom > offset && rect.bottom < ((parent.h + height) - offset))
+		return offset
 	}
 
 	/**
-	 * Checks the visibility when the user scrolls to the top
+	 * Check the visibility of the trigger in the viewport, with offsets applied
 	 * @param {ClientRect} rect
-	 * @param {{w:(number),h:(number)}} parent
-	 * @returns {boolean} If the element is visible
+	 * @param {{w: number, h: number}} parent
+	 * @returns {boolean}
 	 * @private
 	 */
-	_checkToTopVisibility(rect, parent) {
-		return this._checkToBottomVisibility(rect, parent)
-	}
+    _checkVisibility(rect, parent) {
+		const elementOffset = this._getElementOffset(rect)
+		const viewportOffset = this._getViewportOffset(parent)
 
+		let visible = true
 
-	/**
-	 * Checks the visibility when the user scrolls to the right
-	 * @param {ClientRect} rect
-	 * @param {{w:(number),h:(number)}} parent
-	 * @returns {boolean} If the element is visible
-	 * @private
-	 */
-	_checkToRightVisibility(rect, parent) {
-		let width = rect.right - rect.left
-
-		// Set the element offset
-		if (typeof this.offset.element.x == 'function') {
-			width -= width * this.offset.element.x()
-		} else if (isFloat(this.offset.element.x)) {
-			width -= width * this.offset.element.x
-		} else if (isInt(this.offset.element.x)) {
-			width -= this.offset.element.x
+		if ((rect.x - viewportOffset.x) < -(rect.width - elementOffset.x)) {
+			visible = false
 		}
 
-		// Set the viewport offset
-		let offset = 0
-
-		if (typeof this.offset.viewport.x == 'function') {
-			offset = parent.w * this.offset.viewport.x()
-		} else if (isFloat(this.offset.viewport.x)) {
-			offset = parent.w * this.offset.viewport.x
-		} else if (isInt(this.offset.viewport.x)) {
-			offset = this.offset.viewport.x
+		if ((rect.x + viewportOffset.x) > (parent.w - elementOffset.x)) {
+			visible = false
 		}
 
-		return (rect.right > offset && rect.right < ((parent.w + width) - offset))
-	}
+		if ((rect.y - viewportOffset.y) < -(rect.height - elementOffset.y)) {
+			visible = false
+		}
 
-	/**
-	 * Checks the visibility when the user scrolls to the left
-	 * @param {ClientRect} rect
-	 * @param {{w:(number),h:(number)}} parent
-	 * @returns {boolean} If the element is visible
-	 * @private
-	 */
-	_checkToLeftVisibility(rect, parent) {
-		return this._checkToRightVisibility(rect, parent)
+		if ((rect.y + viewportOffset.y) > (parent.h - elementOffset.y)) {
+			visible = false
+		}
+
+		return visible
 	}
 
 	/**
@@ -225,8 +208,8 @@ export default class Trigger {
 
 	/**
 	 * Toggles the callback
-   * @private
-   * @return null|Promise
+	 * @private
+	 * @return null|Promise
 	 */
 	_toggleCallback() {
 		if (this.visible) {

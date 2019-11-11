@@ -1,32 +1,33 @@
 const webpack = require('webpack')
 const path = require('path')
-const htmlWebpackPlugin = require('html-webpack-plugin')
-const uglifyJsPlugin = webpack.optimize.UglifyJsPlugin
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin
 const libraryName = 'ScrollTrigger'
 
-var plugins = []
-var outputFile = libraryName + '.js'
+let plugins = []
+let outputFile = libraryName + '.js'
 
 const dev = process.env.NODE_ENV !== 'production'
+const demo = process.env.NODE_ENV === 'demo'
 
 if (!dev) {
-	plugins.push(new uglifyJsPlugin({ minimize: true }))
+	plugins.push(new UglifyJsPlugin({ minimize: true }))
 
 	outputFile = libraryName + '.min.js'
 } else {
-	plugins.push(new htmlWebpackPlugin({
-		inject: "body",
-		template: 'src/index.html'
+	plugins.push(new HtmlWebpackPlugin({
+		inject: 'body',
+		template: demo ? 'demo/index.html' : 'dev/index.html'
 	}))
 
 	outputFile = libraryName + '.js?[hash]'
 }
 
 module.exports = {
-  entry: dev ? __dirname + '/src/main.js' : __dirname + '/src/ScrollTrigger.js',
+  entry: dev ? __dirname + (demo ? '/demo/main.js' : '/dev/main.js') : __dirname + '/src/ScrollTrigger.js',
 	devtool: 'source-map',
 	output: {
-		path: __dirname + '/lib',
+		path: __dirname + '/dist',
 		filename: outputFile,
 		library: libraryName,
 		libraryTarget: 'umd',
@@ -50,7 +51,7 @@ module.exports = {
 		}
 	},
 	devServer: {
-		contentBase: 'src',
+		contentBase: demo ? 'demo' : 'dev',
 		host: '127.0.0.1',
 		port: 8010
 	}
