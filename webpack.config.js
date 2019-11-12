@@ -27,7 +27,7 @@ module.exports = {
   entry: dev ? __dirname + (demo ? '/demo/main.js' : '/dev/main.js') : __dirname + '/src/ScrollTrigger.js',
 	devtool: 'source-map',
 	output: {
-		path: __dirname + '/dist',
+		path: demo ? __dirname + '/public' : __dirname + '/dist',
 		filename: outputFile,
 		library: libraryName,
 		libraryTarget: 'umd',

@@ -1,161 +1,219 @@
-import ScrollTrigger from '../src/ScrollTrigger'
+import ScrollTrigger, { Trigger } from '../src/ScrollTrigger'
+import Canvas from './Canvas'
 
-let scrollY = 0
+((document, window) => {
+    // This is where the magic happens, start by initializing a ScrollTrigger
+    // instance. We can set default options for all triggers in the constructor.
+    //
+    // We set some default 'trigger' options, and add a custom callback for
+    // the didScroll method. Also we set the scroll sustain to 800ms.
+    const trigger = new ScrollTrigger({
+        // Set custom (default) options for the triggers, these can be overwritten
+        // when adding new triggers to the ScrollTrigger instance. If you pass
+        // options when adding new triggers, you'll only need to pass the object
+        // `trigger`, e.g. { once: false }
+        trigger: {
+            // If the trigger should just work one time
+            once: false,
+            offset: {
+                // Set an offset based on the elements position, returning an
+                // integer = offset in px, float = offset in percentage of either
+                // width (when setting the x offset) or height (when setting y)
+                //
+                // So setting an yOffset of 0.2 means 20% of the elements height,
+                // the callback / class will be toggled when the element is 20%
+                // in the viewport.
+                element: {
+                    x: 0,
+                    y: (trigger, rect, direction) => {
+                        // You can add custom offsets according to callbacks, you
+                        // get passed the trigger, rect (DOMRect) and the scroll
+                        // direction, a string of either top, left, right or
+                        // bottom.
+                        return 0.2
+                    }
+                },
+                // Setting an offset of 0.2 on the viewport means the trigger
+                // will be called when the element is 20% in the viewport. So if
+                // your screen is 1200x600px, the trigger will be called when the
+                // user has scrolled for 120px.
+                viewport: {
+                    x: 0,
+                    y: (trigger, frame, direction) => {
+                        // We check if the trigger is visible, if so, the offset
+                        // on the viewport is 0, otherwise it's 20% of the height
+                        // of the viewport. This causes the triggers to animate
+                        // 'on screen' when the element is in the viewport, but
+                        // don't trigger the 'out' class until the element is out
+                        // of the viewport.
 
-// Setup ScrollTrigger with default trigger options
-const scroll = new ScrollTrigger({
-  trigger: {
-    once: false,
-    offset: {
-        viewport: {
-            y: 0.5
+                        // This is the same as returning Math.ceil(0.2 * frame.h)
+                        return trigger.visible ? 0 : 0.2
+                    }
+                }
+            },
+            toggle: {
+                // The class(es) that should be toggled
+                class: {
+                    in: 'visible', // Either a string, or an array of strings
+                    out: ['invisible', 'extraClassToToggleWhenHidden']
+                },
+                callback: {
+                    // A callback when the element is going in the viewport, you can
+                    // return a Promise here, the trigger will not be called until
+                    // the promise resolves.
+                    in: null,
+                    // A callback when the element is visible on screen, keeps
+                    // on triggering for as long as 'sustain' is set
+                    visible: null,
+                    // A callback when the element is going out of the viewport.
+                    // You can also return a promise here, like in the 'in' callback.
+                    //
+                    // Here an example where all triggers take 10ms to trigger
+                    // the 'out' class.
+                    out: (trigger) => {
+                        // `trigger` contains the Trigger object that goes out
+                        // of the viewport
+                        return new Promise((resolve, reject) => {
+                            setTimeout(resolve, 10)
+                        })
+                    }
+                }
+            },
+        },
+        // Set custom options and callbacks for the ScrollAnimationLoop
+        scroll: {
+            // The amount of ms the scroll loop should keep triggering after the
+            // scrolling has stopped. This is sometimes nice for canvas
+            // animations.
+            sustain: 200,
+            // Window|HTMLDocument|HTMLElement to check for scroll events
+            element: window,
+            // Add a callback when the user has scrolled, keeps on triggering for
+            // as long as the sustain is set to do
+            callback: didScroll,
+            // Callback when the user started scrolling
+            start: () => {},
+            // Callback when the user stopped scrolling
+            stop: () => {},
+            // Callback when the user changes direction in scrolling
+            directionChange: () => {}
         }
+    })
+
+    const canvasElement = document.querySelector('canvas'),
+                    ctx = canvasElement.getContext('2d')
+
+    let w = canvasElement.width = window.innerWidth,
+        h = canvasElement.height = window.innerHeight,
+        density = 1, isDrawing = true
+
+    const canvas = new Canvas(ctx, w, h)
+
+    function setup() {
+        // Add the triggers
+        addTriggers()
+
+        // Basic canvas setup
+        window.addEventListener('resize', resize)
+
+        density = window.devicePixelRatio != undefined ? window.devicePixelRatio : 1.0
+
+        canvasElement.width = w * density
+        canvasElement.height = h * density
+
+        canvas.width = w
+        canvas.height = h
+
+        ctx.scale(density,density)
+
+        draw()
     }
-  },
-  scroll: {
-      callback: (position, direction) => {
-          const stats = document.querySelector('div.stats')
-          scrollY = position.y
-          stats.innerHTML = `x: ${position.x}, y: ${position.y}, direction: ${direction}`
-      },
-      sustain: 800
-  }
-})
 
-// Add all sections to the scroll trigger colllection
-scroll.add('section')
-      .add('[data-lazy]', { once: true }) // add the lazy loaded image triggers to the collection with custom options
+    function addTriggers() {
+        // Adding triggers can be done in multiple ways, the easiest is to pass
+        // a querySelector.
+        trigger.add('[data-slideInLeft]')
+               .add('[data-slideInRight]')
+               .add('[data-slideInBottom]')
 
-scroll.query('section')[0].toggle.callback.in = function(){
-    console.log('in')
-}
-
-scroll.query('section')[0].toggle.callback.visible = function(){
-    console.log('visible')
-}
-
-scroll.query('section')[0].toggle.callback.out = function(){
-    console.log('out')
-}
-
-/**
- * Lazy loaded image triggers
- */
-const lazyTriggers = scroll.query('[data-lazy]')
-
-lazyTriggers.forEach((trigger) => {
-	trigger.toggle.callback.in = function(trigger) {
-        return new Promise((resolve, reject) => {
-            // the image url is set in the data-lazy attribute
-            const url = this.getAttribute('data-lazy')
-
-            if (!url) { return resolve() }
-
-            // create the image element
-            const img = document.createElement('img')
-            img.src = url
-
-            img.addEventListener('load', _ => {
-                // resolve the promise (that triggers the class) after a 200ms timeout
-                setTimeout(resolve, 200)
-            })
-
-            img.addEventListener('error', _ => {
-              reject()
-            })
-
-            // add the image element
-            this.appendChild(img)
-            this.removeAttribute('data-lazy')
-
-            // remove the callback when the image is loaded
-            trigger.toggle.callback.in = null
+        // Add the trigger for the callback example, also add a custom callback
+        // when the trigger becomes visible. As an example we pass an HTMLElement
+        // instead of a querySelector.
+        const element = document.querySelector('[data-callback]')
+        trigger.add(element, {
+            toggle: {
+                callback: {
+                    in: counterCallback
+                }
+            }
         })
     }
-})
 
-/**
- * Counter triggers
- */
-const counterTriggers = scroll.query('[data-counter]')
+    function counterCallback(trigger) {
+        // In the callback we get passed the Trigger object, from here we have
+        // access to the responding HTMLElement among other things. You could,
+        // for instance, change the class it toggles, or attach another callback.
+        // Check the console for more info.
+        console.info(trigger)
 
-counterTriggers.forEach((trigger) => {
-	trigger.toggle.callback.in = function(trigger) {
-        // grab the current count
-        const count = parseInt(this.getAttribute('data-counter')) + 1
+        // For now, we just append the counter
+        const counterElement = trigger.element.querySelector('span')
+        const counter = parseInt(counterElement.innerText)
 
-        // update the counter
-        this.setAttribute('data-counter', count)
-        this.querySelector('.count').innerHTML = count === 1 ? '1 time' : `${count} times`
+        counterElement.innerText = counter + 1
     }
-})
 
-/**
- * Canvas triggers
- */
-const canvasTriggers = scroll.query('[data-canvas]')
+    function didScroll(position) {
+        // calculate the delta, from 0 to 1 (when having 1 screen height) to
+        // animate with
+        const delta = (position.y / window.innerHeight)
 
-// Default canvas setup
-const canvas = document.querySelector('canvas'),
-                ctx = canvas.getContext('2d')
+        canvas.scrollDelta = delta
 
-let w = canvas.width = window.innerWidth,
-    h = canvas.height = window.innerHeight,
-    density = 1,
-    i = 0,
-    targetI = 0,
-    color = '#'+(Math.random()*0xFFFFFF<<0).toString(16)
+        // change the backgroundColor accordingly
+        // const lightness = map(delta, 0, 1, 5, 76)
+        // const saturation = map(delta, 0, 1, 84, 0)
 
+        // document.body.style.backgroundColor = `hsl(186, ${saturation}%, ${lightness}%)`
 
-let lastScrollY = 0
+        // check if the canvas is on-screen, otherwise stop the animationLoop.
+        if (position.y > window.innerHeight) {
+            isDrawing = false
+        } else if (!isDrawing) {
+            isDrawing = true
 
-// Set the draw callback, it's already called by requestAnimationFrame, so no need for that
-canvasTriggers.forEach((trigger) => {
-	trigger.toggle.callback.visible = function(trigger) {
-        ctx.fillStyle = color
-        ctx.beginPath()
-        ctx.arc(w / 2, h / 2, i, 0, 2 * Math.PI)
-        ctx.fill()
-
-        let di = targetI - i
-        i += di * 0.1
-
-        if (scrollY !== lastScrollY) {
-            targetI += 20
-
-            lastScrollY = scrollY
-        }
-
-        const max = Math.max(w, h)
-
-        if (i > max) {
-            i = 0
-            targetI = 0
-            color = '#'+(Math.random()*0xFFFFFF<<0).toString(16)
+            draw()
         }
     }
-})
 
-// simple resize / retina solution
-function setup() {
-  window.addEventListener('resize', resize)
+    function map(value, start1, stop1, start2, stop2) {
+        return (value - start1) / (stop1 - start1) * (stop2 - start2) + start2
+    }
 
-  density = window.devicePixelRatio !== undefined ? window.devicePixelRatio : 1.0
+    function draw() {
+        canvas.update()
+        canvas.draw()
 
-  canvas.width = w * density
-  canvas.height = h * density
+        if (isDrawing) {
+            window.requestAnimationFrame(draw)
+        }
+    }
 
-  ctx.scale(density,density)
-}
+    function resize() {
+        w = canvasElement.width = window.innerWidth
+        h = canvasElement.height = window.innerHeight
 
-function resize() {
-  w = canvas.width = window.innerWidth
-  h = canvas.height = window.innerHeight
+        canvasElement.width = w * density
+        canvasElement.height = h * density
 
-  canvas.width = w * density
-  canvas.height = h * density
+        canvas.width = w
+        canvas.height = h
 
-  ctx.scale(density, density)
-}
+        ctx.scale(density, density)
 
-setup()
+        canvas.didResize()
+    }
+
+    setup()
+})(document, window)

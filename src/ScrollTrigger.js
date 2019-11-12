@@ -14,12 +14,16 @@
  * Created by Erik on 09/07/2017.
  */
 import DefaultOptions from './config/DefaultOptions'
-import Trigger from './scripts/Trigger'
-import TriggerCollection from './scripts/TriggerCollection'
-import ScrollAnimationLoop from './scripts/ScrollAnimationLoop'
+import _Trigger from './scripts/Trigger'
+import _TriggerCollection from './scripts/TriggerCollection'
+import _ScrollAnimationLoop from './scripts/ScrollAnimationLoop'
 
 import extend from 'object-extend'
 import './extensions/Array'
+
+export const Trigger = _Trigger
+export const TriggerCollection = _TriggerCollection
+export const ScrollAnimationLoop = _ScrollAnimationLoop
 
 export default class ScrollTrigger {
 	/**

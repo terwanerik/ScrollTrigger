@@ -46,7 +46,7 @@ export default class Trigger {
 		const parentFrame = { w: parentWidth, h: parentHeight }
 		const rect = this.getBounds()
 
-		const visible = this._checkVisibility(rect, parentFrame)
+		const visible = this._checkVisibility(rect, parentFrame, direction)
 
 		if (visible !== this.visible) {
 			this.visible = visible
@@ -85,14 +85,15 @@ export default class Trigger {
 	/**
 	 * Get the calculated offset to place on the element
 	 * @param {ClientRect} rect
+	 * @param {string} direction top, bottom, left, right
 	 * @returns {{x: number, y: number}}
 	 * @private
 	 */
-	_getElementOffset(rect) {
+	_getElementOffset(rect, direction) {
 		let offset = { x: 0, y: 0 }
 
 		if (typeof this.offset.element.x === 'function') {
-			offset.x = rect.width * this.offset.element.x()
+			offset.x = rect.width * this.offset.element.x(this, rect, direction)
 		} else if (isFloat(this.offset.element.x)) {
 			offset.x = rect.width * this.offset.element.x
 		} else if (isInt(this.offset.element.x)) {
@@ -100,7 +101,7 @@ export default class Trigger {
 		}
 
 		if (typeof this.offset.element.y === 'function') {
-			offset.y = rect.height * this.offset.element.y()
+			offset.y = rect.height * this.offset.element.y(this, rect, direction)
 		} else if (isFloat(this.offset.element.y)) {
 			offset.y = rect.height * this.offset.element.y
 		} else if (isInt(this.offset.element.y)) {
@@ -113,14 +114,15 @@ export default class Trigger {
 	/**
 	 * Get the calculated offset to place on the viewport
 	 * @param {{w: number, h: number}} parent
+	 * @param {string} direction top, bottom, left, right
 	 * @returns {{x: number, y: number}}
 	 * @private
 	 */
-	_getViewportOffset(parent) {
+	_getViewportOffset(parent, direction) {
 		let offset = { x: 0, y: 0 }
 
 		if (typeof this.offset.viewport.x === 'function') {
-			offset.x = parent.w * this.offset.viewport.x()
+			offset.x = parent.w * this.offset.viewport.x(this, parent, direction)
 		} else if (isFloat(this.offset.viewport.x)) {
 			offset.x = parent.w * this.offset.viewport.x
 		} else if (isInt(this.offset.viewport.x)) {
@@ -128,7 +130,7 @@ export default class Trigger {
 		}
 
 		if (typeof this.offset.viewport.y === 'function') {
-			offset.y = parent.h * this.offset.viewport.y()
+			offset.y = parent.h * this.offset.viewport.y(this, parent, direction)
 		} else if (isFloat(this.offset.viewport.y)) {
 			offset.y = parent.h * this.offset.viewport.y
 		} else if (isInt(this.offset.viewport.y)) {
@@ -142,12 +144,13 @@ export default class Trigger {
 	 * Check the visibility of the trigger in the viewport, with offsets applied
 	 * @param {ClientRect} rect
 	 * @param {{w: number, h: number}} parent
+	 * @param {string} direction top, bottom, left, right
 	 * @returns {boolean}
 	 * @private
 	 */
-    _checkVisibility(rect, parent) {
-		const elementOffset = this._getElementOffset(rect)
-		const viewportOffset = this._getViewportOffset(parent)
+    _checkVisibility(rect, parent, direction) {
+		const elementOffset = this._getElementOffset(rect, direction)
+		const viewportOffset = this._getViewportOffset(parent, direction)
 
 		let visible = true
 
@@ -180,30 +183,36 @@ export default class Trigger {
 				this.toggle.class.in.each((className) => {
 					this.element.classList.add(className)
 				})
+			} else {
+                this.element.classList.add(this.toggle.class.in)
+            }
 
-				this.toggle.class.out.each((className) => {
-					this.element.classList.remove(className)
-				})
-			}
+            if (Array.isArray(this.toggle.class.out)) {
+                this.toggle.class.out.each((className) => {
+                    this.element.classList.remove(className)
+                })
+            } else {
+                this.element.classList.remove(this.toggle.class.out)
+            }
 
-			this.element.classList.remove(this.toggle.class.out)
-
-			return this.element.classList.add(this.toggle.class.in)
+            return
 		}
 
-		if (Array.isArray(this.toggle.class.out)) {
+		if (Array.isArray(this.toggle.class.in)) {
 			this.toggle.class.in.each((className) => {
 				this.element.classList.remove(className)
 			})
+		} else {
+            this.element.classList.remove(this.toggle.class.in)
+        }
 
+		if (Array.isArray(this.toggle.class.out)) {
 			this.toggle.class.out.each((className) => {
 				this.element.classList.add(className)
 			})
-		}
-
-		this.element.classList.remove(this.toggle.class.in)
-
-		return this.element.classList.add(this.toggle.class.out)
+		} else {
+            this.element.classList.add(this.toggle.class.out)
+        }
 	}
 
 	/**

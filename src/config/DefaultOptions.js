@@ -10,12 +10,12 @@ export default function() {
 	 *  once: boolean,
 	 *  offset: {
 	 *    viewport: {
-	 *      x: number|(function()),
-	 *      y: number|(function())
+	 *      x: number|(function(frame, direction)),
+	 *      y: number|(function(frame, direction))
 	 *    },
 	 *    element: {
-	 *      x: number|(function()),
-	 *      y: number|(function())
+	 *      x: number|(function(rect, direction)),
+	 *      y: number|(function(rect, direction))
 	 *    }
 	 *  },
 	 *  toggle: {

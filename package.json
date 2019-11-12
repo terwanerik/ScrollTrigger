@@ -26,6 +26,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
     "demo": "cross-env NODE_ENV=demo webpack-dev-server --open --hot",
+    "build-demo": "cross-env NODE_ENV=demo webpack",
     "build": "cross-env NODE_ENV=production webpack"
   },
   "engines": {
