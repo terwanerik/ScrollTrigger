@@ -15,6 +15,7 @@ jobs:
         run: |
           npm ci
           npm run build-demo
+          cp demo/demo.css ./public/demo.css
         env:
           CI: true
       - name: Deploy
@@ -22,4 +23,4 @@ jobs:
         env:
           ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           PUBLISH_BRANCH: gh-pages
-          PUBLISH_DIR: ./demo
+          PUBLISH_DIR: ./public
