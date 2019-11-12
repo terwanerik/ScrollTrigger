@@ -3,7 +3,7 @@
 [![Issues](https://img.shields.io/github/issues/terwanerik/ScrollTrigger.svg)](https://github.com/terwanerik/ScrollTrigger/issues)
 [![GitHub release](https://img.shields.io/github/release/terwanerik/ScrollTrigger.svg?maxAge=2592000)]()
 [![Bower](https://img.shields.io/bower/v/ScrollTrigger.svg?maxAge=2592000)]()
-[![npm version](https://badge.fury.io/js/scrolltrigger-classes.svg)](https://www.npmjs.com/package/scrolltrigger-classes)
+[![npm version](https://badge.fury.io/js/@terwanerik/scrolltrigger.svg)](https://www.npmjs.com/package/@terwanerik/scrolltrigger)
 
 Let your page react to scroll changes.
 
