@@ -1,57 +1,73 @@
 const webpack = require('webpack')
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin
+const UnminifiedWebpackPlugin = require('unminified-webpack-plugin')
+
 const libraryName = 'ScrollTrigger'
 
-let plugins = []
-let outputFile = libraryName + '.js'
+let plugins = [new UnminifiedWebpackPlugin()]
+let mode = 'development'
+let entry = __dirname + '/src/ScrollTrigger.js'
+let outputFile = libraryName + '.js?[hash]'
+let outputPath = __dirname + '/dist'
+let contentBase = 'dev'
 
-const dev = process.env.NODE_ENV !== 'production'
-const demo = process.env.NODE_ENV === 'demo'
+switch (process.env.NODE_ENV) {
+    case 'demo':
+        entry = __dirname + '/demo/main.js'
+        outputPath = __dirname + '/public'
+        contentBase = 'demo'
 
-if (!dev) {
-	plugins.push(new UglifyJsPlugin({ minimize: true }))
+        plugins.push(new HtmlWebpackPlugin({
+            inject: 'body',
+            template: 'demo/index.html'
+        }))
 
-	outputFile = libraryName + '.min.js'
-} else {
-	plugins.push(new HtmlWebpackPlugin({
-		inject: 'body',
-		template: demo ? 'demo/index.html' : 'dev/index.html'
-	}))
+        break
+    case 'development':
+        entry = __dirname + '/dev/main.js'
 
-	outputFile = libraryName + '.js?[hash]'
+        plugins.push(new HtmlWebpackPlugin({
+            inject: 'body',
+            template: 'dev/index.html'
+        }))
+
+        break
+    default:
+        outputFile = libraryName + '.min.js'
+        mode = 'production'
+
+        break
 }
 
 module.exports = {
-  entry: dev ? __dirname + (demo ? '/demo/main.js' : '/dev/main.js') : __dirname + '/src/ScrollTrigger.js',
+    entry: entry,
+    mode: mode,
 	devtool: 'source-map',
 	output: {
-		path: demo ? __dirname + '/public' : __dirname + '/dist',
-		filename: outputFile,
+        path: outputPath,
+        filename: outputFile,
 		library: libraryName,
 		libraryTarget: 'umd',
 		umdNamedDefine: true
 	},
-	plugins: plugins,
-	module: {
-		loaders: [
-			{
-				test: /\.js$/,
-				loader: 'babel-loader',
-				exclude: /node_modules/
-			}
-		]
-	},
-	resolve: {
-		modules: [__dirname, 'node_modules'],
-		extensions: ['.js'],
-		alias: {
-			'~': path.resolve(__dirname, 'src')
-		}
-	},
+    plugins: plugins,
+    module: {
+        rules: [
+            {
+                test: /\.m?js$/,
+                exclude: /(node_modules|bower_components)/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env']
+                    }
+                }
+            }
+        ]
+    },
 	devServer: {
-		contentBase: demo ? 'demo' : 'dev',
+		contentBase: contentBase,
 		host: '127.0.0.1',
 		port: 8010
 	}

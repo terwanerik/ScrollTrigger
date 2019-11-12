@@ -1,6 +1,6 @@
 {
   "name": "@terwanerik/scrolltrigger",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Triggers classes on html elements based on the scroll position. It makes use of requestAnimationFrame so it doesn't jack the users scroll, that way the user / browser keeps their original scroll behaviour. Animations run when the browser is ready for it.",
   "main": "lib/ScrollTrigger.js",
   "directories": {
@@ -36,13 +36,15 @@
     "object-extend": "^0.5.0"
   },
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-loader": "^6.4.1",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-plugin-add-module-exports": "^0.3.3",
+    "@babel/core": "^7.7.2",
+    "@babel/preset-env": "^7.7.1",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-add-module-exports": "^1.0.2",
     "cross-env": "^5.2.1",
-    "html-webpack-plugin": "^2.30.1",
-    "webpack": "^2.7.0",
-    "webpack-dev-server": "^2.11.5"
+    "html-webpack-plugin": "^3.2.0",
+    "unminified-webpack-plugin": "^2.0.0",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0"
   }
 }
