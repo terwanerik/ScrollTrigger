@@ -1,4 +1,4 @@
-import Point from './Point'
+import Point from './point'
 
 const AMOUNT_DELTA = 2.4
 const CONNECT_DISTANCE = 260

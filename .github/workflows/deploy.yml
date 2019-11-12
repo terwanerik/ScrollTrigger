@@ -1,6 +1,5 @@
 name: Deploy
 
-
 on:
   push:
     branches:

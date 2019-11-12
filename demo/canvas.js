@@ -1,4 +1,4 @@
-import Scene from './Scene'
+import Scene from './scene'
 
 const FRAME_RATE = 60
 const FRAME_RATE_SECONDS = 1000 / FRAME_RATE
