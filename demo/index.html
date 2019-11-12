@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>ScrollTrigger - Let your page react to scroll changes</title>
+
+  <link rel="stylesheet" href="demo.css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <canvas></canvas>
+
+    <div class="MouseScroll">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" version="1.1">
+            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                <g fill="rgba(160, 187, 189, 0.8)">
+                    <path d="M40,41.0074017 L40,41.0074017 L40,58.9925983 C40,64.5218355 44.4762336,69 50,69 C55.5234877,69 60,64.5203508 60,58.9925983 L60,41.0074017 C60,35.4781645 55.5237664,31 50,31 C44.4765123,31 40,35.4796492 40,41.0074017 L40,41.0074017 Z M38,41.0074017 C38,34.3758969 43.3711258,29 50,29 C56.627417,29 62,34.3726755 62,41.0074017 L62,58.9925983 C62,65.6241031 56.6288742,71 50,71 C43.372583,71 38,65.6273245 38,58.9925983 L38,41.0074017 L38,41.0074017 Z"></path>
+                    <path d="M49,36 L49,40 C49,40.5522847 49.4477153,41 50,41 C50.5522847,41 51,40.5522847 51,40 L51,36 C51,35.4477153 50.5522847,35 50,35 C49.4477153,35 49,35.4477153 49,36 L49,36 Z"></path>
+                    <path d="M50,81.9929939 L55.4998372,76.4931567 C55.8903615,76.1026324 56.5235265,76.1026324 56.9140508,76.4931567 C57.3045751,76.883681 57.3045751,77.516846 56.9140508,77.9073703 L50.7071068,84.1143143 C50.5118446,84.3095764 50.2559223,84.4072075 50,84.4072075 C49.7440777,84.4072075 49.4881554,84.3095764 49.2928932,84.1143143 L43.038379,77.8598002 C42.6478547,77.4692759 42.6478547,76.8361109 43.038379,76.4455866 C43.4289033,76.0550623 44.0620683,76.0550623 44.4525926,76.4455866 L50,81.9929939 Z" class="MouseScroll--chevron"></path>
+                </g>
+            </g>
+        </svg>
+    </div>
+
+    <section class="Intro CenterAlign">
+        <div class="Wrapper">
+            <h1>ScrollTrigger</h1>
+            <h2>Let your page react to scroll changes</h2>
+        </div>
+    </section>
+    <section class="About">
+        <div class="Wrapper">
+            <h3 data-slideInLeft>
+                Trigger classes based on scroll position
+            </h3>
+            <p data-slideInRight>
+                The most basic usage of ScrollTrigger is to trigger classes based
+                on the current scroll position. E.g. when an element enters the
+                viewport, fade it in. You can add custom offsets per element, or
+                set offsets on the viewport (e.g. always trigger after the
+                element reaches 20% of the viewport)
+            </p>
+
+            <h3 data-slideInLeft>
+                Execute callbacks on entering / leaving the viewport
+            </h3>
+            <p data-slideInRight>
+                When using the callbacks ScrollTrigger becomes really powerfull.
+                You can run custom code when an element enters / becomes visible,
+                and even return Promises to halt the trigger if the callback
+                fails. This makes lazy loading images very easy.
+            </p>
+            <p></p>
+            <div data-callback data-slideInBottom class="CenterAlign">
+                You've scrolled passed this block <span>0</span> times.
+            </div>
+        </div>
+    </section>
+    <section class="Examples">
+        <div class="Wrapper">
+            <h3 data-slideInBottom>Show me some code!</h3>
+            <p data-slideInBottom>
+                The easiest way to start is to create a new instance and add some
+                triggers to it, with all default values. This will toggle the 'visible'
+                class when the element comes into the viewport, and toggles the 'invisible'
+                class when it scrolls out of the viewport.
+            </p>
+
+            <code data-slideInBottom>
+                <span>// Create a new ScrollTrigger instance with default options</span><br />
+                const trigger = new ScrollTrigger()<br />
+                <span>// Add all html elements with attribute data-trigger</span><br />
+                trigger.add('[data-trigger]')<br />
+                <br />
+                <span>// Now in your CSS add the following classes, this
+                    fades the [data-trigger] elements in and out</span><br />
+
+                .visible, .invisible {<br />
+                    &nbsp;&nbsp;opacity: 0.0;<br />
+                    &nbsp;&nbsp;transition: opacity 0.5s ease;<br />
+                }<br />
+
+                .visible {<br />
+                    &nbsp;&nbsp;opacity: 1.0;<br />
+                }
+            </code>
+
+            <h3 data-slideInBottom>Now let's add some callbacks and custom classes</h3>
+            <p data-slideInBottom>
+                Adding callbacks / different classes can be done globally, this
+                becomes the default for all triggers you add, or you can specify
+                custom configuration when adding a trigger.
+            </p>
+
+            <code data-slideInBottom>
+                <span>// Create a new ScrollTrigger instance with some custom options</span><br />
+                const trigger = new ScrollTrigger({<br />
+                &nbsp;&nbsp;trigger: {<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;once: true<br />
+                &nbsp;&nbsp;}<br />
+                })<br />
+                <span>// Add all html elements with attribute data-trigger, these elements will only be triggered once</span><br />
+                trigger.add('[data-trigger]')<br />
+
+                <span>// Add all html elements with attribute data-triggerAlways, these elements will always be triggered</span><br />
+                trigger.add('[data-triggerAlways]', { once: false })<br />
+            </code>
+
+            <p></p>
+
+            <p data-slideInBottom>
+                For more examples, checkout the <span>/demo</span> directory on
+                <a href="https://github.com/terwanerik/ScrollTrigger/tree/master/demo">GitHub</a>.
+            </p>
+        </div>
+    </section>
+    <section class="MoreInformation CenterAlign">
+        <div class="Wrapper">
+            <h2>More information?</h2>
+            <h3><a href="https://github.com/terwanerik/ScrollTrigger">Visit GitHub!</a></h3>
+        </div>
+    </section>
+</body>
+</html>

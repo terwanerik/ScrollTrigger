@@ -1,6 +1,6 @@
 {
   "name": "ScrollTrigger",
-  "main": "ScrollTrigger.js",
+  "main": "dist/ScrollTrigger.js",
   "homepage": "https://github.com/terwanerik/ScrollTrigger",
   "authors": [
     "Erik Terwan"
@@ -17,8 +17,6 @@
   "ignore": [
     "**/.*",
     "node_modules",
-    "bower_components",
-    "test",
-    "tests"
+    "bower_components"
   ]
 }

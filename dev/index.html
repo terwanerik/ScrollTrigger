@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>ScrollTrigger</title>
+
+    <style>
+        div.Wrapper {
+            width: 250vw;
+            height: 250vw;
+        }
+
+        div.Block {
+            float: left;
+            width: 25vw;
+            height: 25vw;
+            margin: 100vw;
+            background-color: tomato;
+
+            transition: background-color 0.8s ease;
+        }
+
+        div.Block.visible {
+            background-color: chartreuse;
+        }
+    </style>
+</head>
+<body>
+<div class="Wrapper">
+    <div class="Block"></div>
+</div>
+</body>
+</html>

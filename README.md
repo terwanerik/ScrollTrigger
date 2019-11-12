@@ -4,164 +4,252 @@
 [![GitHub release](https://img.shields.io/github/release/terwanerik/ScrollTrigger.svg?maxAge=2592000)]()
 [![Bower](https://img.shields.io/bower/v/ScrollTrigger.svg?maxAge=2592000)]()
 [![npm version](https://badge.fury.io/js/scrolltrigger-classes.svg)](https://www.npmjs.com/package/scrolltrigger-classes)
-[![Package Quality](http://npm.packagequality.com/shield/scrolltrigger-classes.svg)](http://packagequality.com/#?package=scrolltrigger-classes)
 
-Triggers classes on html elements based on the scroll position. It makes use of requestAnimationFrame so it doesn't jack the users scroll, that way the user / browser keeps their original scroll behaviour. Animations run when the browser is ready for it.
+Let your page react to scroll changes.
 
-## Install
+The most basic usage of ScrollTrigger is to trigger classes based on the current scroll position. E.g. when an element enters the viewport, fade it in. You can add custom offsets per element, or set offsets on the viewport (e.g. always trigger after the element reaches 20% of the viewport)
 
-`npm install scrolltrigger-classes --save`
+When using the callbacks ScrollTrigger becomes really powerfull. You can run custom code when an element enters / becomes visible, and even return Promises to halt the trigger if the callback fails. This makes lazy loading images very easy.
+
+## Installation
+`npm install @terwanerik/scrolltrigger` or just add the `dist/ScrollTrigger.min.js` file to your project and import that.
 
 ## How to use?
-It's quite simple, just add the `ScrollTrigger.min.js` file to your HTML page. Then construct a new ScrollTrigger instance when the page has loaded. Like so:
+The easiest way to start is to create a new instance and add some triggers to it, with all default values. This will toggle the 'visible' class when the element comes into the viewport, and toggles the 'invisible' class when it scrolls out of the viewport.
 
-```html
-<script src="ScrollTrigger.min.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function(){
-  var trigger = new ScrollTrigger();
-});
-</script>
-```
+```javascript
+// when using ES6 import / npm
+import ScrollTrigger from '@terwanerik/scrolltrigger'
+// Create a new ScrollTrigger instance with default options
+const trigger = new ScrollTrigger()
+// Add all html elements with attribute data-trigger
+trigger.add('[data-trigger]')
 
-That's how simple it can be. A more advanced example would be:
-
-```js
-document.addEventListener('DOMContentLoaded', function(){
-  var trigger = new ScrollTrigger({
-    toggle: {
-      visible: 'visibleClass',
-      hidden: 'hiddenClass'
-    },
-    offset: {
-      x: 0,
-      y: 20
-    },
-    addHeight: true,
-    once: true
-  }, document.body, window);
-});
-```
-
-The init call takes 3 parameters, the first is a default set of options. The last two are the `bindTo` and `scrollIn` parameters. These are optional.
-
-The `bindTo` parameter is the HTML element where the triggers should be fetched from, this usually is `document.body` but could specify to a certain element.
-
-The `scrollIn` parameter is the element to get the scroll position from, by default this is `window`, but it could be a scrolling div etc.
-
-Now add the `data-scroll` attribute to the HTML element you want to animate:
-
-```html
-<div data-scroll></div>
-```
-
-When you scroll the page, and the element is visible in the viewport, it will add the `visible` class. If it's out of the viewport the `invisible` class is added. Now you can define those classes in your css file and add animations to them, like so:
-
-```css
-.invisible {
-  transition: opacity 0.5s ease;
+// Now in your CSS add the following classes, this fades the [data-trigger] elements in and out
+.visible, .invisible {
   opacity: 0.0;
-}
-
-.visible {
   transition: opacity 0.5s ease;
+}
+.visible {
   opacity: 1.0;
 }
 ```
 
-Now when you scroll the page, the elements that 'come in' to the viewport fade in. A really basic example.
+## A more detailed example
+Adding callbacks / different classes can be done globally, this becomes the default for all triggers you add, or you can specify custom configuration when adding a trigger.
+
+```javascript
+// Create a new ScrollTrigger instance with some custom options
+const trigger = new ScrollTrigger({
+  trigger: {
+    once: true
+  }
+})
+// Add all html elements with attribute data-trigger, these elements will only be triggered once
+trigger.add('[data-trigger]')
+// Add all html elements with attribute data-triggerAlways, these elements will always be triggered
+trigger.add('[data-triggerAlways]', { once: false })
+```
 
 ## Options
-The `data-scroll` attribute can take a couple of options, in contrast to v0.1, the position of the options are not strict. So you can place them anywhere inside the `data-scroll` tag.
-
-| Name      | Type        | Description                                                                                                                                                                          | Example                                                                                                                                                                                                        |
-|-----------|-------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| toggle() | CSS Classes | These are the classes that ScrollTrigger changes, a replacement for the default `visible` and `invisible` classes. It takes 2 required parameters, the visible and invisible class. | `data-scroll="toggle(.animateIn, .animateOut)"` The `.` is not required, so `data-scroll="toggle(animateIn, animateOut)"` is also valid, just a bit less legible. For the default options the syntax is: `{ toggle: { visible: 'SomeClass', hidden: 'OtherClass' } }`                                           |
-| offset()  | Pixels      | This is a custom offset you can add to the element, this is nice for tuning animations. It takes 2 required parameters, the x and y offset.                                          | `data-scroll="offset(0,50px)"` for a 50px y offset.`data-scroll="offset(-50px,0)"` for a -50px x offset.The px value is not required, so `data-scroll="offset(-50,0)"` is also valid, just a bit less legible. For the default options the syntax is: `{ offset: { x: -50, y: 0 } }`  |
-| addWidth  | Boolean     | This adds the offsetWidth of the element to the offset, so the `visible` class is only added when the element is completely in the viewport.                                         | `data-scroll="addWidth"` For the default options the syntax is: `{ addWidth: true }`                                                                                                                                                                                       |
-| addHeight | Boolean     | This adds the offsetHeight of the element to the offset, so the `visible` class is only added when the element is completely in the viewport.                                        | `data-scroll="addHeight"` For the default options the syntax is: `{ addHeight: true }`                                                                                                                                                                                      |
-| centerHorizontal      | Boolean     | This adds the half of the offsetWidth to the offset, so the `visible` class is added when the element is exactly half in the viewport. Really handy for horizontal scrolling pages.                                                                                    | `data-scroll="centerHorizontal"` For the default options the syntax is: `{ centerHorizontal: true }`                                                                                                                                                                                           |
-| centerVertical      | Boolean     | This adds the half of the offsetHeight to the offset, so the `visible` class is added when the element is exactly half in the viewport.                                                                                    | `data-scroll="centerVertical"` For the default options the syntax is: `{ centerVertical: true }`                                                                                                                                                                                           |
-| once      | Boolean     | This makes sure the animation only runs once, if you add a callback that will also only run once.                                                                                    | `data-scroll="once"` For the default options the syntax is: `{ once: true }`                                                                                                                                                                                           |
-
-For advanced examples on how to use the options, check out the `example` folder. Especially the `horizontal.html` file.
-
-### Callbacks
-You can add callbacks to the show and hide events, e.g. when an element comes into the viewport and when it goes out. You do this by adding the `data-scroll-showCallback` and / or the `data-scroll-hideCallback` tags. We avoid using `eval` so the callback needs to be in the (global) `window` scope. If you dont want to expose your function to the `window` scope, you can define a custom scope by setting the `trigger.callScope` to your scope.
-
-A super simple example:
-```html
-<div data-scroll data-scroll-showCallback="alert('Visible')" data-scroll-hideCallback="alert('Invisible')"></div>
-```
-
-With a custom callScope:
-```javascript
-var scope = {};
-var trigger = new ScrollTrigger();
-trigger.callScope = scope;
-
-scope.customFunction = function(value) {
-  console.log(this); // this refers to the html element coming into the viewport
-  alert(value);
-};
-```
-```html
-<div data-scroll data-scroll-showCallback="customFunction('Visible')" data-scroll-hideCallback="customFunction('Invisible')"></div>
-```
-
-For a more advanced example check out the example folder.
-
-### What about CSS?
-For more advanced CSS animations check out the example folder, specifically `demo.css`. This demonstrates some translate/scale animations combined with opacity animations. All the animations are done in CSS so the possibilities are (almost) endless.
-
-## JavaScript API
-There are several things you can control via JavaScript.
-
-| Name                       | Description                                                                                                                                              | Example                                                        |
-|----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------|
-| .bind(elements)            | Binds new elements to the ScrollTrigger                                                                                                                  | `.bind(document.querySelectorAll('.someClass [data-scroll]'))` |
-| .triggerFor(element)       | Returns the Trigger object for the given HTMLElement                                                                                                     | `.triggerFor(document.querySelector('[data-scroll]'))`         |
-| .destroy(element)          | Removes the Trigger object for the given HTMLElement, leaving the DOM untouched, so the classes added by ScrollTrigger will stay put.                    | `.destroy(document.getElementById('someTrigger'))`             |
-| .destroyAll()              | The same as `.destroy()` but than for all elements.                                                                                                      | `.destroyAll()`                                                |
-| .reset(element)            | Removes the Trigger object for the given HTMLElement, and removing all traces from ScrollTrigger, so the classes added by ScrollTrigger will be removed. | `.reset(document.getElementById('someTrigger'))`               |
-| .resetAll()                | The same as `.reset()` but than for all elements.                                                                                                        | `.resetAll()`                                                  |
-| .attach(functionReference) | Attaches a callback to the ScrollTrigger loop, get's called every time the scroll position has changed. Very nice for custom animations.                                                  | Check the example below                                        |
-| .detach(functionReference) | Removes the callback from the ScrollTrigger loop.                                                                                                        | Check the example below                                        |
-
-
-## Custom animations
-If you want to add custom animations based on the scroll position, it would be a waste to start another loop / jack the onscroll function. That's why you can attach callbacks to the ScrollTrigger's loop. This is really simple:
+The full set of options is taken from the `demo` directory, for more info, check that out.
 
 ```javascript
-document.addEventListener('DOMContentLoaded', function(){
-  var trigger = new ScrollTrigger();
+const trigger = new ScrollTrigger({
+    // Set custom (default) options for the triggers, these can be overwritten
+    // when adding new triggers to the ScrollTrigger instance. If you pass
+    // options when adding new triggers, you'll only need to pass the object
+    // `trigger`, e.g. { once: false }
+    trigger: {
+        // If the trigger should just work one time
+        once: false,
+        offset: {
+            // Set an offset based on the elements position, returning an
+            // integer = offset in px, float = offset in percentage of either
+            // width (when setting the x offset) or height (when setting y)
+            //
+            // So setting an yOffset of 0.2 means 20% of the elements height,
+            // the callback / class will be toggled when the element is 20%
+            // in the viewport.
+            element: {
+                x: 0,
+                y: (trigger, rect, direction) => {
+                    // You can add custom offsets according to callbacks, you
+                    // get passed the trigger, rect (DOMRect) and the scroll
+                    // direction, a string of either top, left, right or
+                    // bottom.
+                    return 0.2
+                }
+            },
+            // Setting an offset of 0.2 on the viewport means the trigger
+            // will be called when the element is 20% in the viewport. So if
+            // your screen is 1200x600px, the trigger will be called when the
+            // user has scrolled for 120px.
+            viewport: {
+                x: 0,
+                y: (trigger, frame, direction) => {
+                    // We check if the trigger is visible, if so, the offset
+                    // on the viewport is 0, otherwise it's 20% of the height
+                    // of the viewport. This causes the triggers to animate
+                    // 'on screen' when the element is in the viewport, but
+                    // don't trigger the 'out' class until the element is out
+                    // of the viewport.
 
-  var loop = function(scrollLeft, scrollTop, width, height){
-    // you can do anything now with the height of the viewport
-    // or the scrollPosition in the scrollElement.
+                    // This is the same as returning Math.ceil(0.2 * frame.h)
+                    return trigger.visible ? 0 : 0.2
+                }
+            }
+        },
+        toggle: {
+            // The class(es) that should be toggled
+            class: {
+                in: 'visible', // Either a string, or an array of strings
+                out: ['invisible', 'extraClassToToggleWhenHidden']
+            },
+            callback: {
+                // A callback when the element is going in the viewport, you can
+                // return a Promise here, the trigger will not be called until
+                // the promise resolves.
+                in: null,
+                // A callback when the element is visible on screen, keeps
+                // on triggering for as long as 'sustain' is set
+                visible: null,
+                // A callback when the element is going out of the viewport.
+                // You can also return a promise here, like in the 'in' callback.
+                //
+                // Here an example where all triggers take 10ms to trigger
+                // the 'out' class.
+                out: (trigger) => {
+                    // `trigger` contains the Trigger object that goes out
+                    // of the viewport
+                    return new Promise((resolve, reject) => {
+                        setTimeout(resolve, 10)
+                    })
+                }
+            }
+        },
+    },
+    // Set custom options and callbacks for the ScrollAnimationLoop
+    scroll: {
+        // The amount of ms the scroll loop should keep triggering after the
+        // scrolling has stopped. This is sometimes nice for canvas
+        // animations.
+        sustain: 200,
+        // Window|HTMLDocument|HTMLElement to check for scroll events
+        element: window,
+        // Add a callback when the user has scrolled, keeps on triggering for
+        // as long as the sustain is set to do
+        callback: didScroll,
+        // Callback when the user started scrolling
+        start: () => {},
+        // Callback when the user stopped scrolling
+        stop: () => {},
+        // Callback when the user changes direction in scrolling
+        directionChange: () => {}
+    }
+})
 
-    // if you are done with the callback you can detach it
-    // using the ScrollTrigger.detach() method.
-    trigger.detach(loop);
-  };
+/***
+ ** Methods on the ScrollTrigger instance
+ ***/
 
-  trigger.attach(loop);
-});
+/**
+ * Creates a Trigger object from a given element and optional option set
+ * @param {HTMLElement} element
+ * @param {DefaultOptions.trigger} [options=DefaultOptions.trigger] options
+ * @returns Trigger
+ */
+trigger.createTrigger(element, options)
+
+/**
+ * Creates an array of triggers
+ * @param {HTMLElement[]|NodeList} elements
+ * @param {Object} [options=null] options
+ * @returns {Trigger[]} Array of triggers
+ */
+trigger.createTriggers(elements, options)
+
+/**
+ * Adds triggers
+ * @param {string|HTMLElement|NodeList|Trigger|Trigger[]} objects A list of objects or a query
+ * @param {Object} [options=null] options
+ * @returns {ScrollTrigger}
+ */
+trigger.add(objects, options)
+
+/**
+ * Removes triggers
+ * @param {string|HTMLElement|NodeList|Trigger|Trigger[]} objects A list of objects or a query
+ * @returns {ScrollTrigger}
+ */
+trigger.remove(objects)
+
+/**
+ * Lookup one or multiple triggers by a query string
+ * @param {string} selector
+ * @returns {Trigger[]}
+ */
+trigger.query(selector)
+
+/**
+ * Lookup one or multiple triggers by a certain HTMLElement or NodeList
+ * @param {HTMLElement|HTMLElement[]|NodeList} element
+ * @returns {Trigger|Trigger[]|null}
+ */
+trigger.search(element)
+
+/**
+ * Reattaches the scroll listener
+ */
+trigger.listen()
+
+/**
+ * Kills the scroll listener
+ */
+trigger.kill()
+
+
+/***
+ ** Methods on a Trigger instance, e.g. when receiving from a callback or from a query
+ ***/
+const receivedTrigger = new Trigger()
+
+/**
+ * The HTML element
+ */
+receivedTrigger.element
+
+/**
+ * The offset settings
+ */
+receivedTrigger.offset
+
+/**
+ * The toggle settings
+ */
+receivedTrigger.toggle
+
+/**
+ * If the trigger should fire once, boolean
+ */
+receivedTrigger.once
+
+/**
+ * If the trigger is visible, boolean
+ */
+receivedTrigger.visible
 ```
 
 ## Contributing
-Have some improvements? Check out the [v1 branch](https://github.com/terwanerik/ScrollTrigger/tree/v1.0)! This branch is under construction, but way better than v0.2 (master). If you want to fix a bug, then just fork, start a new branch & create a pull request when you're all done :)
+Fork, have a look in the `src/` directory and enjoy! If you have improvements, start a new branch & create a pull request when you're all done :)
 
 ## Troubleshooting
-You can see really quickly if the Trigger is working by hitting 'inspect element' in the little menu that pops up when you hit the right mouse button (or ctrl + click if you're one of those oldschool Mac users). Here you can see if the visible/invisble class is toggled when you scroll past the element, is that happening? Then there is something wrong with the CSS.
+You can see really quickly if the Trigger is working by hitting 'inspect element'. Here you can see if the visible/invisble class is toggled when you scroll past the element.
 
 If the classes don't toggle, check the JavaScript console. There might be some handy info in there.
 
 #### Found an issue?
 Ooh snap, well, bugs happen. Please create a new issue and mention the OS and browser (including version) that the issue is occurring on. If you are really kind, make a [minimal, complete and verifiable example](http://stackoverflow.com/help/mcve) and upload that to [codepen](http://codepen.io).
 
-## Using ScrollTrigger?
-I would love to see how you use ScrollTrigger in your projects! If you are using ScrollTrigger on a live webpage, please hit me up on Twitter [@erikterwan](http://twitter.com/erikterwan), good implementations will be referenced here.
-
 ## Legacy
-Looking for the old, 1.5kb minified, ScrollTrigger? Check out the [legacy branch](https://github.com/terwanerik/ScrollTrigger/tree/legacy-v0.1)!
+Looking for the old ScrollTrigger? Check out the [legacy branch](https://github.com/terwanerik/ScrollTrigger/tree/legacy-v0.2)!

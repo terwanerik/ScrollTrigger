@@ -1,0 +1,190 @@
+html, body {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background: #021517;
+    color: #a0bbbd;
+
+	font-family: 'Montserrat', Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimSun, sans-serif;
+	font-weight: 400;
+    font-size: 21px;
+	-webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, p {
+    margin: 0;
+    padding: 0.25em 0;
+}
+
+h1 {
+    font-size: 2.5em;
+}
+
+h2 {
+    font-size: 1.875em;
+    font-weight: normal;
+}
+
+h3 {
+    font-size: 1.5em;
+}
+
+a {
+    text-decoration: none;
+    font-weight: 500;
+    color: #689396;
+}
+
+section {
+    display: table;
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 100vh;
+
+    padding: 75px 15px;
+}
+
+section div.Wrapper {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    z-index: 0;
+}
+
+section h3,
+section p,
+section code {
+    display: block;
+    width: 98%;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 0 25px 0;
+
+    line-height: 1.4em;
+    color: inherit;
+}
+
+section h3 {
+    margin: 45px auto 0 auto;
+}
+
+section p span {
+    display: inline-block;
+    position: relative;
+    top: -2px;
+    padding: 0 5px;
+
+    background: #689396;
+
+    font-family: monospace;
+    font-size: 14px;
+    color: #fff;
+}
+
+section code {
+    padding: 15px;
+
+    background: #689396;
+    color: #fff;
+    font-size: 14px;
+}
+
+section code span {
+    opacity: 0.6;
+}
+
+section.Intro {
+    color: #a0bbbd;
+}
+
+section.Intro h2 {
+    color: rgba(160, 187, 189, 0.8);
+}
+
+section.About {
+    color: #497275;
+    background: #a0bbbd;
+}
+
+section.Examples {
+    background: #fff;
+    color: #689396;
+}
+
+.CenterAlign {
+    text-align: center;
+}
+
+div.Wrapper {
+    position: relative;
+    width: 96%;
+    max-width: 680px;
+    margin: 0 auto;
+
+    z-index: 1;
+}
+
+div.MouseScroll {
+    position: absolute;
+    left: 50%;
+    bottom: 25px;
+    width: 100px;
+    height: 100px;
+    margin: 0 0 0 -50px;
+
+    z-index: 2;
+}
+
+path.MouseScroll--chevron {
+	animation: ChevronAnimation 3s ease infinite;
+	transform: translateY(3px)
+}
+
+[data-slideInLeft].visible, [data-slideInLeft].invisible,
+[data-slideInRight].visible, [data-slideInRight].invisible ,
+[data-slideInBottom].visible, [data-slideInBottom].invisible {
+    opacity: 1.0;
+    transform: translate(0, 0);
+    transition: transform 0.8s ease, opacity 0.8s ease;
+}
+
+[data-slideInLeft].invisible {
+    opacity: 0.0;
+    transform: translate(10px, 0);
+}
+
+[data-slideInRight].invisible {
+    opacity: 0.0;
+    transform: translate(-10px, 0);
+}
+
+[data-slideInBottom].invisible {
+    opacity: 0.0;
+    transform: translate(0, 10px);
+}
+
+@keyframes ChevronAnimation {
+	0% {
+		transform: translateY(3px);
+		opacity: 1
+	}
+	50% {
+		transform: translateY(8px);
+		opacity: 0
+	}
+	60% {
+		transform: translateY(3px);
+		opacity: 0
+	}
+}
