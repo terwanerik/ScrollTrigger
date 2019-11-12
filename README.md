@@ -11,11 +11,14 @@ The most basic usage of ScrollTrigger is to trigger classes based on the current
 
 When using the callbacks ScrollTrigger becomes really powerfull. You can run custom code when an element enters / becomes visible, and even return Promises to halt the trigger if the callback fails. This makes lazy loading images very easy.
 
+## Installation
+`npm install @terwanerik/scrolltrigger` or just add the `dist/ScrollTrigger.min.js` file to your project and import that.
+
 ## How to use?
 The easiest way to start is to create a new instance and add some triggers to it, with all default values. This will toggle the 'visible' class when the element comes into the viewport, and toggles the 'invisible' class when it scrolls out of the viewport.
 
 ```javascript
-// when using ES6 import
+// when using ES6 import / npm
 import ScrollTrigger from '@terwanerik/scrolltrigger'
 // Create a new ScrollTrigger instance with default options
 const trigger = new ScrollTrigger()
