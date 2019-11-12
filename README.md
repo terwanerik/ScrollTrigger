@@ -1,7 +1,7 @@
 # ScrollTrigger
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/terwanerik/ScrollTrigger/blob/master/LICENSE)
 [![Issues](https://img.shields.io/github/issues/terwanerik/ScrollTrigger.svg)](https://github.com/terwanerik/ScrollTrigger/issues)
-![GitHub release](https://img.shields.io/github/release/terwanerik/ScrollTrigger.svg?maxAge=2592000)
+![GitHub release](https://img.shields.io/github/release/terwanerik/ScrollTrigger.svg)
 ![npm (scoped)](https://img.shields.io/npm/v/@terwanerik/scrolltrigger)
 
 Let your page react to scroll changes.
