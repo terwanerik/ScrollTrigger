@@ -828,8 +828,8 @@ function () {
   }, {
     key: "getPosition",
     value: function getPosition() {
-      var left = this.element.pageXOffset || document.documentElement.scrollLeft || this.element.scrollLeft || 0;
-      var top = this.element.pageYOffset || document.documentElement.scrollTop || this.element.scrollTop || 0;
+      var left = this.element.pageXOffset || this.element.scrollLeft || document.documentElement.scrollLeft || 0;
+      var top = this.element.pageYOffset || this.element.scrollTop || document.documentElement.scrollTop || 0;
       return {
         x: left,
         y: top

@@ -1,8 +1,8 @@
 # ScrollTrigger
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/terwanerik/ScrollTrigger/blob/master/LICENSE)
 [![Issues](https://img.shields.io/github/issues/terwanerik/ScrollTrigger.svg)](https://github.com/terwanerik/ScrollTrigger/issues)
-![GitHub release](https://img.shields.io/github/release/terwanerik/ScrollTrigger.svg)
-![npm (scoped)](https://img.shields.io/npm/v/@terwanerik/scrolltrigger)
+[![GitHub release](https://img.shields.io/github/release/terwanerik/ScrollTrigger.svg)](https://github.com/terwanerik/ScrollTrigger/releases)
+[![npm (scoped)](https://img.shields.io/npm/v/@terwanerik/scrolltrigger)](https://www.npmjs.com/package/@terwanerik/scrolltrigger)
 
 Let your page react to scroll changes.
 
@@ -23,8 +23,11 @@ import ScrollTrigger from '@terwanerik/scrolltrigger'
 const trigger = new ScrollTrigger() // When not using npm, create a new instance with 'new ScrollTrigger.default()'
 // Add all html elements with attribute data-trigger
 trigger.add('[data-trigger]')
+```
 
-// Now in your CSS add the following classes, this fades the [data-trigger] elements in and out
+Now in your CSS add the following classes, this fades the `[data-trigger]` elements in and out.
+
+```css
 .visible, .invisible {
   opacity: 0.0;
   transition: opacity 0.5s ease;
@@ -238,6 +241,103 @@ receivedTrigger.once
  */
 receivedTrigger.visible
 ```
+
+## Migrating from 0.x to 1.x
+The main differences between `0.x` and `1.x` are the way you add and configure your
+triggers. `0.x` added all HTMLElement's with the data-scroll attribute by default,
+`1.x` doesn't do that, this requires you to add the triggers yourself. This improves
+the configuration of the triggers.
+
+Also, please note that when *not* using a package manager / webpack, and you're
+just importing the minified version, you'll have to always use `new ScrollTrigger.default()`.
+
+```html
+<script src="dist/ScrollTrigger.min.js"></script>
+<script>
+var trigger = new ScrollTrigger.default()
+</script>
+```
+
+Take for example the following element in ScrollTrigger `0.x`:
+
+```html
+<div data-scroll="once addHeight" data-scroll-showCallback="alert('Visible')" data-scroll-hideCallback="alert('Invisible')"></div>
+```
+
+In ScrollTrigger `1.x` you would write this mostly in JavaScript:
+
+```javascript
+// Say you have some divs with class 'animateMe'
+const scrollTrigger = new ScrollTrigger()
+scrollTrigger.add('.animateMe', {
+    once: true, // same functionality as the `once` flag in v0.x
+    offset: {
+        element: {
+            y: 1.0 // note that we pass a float instead of an integer, when the
+                   // offset is a float, it takes it as a percentage, in this
+                   // case, add 100% of the height of the element, the same
+                   // functionality as the `addHeight` flag in v0.x
+        }
+    },
+    toggle: {
+        callback: {
+            in: () => { // same as the data-scroll-showCallback, no need to set a
+                        // custom callScope when calling custom functions and
+                        // the possibility to return a Promise
+                alert('Visible')
+            },
+            out: () => { // same as the data-scroll-hideCallback
+                alert('Invisible')
+            }
+        }
+    }
+})
+```
+
+The advantage of writing all this in javascript is the configuration possible, say
+i want to change the offset of the element after the first time it's been visible
+(e.g. remove the `addHeight` flag after it's been shown):
+
+```javascript
+scrollTrigger.add('.animateMe', {
+    offset: {
+        element: {
+            y: 1.0
+        }
+    },
+    toggle: {
+        callback: {
+            in: (trigger) => {
+                // remove the element offset
+                trigger.offset.element.y = 0
+            }
+        }
+    }
+})
+```
+
+Another example for setting custom classes per toggle;
+
+```html
+<div data-scroll="toggle(animateIn, animateOut)"></div>
+```
+
+Becomes
+
+```javascript
+const scrollTrigger = new ScrollTrigger()
+
+scrollTrigger.add('[data-scroll]', {
+    toggle: {
+        class: {
+            in: 'animateIn',
+            out: 'animateOut'
+        }
+    }
+})
+```
+
+If you have any questions on migrating to `v1.x` feel free to [create a new issue](https://github.com/terwanerik/ScrollTrigger/issues).
 
 ## Contributing
 Fork, have a look in the `src/` directory and enjoy! If you have improvements, start a new branch & create a pull request when you're all done :)

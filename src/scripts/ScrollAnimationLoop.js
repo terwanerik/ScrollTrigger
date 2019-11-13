@@ -120,8 +120,8 @@ export default class ScrollAnimationLoop {
 	 * @returns {{x: number, y: number}}
 	 */
 	getPosition() {
-		const left = this.element.pageXOffset || document.documentElement.scrollLeft || this.element.scrollLeft || 0
-		const top = this.element.pageYOffset || document.documentElement.scrollTop || this.element.scrollTop || 0
+		const left = this.element.pageXOffset || this.element.scrollLeft || document.documentElement.scrollLeft || 0
+		const top = this.element.pageYOffset || this.element.scrollTop || document.documentElement.scrollTop || 0
 
 		return { x: left, y: top }
 	}

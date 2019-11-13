@@ -7,7 +7,7 @@ const scroll = new ScrollTrigger({
   },
   scroll: {
       callback: (position, direction) => {
-
+          console.log(position)
       }
   }
 })
