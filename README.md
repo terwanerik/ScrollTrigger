@@ -37,6 +37,9 @@ Now in your CSS add the following classes, this fades the `[data-trigger]` eleme
 }
 ```
 
+> ⚠️ **Attention**
+> Are you migrating from 0.x to 1.x? [Checkout the migration guide!](https://github.com/terwanerik/ScrollTrigger#migrating-from-0x-to-1x)
+
 ## A more detailed example
 Adding callbacks / different classes can be done globally, this becomes the default for all triggers you add, or you can specify custom configuration when adding a trigger.
 
@@ -351,4 +354,4 @@ If the classes don't toggle, check the JavaScript console. There might be some h
 Ooh snap, well, bugs happen. Please create a new issue and mention the OS and browser (including version) that the issue is occurring on. If you are really kind, make a [minimal, complete and verifiable example](http://stackoverflow.com/help/mcve) and upload that to [codepen](http://codepen.io).
 
 ## Legacy
-Looking for the old ScrollTrigger? Check out the [legacy branch](https://github.com/terwanerik/ScrollTrigger/tree/legacy-v0.2)!
+Looking for the old ScrollTrigger? Check out the [legacy branch](https://github.com/terwanerik/ScrollTrigger/tree/legacy-v0.3.6)!
