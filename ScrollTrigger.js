@@ -563,7 +563,7 @@ function () {
           var distanceY = Math.abs(point.calcY - reference.calcY);
           var distance = Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2));
 
-          if (distance <= CONNECT_DISTANCE * (1 - this.scrollDelta)) {
+          if (distance <= CONNECT_DISTANCE) {
             var tag = point.id > reference.id ? "".concat(reference.id, "_").concat(point.id) : "".concat(point.id, "_").concat(reference.id);
 
             if (linesById.hasOwnProperty(tag)) {
@@ -585,7 +585,7 @@ function () {
 
       for (var i = 0; i < lines.length; i++) {
         var line = lines[i];
-        var alpha = 1.0 - line.distance / (CONNECT_DISTANCE * (1 - this.scrollDelta));
+        var alpha = 1.0 - line.distance / CONNECT_DISTANCE;
         this.ctx.strokeStyle = "rgba(98, 130, 94, ".concat(alpha, ")");
         this.ctx.lineWidth = LINE_WIDTH;
         this.ctx.beginPath();
@@ -1803,4 +1803,4 @@ function () {
 
 /******/ });
 });
-//# sourceMappingURL=ScrollTrigger.js.map?1b9b0b1134b5f456026f
+//# sourceMappingURL=ScrollTrigger.js.map?6b7d1d62124da3e10953
