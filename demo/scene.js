@@ -62,7 +62,7 @@ export default class Scene {
                 const distanceY = Math.abs(point.calcY - reference.calcY)
                 const distance = Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2))
 
-                if (distance <= (CONNECT_DISTANCE * (1 - this.scrollDelta))) {
+                if (distance <= CONNECT_DISTANCE) {
                     const tag = point.id > reference.id ? `${reference.id}_${point.id}` : `${point.id}_${reference.id}`
 
                     if (linesById.hasOwnProperty(tag)) { continue }
@@ -76,7 +76,7 @@ export default class Scene {
 
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i]
-            const alpha = 1.0 - (line.distance / (CONNECT_DISTANCE * (1 - this.scrollDelta)))
+            const alpha = 1.0 - (line.distance / CONNECT_DISTANCE)
 
             this.ctx.strokeStyle = `rgba(98, 130, 94, ${alpha})`
             this.ctx.lineWidth = LINE_WIDTH
