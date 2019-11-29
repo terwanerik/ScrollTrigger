@@ -1,0 +1,17 @@
+name: Build
+
+on:
+  - push
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@master
+      - name: Build
+        run: |
+          npm ci
+          npm run build
+        env:
+          CI: true
