@@ -1,4 +1,6 @@
 # ScrollTrigger
+[![Build](https://github.com/terwanerik/ScrollTrigger/workflows/Build/badge.svg)](https://github.com/terwanerik/ScrollTrigger/actions?query=workflow%3ABuild)
+[![Deploy](https://github.com/terwanerik/ScrollTrigger/workflows/Deploy/badge.svg)](https://github.com/terwanerik/ScrollTrigger/actions?query=workflow%3ADeploy)
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/terwanerik/ScrollTrigger/blob/master/LICENSE)
 [![Issues](https://img.shields.io/github/issues/terwanerik/ScrollTrigger.svg)](https://github.com/terwanerik/ScrollTrigger/issues)
 [![GitHub release](https://img.shields.io/github/release/terwanerik/ScrollTrigger.svg)](https://github.com/terwanerik/ScrollTrigger/releases)
