@@ -42,6 +42,9 @@ Now in your CSS add the following classes, this fades the `[data-trigger]` eleme
 > ⚠️ **Attention**
 > Are you migrating from 0.x to 1.x? [Checkout the migration guide!](https://github.com/terwanerik/ScrollTrigger#migrating-from-0x-to-1x)
 
+### Some more demo's
+ - [A Vue.js example with image lazy loading](https://codepen.io/erikterwan/pen/bGNeRMr)
+
 ## A more detailed example
 Adding callbacks / different classes can be done globally, this becomes the default for all triggers you add, or you can specify custom configuration when adding a trigger.
 
