@@ -1567,19 +1567,19 @@ function () {
 
       var visible = true;
 
-      if (rect.x - viewportOffset.x < -(rect.width - elementOffset.x)) {
+      if (rect.left - viewportOffset.x < -(rect.width - elementOffset.x)) {
         visible = false;
       }
 
-      if (rect.x + viewportOffset.x > parent.w - elementOffset.x) {
+      if (rect.left + viewportOffset.x > parent.w - elementOffset.x) {
         visible = false;
       }
 
-      if (rect.y - viewportOffset.y < -(rect.height - elementOffset.y)) {
+      if (rect.top - viewportOffset.y < -(rect.height - elementOffset.y)) {
         visible = false;
       }
 
-      if (rect.y + viewportOffset.y > parent.h - elementOffset.y) {
+      if (rect.top + viewportOffset.y > parent.h - elementOffset.y) {
         visible = false;
       }
 
@@ -1803,4 +1803,4 @@ function () {
 
 /******/ });
 });
-//# sourceMappingURL=ScrollTrigger.js.map?6b7d1d62124da3e10953
+//# sourceMappingURL=ScrollTrigger.js.map?d7c6bf4aa6d0bcb97658
