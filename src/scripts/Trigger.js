@@ -51,25 +51,25 @@ export default class Trigger {
 		if (visible !== this.visible) {
 			this.visible = visible
 
-            const response = this._toggleCallback()
+			const response = this._toggleCallback()
 
-            if (response instanceof Promise) {
-                response.then(this._toggleClass.bind(this)).catch(e => {
-                  console.error('Trigger promise failed')
-                  console.error(e)
-                })
-            } else {
-                this._toggleClass()
-            }
+			if (response instanceof Promise) {
+					response.then(this._toggleClass.bind(this)).catch(e => {
+						console.error('Trigger promise failed')
+						console.error(e)
+					})
+			} else {
+					this._toggleClass()
+			}
 
-        	if (this.visible && this.once) {
-        		this.active = false
-        	}
-        } else if (visible) {
-            if (typeof this.toggle.callback.visible == 'function') {
-                return this.toggle.callback.visible.call(this.element, this)
-            }
-        }
+			if (this.visible && this.once) {
+				this.active = false
+			}
+		} else if (visible) {
+				if (typeof this.toggle.callback.visible == 'function') {
+						return this.toggle.callback.visible.call(this.element, this)
+				}
+		}
 
 		return visible
 	}
@@ -79,8 +79,8 @@ export default class Trigger {
 	 * @return {ClientRect | DOMRect}
 	 */
 	getBounds() {
-        return this.element.getBoundingClientRect()
-    }
+  	return this.element.getBoundingClientRect()
+	}
 
 	/**
 	 * Get the calculated offset to place on the element
@@ -148,25 +148,25 @@ export default class Trigger {
 	 * @returns {boolean}
 	 * @private
 	 */
-    _checkVisibility(rect, parent, direction) {
+	 _checkVisibility(rect, parent, direction) {
 		const elementOffset = this._getElementOffset(rect, direction)
 		const viewportOffset = this._getViewportOffset(parent, direction)
 
 		let visible = true
 
-		if ((rect.x - viewportOffset.x) < -(rect.width - elementOffset.x)) {
+		if ((rect.left - viewportOffset.x) < -(rect.width - elementOffset.x)) {
 			visible = false
 		}
 
-		if ((rect.x + viewportOffset.x) > (parent.w - elementOffset.x)) {
+		if ((rect.left + viewportOffset.x) > (parent.w - elementOffset.x)) {
 			visible = false
 		}
 
-		if ((rect.y - viewportOffset.y) < -(rect.height - elementOffset.y)) {
+		if ((rect.top - viewportOffset.y) < -(rect.height - elementOffset.y)) {
 			visible = false
 		}
 
-		if ((rect.y + viewportOffset.y) > (parent.h - elementOffset.y)) {
+		if ((rect.top + viewportOffset.y) > (parent.h - elementOffset.y)) {
 			visible = false
 		}
 
@@ -184,18 +184,18 @@ export default class Trigger {
 					this.element.classList.add(className)
 				})
 			} else {
-                this.element.classList.add(this.toggle.class.in)
-            }
+      	this.element.classList.add(this.toggle.class.in)
+      }
 
-            if (Array.isArray(this.toggle.class.out)) {
-                this.toggle.class.out.each((className) => {
-                    this.element.classList.remove(className)
-                })
-            } else {
-                this.element.classList.remove(this.toggle.class.out)
-            }
+      if (Array.isArray(this.toggle.class.out)) {
+      	this.toggle.class.out.each((className) => {
+        	this.element.classList.remove(className)
+        })
+      } else {
+      	this.element.classList.remove(this.toggle.class.out)
+      }
 
-            return
+      return
 		}
 
 		if (Array.isArray(this.toggle.class.in)) {
@@ -203,16 +203,16 @@ export default class Trigger {
 				this.element.classList.remove(className)
 			})
 		} else {
-            this.element.classList.remove(this.toggle.class.in)
-        }
+			this.element.classList.remove(this.toggle.class.in)
+    }
 
 		if (Array.isArray(this.toggle.class.out)) {
 			this.toggle.class.out.each((className) => {
 				this.element.classList.add(className)
 			})
 		} else {
-            this.element.classList.add(this.toggle.class.out)
-        }
+    	this.element.classList.add(this.toggle.class.out)
+    }
 	}
 
 	/**
