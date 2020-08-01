@@ -117,9 +117,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var FRAME_RATE = 60;
 var FRAME_RATE_SECONDS = 1000 / FRAME_RATE;
 
-var Canvas =
-/*#__PURE__*/
-function () {
+var Canvas = /*#__PURE__*/function () {
   function Canvas(ctx, w, h) {
     _classCallCheck(this, Canvas);
 
@@ -407,9 +405,7 @@ function getRandomNegative(from, to) {
   return Math.random() > 0.5 ? rand : -rand;
 }
 
-var Point =
-/*#__PURE__*/
-function () {
+var Point = /*#__PURE__*/function () {
   function Point(id, w, h) {
     _classCallCheck(this, Point);
 
@@ -501,9 +497,7 @@ var AMOUNT_DELTA = 2.4;
 var CONNECT_DISTANCE = 260;
 var LINE_WIDTH = 2;
 
-var Scene =
-/*#__PURE__*/
-function () {
+var Scene = /*#__PURE__*/function () {
   function Scene(ctx, w, h) {
     _classCallCheck(this, Scene);
 
@@ -714,9 +708,7 @@ var Trigger = _scripts_Trigger__WEBPACK_IMPORTED_MODULE_1__["default"];
 var TriggerCollection = _scripts_TriggerCollection__WEBPACK_IMPORTED_MODULE_2__["default"];
 var ScrollAnimationLoop = _scripts_ScrollAnimationLoop__WEBPACK_IMPORTED_MODULE_3__["default"];
 
-var ScrollTrigger =
-/*#__PURE__*/
-function () {
+var ScrollTrigger = /*#__PURE__*/function () {
   /**
    * Constructor for the scroll trigger
    * @param {DefaultOptions} [options=DefaultOptions] options
@@ -1164,9 +1156,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
-var ScrollAnimationLoop =
-/*#__PURE__*/
-function () {
+var ScrollAnimationLoop = /*#__PURE__*/function () {
   /**
    * ScrollAnimationLoop constructor.
    * Starts a requestAnimationFrame loop as long as the user has scrolled the scrollElement. Stops after a certain time.
@@ -1401,9 +1391,7 @@ function isFloat(n) {
   return Number(n) === n && n % 1 !== 0;
 }
 
-var Trigger =
-/*#__PURE__*/
-function () {
+var Trigger = /*#__PURE__*/function () {
   /**
    * Creates a new Trigger from the given element and options
    *
@@ -1681,9 +1669,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
-var TriggerCollection =
-/*#__PURE__*/
-function () {
+var TriggerCollection = /*#__PURE__*/function () {
   /**
    * Initializes the collection
    * @param {Trigger[]} [triggers=[]] triggers A set of triggers to init with, optional
@@ -1803,4 +1789,4 @@ function () {
 
 /******/ });
 });
-//# sourceMappingURL=ScrollTrigger.js.map?d7c6bf4aa6d0bcb97658
+//# sourceMappingURL=ScrollTrigger.js.map?945a845231bcfd009389
