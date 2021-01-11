@@ -3,7 +3,7 @@
 [![Deploy](https://github.com/terwanerik/ScrollTrigger/workflows/Deploy/badge.svg)](https://github.com/terwanerik/ScrollTrigger/actions?query=workflow%3ADeploy)
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/terwanerik/ScrollTrigger/blob/master/LICENSE)
 [![Issues](https://img.shields.io/github/issues/terwanerik/ScrollTrigger.svg)](https://github.com/terwanerik/ScrollTrigger/issues)
-[![GitHub release](https://img.shields.io/github/release/terwanerik/ScrollTrigger.svg)](https://github.com/terwanerik/ScrollTrigger/releases)
+[![GitHub release](https://img.shields.io/github/release/terwanerik/ScrollTrigger.svg)](https://github.com/terwanerik/ScrollTrigger/releases) [![Meercode CI Score](https://meercode.io/badge/terwanerik/ScrollTrigger?type=ci-score&branch=master)](https://meercode.io/terwanerik/ScrollTrigger)
 [![npm (scoped)](https://img.shields.io/npm/v/@terwanerik/scrolltrigger)](https://www.npmjs.com/package/@terwanerik/scrolltrigger)
 
 Let your page react to scroll changes.
