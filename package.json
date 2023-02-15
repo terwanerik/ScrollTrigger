@@ -41,7 +41,7 @@
     "babel-loader": "^8.1.0",
     "babel-plugin-add-module-exports": "^1.0.2",
     "cross-env": "^5.2.1",
-    "html-webpack-plugin": "^3.2.0",
+    "html-webpack-plugin": "^5.5.0",
     "unminified-webpack-plugin": "^2.0.0",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",
