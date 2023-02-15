@@ -41,34 +41,34 @@ switch (process.env.NODE_ENV) {
 }
 
 module.exports = {
-    entry: entry,
-    mode: mode,
-	devtool: 'source-map',
-	output: {
-        path: outputPath,
-        filename: outputFile,
-		library: libraryName,
-		libraryTarget: 'umd',
-		umdNamedDefine: true
-	},
-    plugins: plugins,
-    module: {
-        rules: [
-            {
-                test: /\.m?js$/,
-                exclude: /(node_modules|bower_components)/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-env']
-                    }
-                }
-            }
-        ]
-    },
-	devServer: {
-		contentBase: contentBase,
-		host: '127.0.0.1',
-		port: 8010
-	}
+  entry: entry,
+  mode: mode,
+  devtool: 'source-map',
+  output: {
+    path: outputPath,
+    filename: outputFile,
+    library: libraryName,
+    libraryTarget: 'umd',
+    umdNamedDefine: true
+  },
+  plugins: plugins,
+  module: {
+    rules: [
+      {
+        test: /\.m?js$/,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
+          }
+        }
+      }
+    ]
+  },
+  devServer: {
+    static: contentBase,
+    host: '127.0.0.1',
+    port: 8010
+  }
 }
